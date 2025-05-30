@@ -36,24 +36,44 @@
         </section>
 
         <section id="quiz-screen" class="hidden">
+            <h2 id="question-number"></h2>
+            <p id="question-text"></p>
+            <div id="choices-container">
+            </div>
+            <button id="submit-answer-button">解答する</button>
+            <div id="feedback-container" class="hidden">
+                <p id="result-message"></p>
+                <p id="explanation-text"></p>
+                <button id="next-question-button">次の問題へ</button>
+            </div>
             <button id="back-to-welcome-from-quiz-button" class="back-to-top-button">TOPに戻る</button>
         </section>
 
         <section id="result-screen" class="hidden">
+            <h2>学習結果</h2>
+            <p>正答数: <span id="correct-answers-count">0</span> / <span id="total-questions-count">0</span></p>
+            <button id="restart-quiz-button">もう一度学習する</button>
             <button id="back-to-welcome-from-result-button" class="back-to-top-button">TOPに戻る</button>
         </section>
 
         <section id="syllabus-screen" class="hidden">
+            <h2>JSTQBテストアナリスト シラバス</h2>
+            <div class="syllabus-layout">
+                <nav id="syllabus-navigation">
+                </nav>
+                <div id="syllabus-content">
+                </div>
+            </div>
             <button id="back-to-welcome-button" class="back-to-top-button">TOPに戻る</button>
         </section>
 
         <section id="assumed-problems-screen" class="hidden">
+            <h2>想定問題</h2>
+            <div id="assumed-problems-list" class="assumed-problems-list">
+            </div>
             <button id="back-from-assumed-problems-button" class="back-to-top-button">TOPに戻る</button>
         </section>
     </main>
-    <footer>
-        <p>&copy; 2025 JSTQB-TA 学習アプリ</p>
-    </footer>
 
     <script type="module" src="js/script.js"></script>
 </body>
