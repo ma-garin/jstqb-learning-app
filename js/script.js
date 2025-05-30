@@ -34,333 +34,376 @@ document.addEventListener('DOMContentLoaded', async () => {
     const nextQuestionButton = document.getElementById('next-question-button');
     const correctAnswersCountElement = document.getElementById('correct-answers-count');
     const totalQuestionsCountElement = document.getElementById('total-questions-count');
-    const restartQuizButton = document.getElementById('restart-quiz-button'); // ★修正点：この行を追加★
+    const restartQuizButton = document.getElementById('restart-quiz-button');
 
-
-    // シラバス関連要素
+    // シラバス画面の要素
     const syllabusNavigation = document.getElementById('syllabus-navigation');
-    const syllabusContentDiv = document.getElementById('syllabus-content');
+    const syllabusContent = document.getElementById('syllabus-content');
 
-    // 想定問題関連要素
+    // 想定問題画面の要素
     const assumedProblemsList = document.getElementById('assumed-problems-list');
 
-    // 各画面への戻るボタン
-    const backToWelcomeButton = document.getElementById('back-to-welcome-button'); // シラバスからTOPへ
-    const backFromAssumedProblemsButton = document.getElementById('back-from-assumed-problems-button'); // 想定問題からTOPへ
-    const backToWelcomeFromQuizButton = document.getElementById('back-to-welcome-from-quiz-button'); // クイズ画面からTOPへ
-    const backToWelcomeFromResultButton = document.getElementById('back-to-welcome-from-result-button'); // 結果画面からTOPへ
+    // 各画面からのTOPに戻るボタン (共通クラス名も持つ)
+    const backToWelcomeButton = document.getElementById('back-to-welcome-button'); // シラバス画面から
+    const backFromAssumedProblemsButton = document.getElementById('back-from-assumed-problems-button'); // 想定問題画面から
+    const backToWelcomeFromQuizButton = document.getElementById('back-to-welcome-from-quiz-button'); // クイズ画面から
+    const backToWelcomeFromResultButton = document.getElementById('back-to-welcome-from-result-button'); // 結果画面から
 
-
-    let questionsData = [];
+    let questionsData = []; // クイズ問題データ
     let currentQuestionIndex = 0;
     let correctAnswersCount = 0;
-    let syllabusData = null;
-    let assumedProblemsData = null;
+    let selectedChoice = null;
+    let syllabusChapters = []; // シラバスデータ (複数のチャプターを格納)
+    let assumedProblemsData = []; // 想定問題データ
 
-    // 画面表示を切り替える関数
+    // ===============================================
+    // 画面切り替え関数
+    // ===============================================
     function showScreen(screenToShow) {
-        // 全てのセクションを非表示にする前にnullチェックを行う
-        [welcomeScreen, quizScreen, resultScreen, syllabusScreen, assumedProblemsScreen].forEach(screen => {
-            if (screen) {
+        const screens = [welcomeScreen, quizScreen, resultScreen, syllabusScreen, assumedProblemsScreen];
+        screens.forEach(screen => {
+            if (screen === screenToShow) {
+                screen.classList.remove('hidden');
+                screen.classList.add('active');
+            } else {
                 screen.classList.add('hidden');
+                screen.classList.remove('active');
             }
         });
-        // 指定されたセクションを表示する前にnullチェックを行う
-        if (screenToShow) {
-            screenToShow.classList.remove('hidden');
+        if (!mainNav.classList.contains('hidden')) {
+            mainNav.classList.add('hidden');
         }
         updateBreadcrumb(screenToShow.id);
-        mainNav.classList.add('hidden'); // メニューを閉じる
     }
 
-    // パンくずリストの更新
+    // ===============================================
+    // パンくずリスト関連
+    // ===============================================
     function updateBreadcrumb(currentScreenId) {
-        breadcrumbNav.innerHTML = ''; // クリア
-
-        // 各画面のパンくず情報を定義
-        const screenMap = {
-            'welcome-screen': 'トップ',
-            'quiz-screen': 'クイズ',
-            'result-screen': '結果',
-            'syllabus-screen': 'シラバス',
-            'assumed-problems-screen': '想定問題'
-        };
-
-        const addBreadcrumbItem = (id, text, isActive) => {
-            const item = document.createElement('span');
-            item.classList.add('breadcrumb-item');
-            item.textContent = text;
-            item.dataset.screenId = id; // データ属性にIDを保存
-
-            if (isActive) {
-                item.classList.add('active-breadcrumb');
-            } else {
-                item.addEventListener('click', () => showScreen(document.getElementById(id)));
-            }
-            breadcrumbNav.appendChild(item);
-        };
-
-        // トップ画面は常に最初に表示
-        addBreadcrumbItem('welcome-screen', 'トップ', currentScreenId === 'welcome-screen');
-
+        breadcrumbNav.innerHTML = `<span class="breadcrumb-item" data-screen-id="welcome-screen">トップ</span>`;
         if (currentScreenId !== 'welcome-screen') {
-            const currentScreenText = screenMap[currentScreenId] || '';
-            if (currentScreenText) {
-                const separator = document.createElement('span');
-                separator.classList.add('breadcrumb-separator');
-                separator.textContent = ' > ';
-                breadcrumbNav.appendChild(separator);
-                addBreadcrumbItem(currentScreenId, currentScreenText, true);
-            }
+            const currentScreenName = {
+                'quiz-screen': '学習',
+                'result-screen': '学習結果',
+                'syllabus-screen': 'シラバス',
+                'assumed-problems-screen': '想定問題'
+            }[currentScreenId];
+            breadcrumbNav.innerHTML += `
+                <span class="breadcrumb-separator"> > </span>
+                <span class="breadcrumb-item active-breadcrumb" data-screen-id="${currentScreenId}">${currentScreenName}</span>
+            `;
         }
+        addBreadcrumbListeners();
     }
 
-
-    // 問題データを読み込む関数
-    async function fetchQuestions() {
-        try {
-            const response = await fetch('js/questions.json'); // または 'js/questions.js'
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+    function addBreadcrumbListeners() {
+        breadcrumbNav.querySelectorAll('.breadcrumb-item').forEach(item => {
+            if (!item.classList.contains('active-breadcrumb')) {
+                item.addEventListener('click', (event) => {
+                    const screenId = event.target.dataset.screenId;
+                    const screenMap = {
+                        'welcome-screen': welcomeScreen,
+                        'quiz-screen': quizScreen,
+                        'result-screen': resultScreen,
+                        'syllabus-screen': syllabusScreen,
+                        'assumed-problems-screen': assumedProblemsScreen
+                    };
+                    if (screenMap[screenId]) {
+                        showScreen(screenMap[screenId]);
+                        if (screenId === 'welcome-screen' && (quizScreen.classList.contains('active') || resultScreen.classList.contains('active'))) {
+                            resetQuiz();
+                        }
+                    }
+                });
             }
-            const data = await response.json();
-            return data.questions;
-        } catch (error) {
-            console.error('問題データの読み込みエラー:', error);
-            alert('問題データの読み込みに失敗しました。開発者ツールでコンソールを確認してください。');
-            return [];
-        }
-    }
-
-    // シラバスデータを読み込む関数
-    async function fetchSyllabusData() {
-        try {
-            const response = await fetch('js/syllabusData.json'); // または 'js/syllabusData.js'
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            return data.chapters;
-        } catch (error) {
-            console.error('シラバスデータの読み込みエラー:', error);
-            alert('シラバスデータの読み込みに失敗しました。開発者ツールでコンソールを確認してください。');
-            return [];
-        }
-    }
-
-    // 想定問題データを読み込む関数
-    async function fetchAssumedProblemsData() {
-        try {
-            const response = await fetch('js/assumedProblemsData.json'); // または 'js/assumedProblemsData.js'
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            return data.problems;
-        } catch (error) {
-            console.error('想定問題データの読み込みエラー:', error);
-            alert('想定問題データの読み込みに失敗しました。開発者ツールでコンソールを確認してください。');
-            return [];
-        }
-    }
-
-    // 問題をロードする関数
-    function loadQuestion(questions) {
-        feedbackContainer.classList.add('hidden');
-        choicesContainer.innerHTML = ''; // 選択肢をクリア
-        submitAnswerButton.disabled = false; // 解答ボタンを有効化
-
-        if (currentQuestionIndex >= questions.length) {
-            // 全問終了
-            correctAnswersCountElement.textContent = correctAnswersCount;
-            totalQuestionsCountElement.textContent = questions.length;
-            showScreen(resultScreen);
-            return;
-        }
-
-        const question = questions[currentQuestionIndex];
-        questionNumberElement.textContent = `第 ${currentQuestionIndex + 1} 問`;
-        questionTextElement.textContent = question.question;
-
-        question.choices.forEach((choice, index) => {
-            const choiceButton = document.createElement('button');
-            choiceButton.classList.add('choice-button');
-            choiceButton.textContent = choice;
-            choiceButton.dataset.index = index;
-            choiceButton.addEventListener('click', () => selectChoice(choiceButton));
-            choicesContainer.appendChild(choiceButton);
         });
-
-        submitAnswerButton.classList.remove('hidden'); // 解答ボタンを表示
-        nextQuestionButton.classList.add('hidden'); // 次の問題ボタンを非表示
     }
 
-    // 選択肢が選択された時の処理
-    let selectedChoiceButton = null;
+    // ===============================================
+    // クイズ関連機能
+    // ===============================================
+
+    // questions.csv の読み込みとパース
+    async function fetchQuestions() {
+        const response = await fetch('data/questions.csv'); // パスを修正
+        if (!response.ok) {
+            console.error(`HTTP error! status: ${response.status} - Could not load questions.csv`);
+            alert("問題データの読み込みに失敗しました。");
+            return [];
+        }
+        const csvText = await response.text();
+        return parseCsvQuestions(csvText);
+    }
+
+    // CSVをパースして問題データ形式に変換する関数
+    function parseCsvQuestions(csv) {
+        const lines = csv.trim().split('\n');
+        // ヘッダー行をスキップし、データ行のみを処理
+        const dataLines = lines.slice(1);
+        
+        return dataLines.map((line, index) => {
+            const parts = line.split(','); // CSVの区切り文字がカンマであることを仮定
+            // 必要に応じてデータの整形（例: 文字列のトリム、数値への変換など）
+            const questionText = parts[0].trim();
+            const choices = [
+                parts[1].trim(),
+                parts[2].trim(),
+                parts[3].trim(),
+                parts[4].trim()
+            ];
+            const correctAnswerIndex = parseInt(parts[5].trim()); // 数値に変換
+            const explanation = parts[6].trim();
+
+            return {
+                id: index + 1, // 連番IDを付与
+                question: questionText,
+                choices: choices,
+                correctAnswerIndex: correctAnswerIndex,
+                explanation: explanation
+            };
+        });
+    }
+
+
+    function loadQuestion(questions) {
+        selectedChoice = null;
+        feedbackContainer.classList.add('hidden');
+        submitAnswerButton.disabled = true;
+        choicesContainer.innerHTML = '';
+
+        if (currentQuestionIndex < questions.length) {
+            const question = questions[currentQuestionIndex];
+            questionNumberElement.textContent = `第 ${currentQuestionIndex + 1} 問`;
+            questionTextElement.textContent = question.question;
+
+            question.choices.forEach((choice, index) => {
+                const button = document.createElement('button');
+                button.classList.add('choice-button');
+                button.dataset.index = index;
+                button.textContent = choice;
+                button.addEventListener('click', () => {
+                    selectChoice(button);
+                });
+                choicesContainer.appendChild(button);
+            });
+            submitAnswerButton.textContent = "解答する";
+            submitAnswerButton.removeEventListener('click', showResultOrNextQuestion);
+            submitAnswerButton.addEventListener('click', submitAnswer);
+        } else {
+            showResult();
+        }
+    }
 
     function selectChoice(button) {
-        if (selectedChoiceButton) {
-            selectedChoiceButton.classList.remove('selected');
-        }
+        choicesContainer.querySelectorAll('.choice-button').forEach(btn => {
+            btn.classList.remove('selected');
+        });
         button.classList.add('selected');
-        selectedChoiceButton = button;
+        selectedChoice = parseInt(button.dataset.index);
+        submitAnswerButton.disabled = false;
     }
 
-    // 解答を提出する関数
     function submitAnswer() {
-        if (!selectedChoiceButton) {
-            alert('選択肢を選んでください！');
+        if (selectedChoice === null) {
+            alert('選択肢を選んでください。');
             return;
         }
 
-        const selectedAnswerIndex = parseInt(selectedChoiceButton.dataset.index);
         const question = questionsData[currentQuestionIndex];
+        const isCorrect = (selectedChoice === question.correctAnswerIndex);
 
-        // 全ての選択肢を無効化する
-        Array.from(choicesContainer.children).forEach(button => {
-            button.disabled = true;
-            // 正解と不正解の視覚的フィードバック
-            if (parseInt(button.dataset.index) === question.correctAnswer) {
-                button.style.backgroundColor = '#d4edda'; // 正解は緑系
-                button.style.borderColor = '#28a745';
-            } else if (button === selectedChoiceButton) {
-                button.style.backgroundColor = '#f8d7da'; // 選択した不正解は赤系
-                button.style.borderColor = '#dc3545';
-            }
+        choicesContainer.querySelectorAll('.choice-button').forEach(btn => {
+            btn.disabled = true;
+            btn.classList.remove('selected');
         });
 
+        choicesContainer.children[question.correctAnswerIndex].style.backgroundColor = 'var(--secondary-color)';
+        choicesContainer.children[question.correctAnswerIndex].style.color = 'white';
+        choicesContainer.children[question.correctAnswerIndex].style.borderColor = 'var(--secondary-color)';
 
-        if (selectedAnswerIndex === question.correctAnswer) {
-            resultMessageElement.textContent = '正解！';
-            resultMessageElement.style.color = 'green';
+        if (isCorrect) {
             correctAnswersCount++;
+            resultMessageElement.textContent = '正解です！';
+            resultMessageElement.style.color = 'var(--secondary-color)';
         } else {
-            resultMessageElement.textContent = '不正解...';
-            resultMessageElement.style.color = 'red';
+            resultMessageElement.textContent = '不正解です。';
+            resultMessageElement.style.color = '#dc3545';
+            choicesContainer.children[selectedChoice].style.backgroundColor = '#dc3545';
+            choicesContainer.children[selectedChoice].style.color = 'white';
+            choicesContainer.children[selectedChoice].style.borderColor = '#dc3545';
         }
 
-        explanationTextElement.innerHTML = `
-            <p><strong>正解:</strong> ${String.fromCharCode(97 + question.correctAnswer)}. ${question.choices[question.correctAnswer]}</p>
-            <p><strong>解説:</strong></p>
-            <p>${question.explanation}</p>
-        `;
-
+        explanationTextElement.innerHTML = `<p>${question.explanation}</p>`;
         feedbackContainer.classList.remove('hidden');
-        submitAnswerButton.classList.add('hidden'); // 解答ボタンを非表示
-        nextQuestionButton.classList.remove('hidden'); // 次の問題ボタンを表示
-        selectedChoiceButton.classList.remove('selected'); // 選択状態を解除
-        selectedChoiceButton = null; // 選択肢をリセット
+
+        submitAnswerButton.removeEventListener('click', submitAnswer);
+        submitAnswerButton.textContent = "次へ";
+        submitAnswerButton.addEventListener('click', showResultOrNextQuestion);
     }
 
-    // シラバスコンテンツをロードする関数
+    function showResultOrNextQuestion() {
+        if (currentQuestionIndex < questionsData.length - 1) {
+            currentQuestionIndex++;
+            loadQuestion(questionsData);
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        correctAnswersCountElement.textContent = correctAnswersCount;
+        totalQuestionsCountElement.textContent = questionsData.length;
+        showScreen(resultScreen);
+        resetQuiz();
+    }
+
+    function resetQuiz() {
+        currentQuestionIndex = 0;
+        correctAnswersCount = 0;
+        selectedChoice = null;
+        feedbackContainer.classList.add('hidden');
+        submitAnswerButton.disabled = true;
+        choicesContainer.innerHTML = '';
+        submitAnswerButton.removeEventListener('click', showResultOrNextQuestion);
+        submitAnswerButton.removeEventListener('click', submitAnswer);
+    }
+
+    // ===============================================
+    // シラバス関連機能
+    // ===============================================
+
+    // シラバスの全章を動的にインポート
+    async function fetchSyllabusChapters() {
+        const chapterFiles = [
+            'chapter0.js', 'chapter1.js', 'chapter2.js', 'chapter3.js',
+            'chapter4.js', 'chapter5.js', 'chapter6.js', 'chapter7.js', 'chapter8.js'
+        ];
+        const loadedChapters = [];
+        for (const file of chapterFiles) {
+            try {
+                // `js/syllabus/` フォルダからの相対パス
+                const chapterModule = await import(`./js/syllabus/${file}`); 
+                loadedChapters.push(chapterModule.default); // default export を取得
+            } catch (error) {
+                console.error(`Failed to load chapter ${file}:`, error);
+                alert(`シラバスの章 ${file} の読み込みに失敗しました。`);
+            }
+        }
+        return loadedChapters;
+    }
+
     async function loadSyllabusContent() {
-        if (!syllabusData) {
-            syllabusData = await fetchSyllabusData();
+        if (syllabusChapters.length === 0) { // まだ読み込んでいない場合のみ
+            syllabusChapters = await fetchSyllabusChapters();
+            if (syllabusChapters.length === 0) {
+                syllabusContent.innerHTML = '<p>シラバスデータの読み込みに失敗しました。</p>';
+                return;
+            }
         }
 
         syllabusNavigation.innerHTML = '';
-        syllabusContentDiv.innerHTML = '';
+        syllabusContent.innerHTML = '';
 
-        if (syllabusData.length === 0) {
-            syllabusContentDiv.innerHTML = '<p>シラバスデータがありません。</p>';
-            return;
-        }
-
-        syllabusData.forEach((chapter, chapterIndex) => {
-            const chapterLink = document.createElement('a');
-            chapterLink.href = `#chapter-${chapterIndex}`;
-            chapterLink.textContent = chapter.title;
-            chapterLink.classList.add('syllabus-nav-item');
-            chapterLink.addEventListener('click', (e) => {
+        // ナビゲーションの生成
+        syllabusChapters.forEach((chapter, index) => {
+            const navItem = document.createElement('a');
+            navItem.href = `#chapter-${index}`; // IDを修正
+            navItem.classList.add('syllabus-nav-item');
+            navItem.textContent = chapter.title; // chapter.title を使用
+            navItem.addEventListener('click', (e) => {
                 e.preventDefault();
-                displaySyllabusChapter(chapterIndex);
-                // アクティブクラスの切り替え
-                Array.from(syllabusNavigation.children).forEach(link => link.classList.remove('active'));
-                chapterLink.classList.add('active');
+                displaySyllabusChapter(chapter); // chapterオブジェクト全体を渡す
+                // ナビゲーションアイテムのアクティブ状態を切り替える
+                syllabusNavigation.querySelectorAll('.syllabus-nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                navItem.classList.add('active');
             });
-            syllabusNavigation.appendChild(chapterLink);
+            syllabusNavigation.appendChild(navItem);
         });
 
-        // 最初の章をデフォルトで表示
-        if (syllabusData.length > 0) {
-            displaySyllabusChapter(0);
-            if (syllabusNavigation.firstChild) {
-                syllabusNavigation.firstChild.classList.add('active');
-            }
+        // 初期表示として最初のチャプターを表示
+        if (syllabusChapters.length > 0) {
+            displaySyllabusChapter(syllabusChapters[0]);
+            syllabusNavigation.querySelector('.syllabus-nav-item').classList.add('active');
         }
     }
 
-    // 特定のシラバス章を表示する関数
-    function displaySyllabusChapter(chapterIndex) {
-        const chapter = syllabusData[chapterIndex];
-        if (!chapter) return; // chapterがundefinedの場合のガード
-
-        syllabusContentDiv.innerHTML = `<h3>${chapter.title}</h3>`;
-
+    // シラバスの章を表示する関数
+    function displaySyllabusChapter(chapter) {
+        syllabusContent.innerHTML = `<h3>${chapter.title}</h3>`;
         chapter.sections.forEach(section => {
-            const sectionDiv = document.createElement('div');
-            sectionDiv.innerHTML = `<h4>${section.section} ${section.title}</h4>`;
+            syllabusContent.innerHTML += `<h4>${section.section} ${section.title}</h4>`;
             if (section.objectives && section.objectives.length > 0) {
-                sectionDiv.innerHTML += `<p><strong>学習目標:</strong></p><ul>${section.objectives.map(obj => `<li>${obj}</li>`).join('')}</ul>`;
+                syllabusContent.innerHTML += `<h5>学習目標:</h5><ul>${section.objectives.map(obj => `<li>${obj}</li>`).join('')}</ul>`;
             }
             if (section.keyTerms && section.keyTerms.length > 0) {
-                sectionDiv.innerHTML += `<p><strong>主要用語:</strong></p><ul>${section.keyTerms.map(term => `<li>${term.term}: ${term.definition}</li>`).join('')}</ul>`;
+                syllabusContent.innerHTML += `<h5>キーワード:</h5><ul>${section.keyTerms.map(term => `<li>${term.term}: ${term.definition}</li>`).join('')}</ul>`;
             }
-            if (section.content && section.content.length > 0) {
-                sectionDiv.innerHTML += `<p>${section.content.join('<br>')}</p>`;
-            }
-            syllabusContentDiv.appendChild(sectionDiv);
         });
+        syllabusContent.scrollTop = 0;
     }
 
-    // 想定問題をロードする関数
+
+    // ===============================================
+    // 想定問題関連機能
+    // ===============================================
+
+    // assumedProblemsData.js の読み込み
+    async function fetchAssumedProblems() {
+        // js/assumedProblemsData.js を動的にインポート
+        try {
+            const assumedProblemsModule = await import('./js/assumedProblemsData.js');
+            return assumedProblemsModule.default; // default export を取得
+        } catch (error) {
+            console.error(`Failed to load assumedProblemsData.js:`, error);
+            alert("想定問題データの読み込みに失敗しました。");
+            return [];
+        }
+    }
+
     async function loadAssumedProblems() {
-        if (!assumedProblemsData) {
-            assumedProblemsData = await fetchAssumedProblemsData();
+        if (assumedProblemsData.length === 0) { // まだ読み込んでいない場合のみ
+            assumedProblemsData = await fetchAssumedProblems();
+            if (assumedProblemsData.length === 0) {
+                assumedProblemsList.innerHTML = '<p>想定問題がありません。</p>';
+                return;
+            }
         }
-
-        assumedProblemsList.innerHTML = ''; // リストをクリア
-
-        if (assumedProblemsData.length === 0) {
-            assumedProblemsList.innerHTML = '<p>想定問題データがありません。</p>';
-            return;
-        }
+        
+        assumedProblemsList.innerHTML = '';
 
         assumedProblemsData.forEach((problem, index) => {
-            const problemDiv = document.createElement('div');
-            problemDiv.classList.add('assumed-problem-item');
-            problemDiv.innerHTML = `
+            const problemItem = document.createElement('div');
+            problemItem.classList.add('assumed-problem-item');
+            problemItem.innerHTML = `
                 <h3>問題 ${index + 1}: ${problem.question}</h3>
-                <p><strong>シラバス参照:</strong> 第${problem.syllabusChapter}章 ${problem.syllabusSection} - ${problem.syllabusObjective}</p>
                 <div class="choices">
-                    ${problem.choices.map((choice, i) => `<p>${String.fromCharCode(97 + i)}. ${choice}</p>`).join('')}
+                    ${problem.choices.map((choice, i) => `<p>${String.fromCharCode(65 + i)}. ${choice}</p>`).join('')}
                 </div>
-                <button class="show-answer-button" data-index="${index}">解答を見る</button>
+                <button class="show-answer-button" data-problem-index="${index}">解答を見る</button>
                 <div class="answer-feedback hidden">
-                    <p><strong>正解:</strong> ${problem.correctAnswerLetter}. ${problem.choices[problem.correctAnswer]}</p>
+                    <p><strong>正解: ${String.fromCharCode(65 + problem.correctAnswerIndex)}</strong></p>
                     <p><strong>解説:</strong> ${problem.explanation}</p>
                 </div>
             `;
-            assumedProblemsList.appendChild(problemDiv);
+            assumedProblemsList.appendChild(problemItem);
         });
 
-        // 解答表示ボタンにイベントリスナーを追加
-        document.querySelectorAll('.show-answer-button').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const feedbackDiv = e.target.nextElementSibling; // 次の要素が解答フィードバック
+        assumedProblemsList.querySelectorAll('.show-answer-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const feedbackDiv = event.target.nextElementSibling;
                 feedbackDiv.classList.toggle('hidden');
-                e.target.textContent = feedbackDiv.classList.contains('hidden') ? '解答を見る' : '解答を隠す';
+                event.target.textContent = feedbackDiv.classList.contains('hidden') ? '解答を見る' : '解答を隠す';
             });
         });
     }
 
+    // ===============================================
     // イベントリスナーの登録
+    // ===============================================
 
-    // ハンバーガーメニューの開閉
-    menuIcon.addEventListener('click', () => {
-        mainNav.classList.toggle('hidden');
-    });
-
+    // メイン画面のボタン
     startQuizButton.addEventListener('click', async () => {
         showScreen(quizScreen);
         currentQuestionIndex = 0;
@@ -369,8 +412,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (questionsData.length > 0) {
             loadQuestion(questionsData);
         } else {
-            // 問題がない場合はウェルカム画面に戻る
-            alert("問題データの読み込みに失敗しました。");
+            alert("問題データの読み込みに失敗しました。アプリケーションを再読み込みしてください。");
             showScreen(welcomeScreen);
         }
     });
@@ -385,30 +427,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadAssumedProblems();
     });
 
-    submitAnswerButton.addEventListener('click', submitAnswer);
-
+    // クイズ画面のボタン (submitAnswer は loadQuestion 内で設定し直される)
     nextQuestionButton.addEventListener('click', () => {
         currentQuestionIndex++;
         loadQuestion(questionsData);
     });
 
     // 各画面からのTOPに戻るボタン
-    restartQuizButton.addEventListener('click', () => { // 結果画面からTOPへ
+    restartQuizButton.addEventListener('click', () => {
         showScreen(welcomeScreen);
     });
-    backToWelcomeButton.addEventListener('click', () => { // シラバス画面からTOPへ
+    backToWelcomeButton.addEventListener('click', () => {
         showScreen(welcomeScreen);
     });
-    backFromAssumedProblemsButton.addEventListener('click', () => { // 想定問題画面からTOPへ
+    backFromAssumedProblemsButton.addEventListener('click', () => {
         showScreen(welcomeScreen);
     });
     backToWelcomeFromQuizButton.addEventListener('click', () => {
         showScreen(welcomeScreen);
+        resetQuiz(); // クイズ途中でTOPに戻った場合もリセット
     });
     backToWelcomeFromResultButton.addEventListener('click', () => {
         showScreen(welcomeScreen);
     });
 
+    // ハンバーガーメニュー関連
+    menuIcon.addEventListener('click', () => {
+        mainNav.classList.toggle('hidden');
+    });
 
     // ハンバーガーメニュー内のボタン
     navStartQuizButton.addEventListener('click', async () => {
@@ -419,6 +465,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (questionsData.length > 0) {
             loadQuestion(questionsData);
         } else {
+            alert("問題データの読み込みに失敗しました。アプリケーションを再読み込みしてください。");
             showScreen(welcomeScreen);
         }
     });
@@ -435,5 +482,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // 初期表示
-    showScreen(welcomeScreen); // アプリ起動時にウェルカム画面を表示
+    showScreen(welcomeScreen);
+    updateBreadcrumb('welcome-screen');
 });
