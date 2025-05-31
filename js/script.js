@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 loadedChapters.push(chapterModule.default); // default export を取得
             } catch (error) {
                 console.error(`Failed to load chapter ${file}:`, error);
-                alert(`シラバスの章 ${file} の読み込みに失敗しました。`);
+                // alert(`シラバスの章 ${file} の読み込みに失敗しました。`); // エラーが多すぎるのでコメントアウト
             }
         }
         return loadedChapters;
@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (syllabusChapters.length === 0) { // まだ読み込んでいない場合のみ
             syllabusChapters = await fetchSyllabusChapters();
             if (syllabusChapters.length === 0) {
-                syllabusContent.innerHTML = '<p>シラバスデータの読み込みに失敗しました。</p>';
+                syllabusContent.innerHTML = '<p>シラバスデータの読み込みに失敗しました。ブラウザのコンソールを確認してください。</p>';
                 return;
             }
         }
@@ -339,6 +339,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             if (section.keyTerms && section.keyTerms.length > 0) {
                 syllabusContent.innerHTML += `<h5>キーワード:</h5><ul>${section.keyTerms.map(term => `<li>${term.term}: ${term.definition}</li>`).join('')}</ul>`;
+            }
+            // Chapter 7や8のように'content'フィールドがある場合に対応
+            if (section.content && section.content.length > 0) {
+                syllabusContent.innerHTML += `<div>${section.content.map(c => `<p>${c}</p>`).join('')}</div>`;
             }
         });
         syllabusContent.scrollTop = 0;
