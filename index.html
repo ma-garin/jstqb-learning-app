@@ -27,7 +27,6 @@
             <span class="breadcrumb-item active-breadcrumb" data-screen-id="welcome-screen">トップ</span>
         </nav>
     </header>
-
     <main id="app-container">
         <section id="welcome-screen" class="active">
             <h2>ようこそ！</h2>
@@ -38,10 +37,14 @@
         </section>
 
         <section id="quiz-screen" class="hidden">
-            <h2 id="question-number"></h2>
-            <p id="question-text"></p>
-            <div id="choices-container"></div>
-            <button id="submit-answer-button">解答する</button>
+            <h2>学習を開始する</h2>
+            <div class="quiz-container">
+                <p id="question-number"></p>
+                <p id="question-text"></p>
+                <div id="choices-container" class="choices-container">
+                    </div>
+                <button id="submit-answer-button" disabled>解答する</button>
+            </div>
             <div id="feedback-container" class="hidden">
                 <p id="result-message"></p>
                 <p id="explanation-text"></p>
@@ -59,19 +62,37 @@
 
         <section id="syllabus-screen" class="hidden">
             <h2>JSTQBテストアナリスト シラバス</h2>
+            <p><a href="jstqb.jpdlJSTQB-SyllabusALTA_V311.J03.pdf" target="_blank">原本PDFを見る</a></p>
             <div class="syllabus-layout">
-                <nav id="syllabus-navigation"></nav>
-                <div id="syllabus-content"></div>
+                <nav id="syllabus-navigation">
+                    </nav>
+                <div id="syllabus-content-area"> <div id="syllabus-content">
+                        </div>
+                    <div id="syllabus-memo-section"> <h3>メモ</h3>
+                        <textarea id="syllabus-memo" placeholder="この章に関するメモをここに記入してください。"></textarea>
+                        <button id="save-memo-button">メモを保存</button>
+                    </div>
+                    <div id="syllabus-search-section"> <h3>章内検索</h3>
+                        <input type="text" id="syllabus-search-input" placeholder="キーワードを入力">
+                        <button id="syllabus-search-button">検索</button>
+                        <button id="syllabus-clear-search-button" class="hidden">クリア</button>
+                    </div>
+                </div>
             </div>
             <button id="back-to-welcome-button" class="back-to-top-button">TOPに戻る</button>
         </section>
 
         <section id="assumed-problems-screen" class="hidden">
             <h2>想定問題</h2>
-            <div id="assumed-problems-list" class="assumed-problems-list"></div>
+            <div id="assumed-problems-list" class="assumed-problems-list">
+                </div>
             <button id="back-from-assumed-problems-button" class="back-to-top-button">TOPに戻る</button>
         </section>
     </main>
+
+    <footer>
+        <p>&copy; 2025 JSTQB Test Analyst Learning App</p>
+    </footer>
 
     <script src="js/script.js" type="module"></script>
 </body>

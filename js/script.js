@@ -38,7 +38,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // シラバス画面の要素
     const syllabusNavigation = document.getElementById('syllabus-navigation');
-    const syllabusContent = document.getElementById('syllabus-content');
+    const syllabusContent = document.getElementById('syllabus-content'); // 章コンテンツ本体
+    const syllabusMemo = document.getElementById('syllabus-memo'); // メモ機能
+    const saveMemoButton = document.getElementById('save-memo-button'); // メモ保存ボタン
+    const syllabusSearchInput = document.getElementById('syllabus-search-input'); // 検索入力
+    const syllabusSearchButton = document.getElementById('syllabus-search-button'); // 検索ボタン
+    const syllabusClearSearchButton = document.getElementById('syllabus-clear-search-button'); // 検索クリアボタン
 
     // 想定問題画面の要素
     const assumedProblemsList = document.getElementById('assumed-problems-list');
@@ -55,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let selectedChoice = null;
     let syllabusChapters = []; // シラバスデータ (複数のチャプターを格納)
     let assumedProblemsData = []; // 想定問題データ
+    let currentSyllabusChapterIndex = 0; // 現在表示中のシラバス章のインデックス
 
     // ===============================================
     // 画面切り替え関数
@@ -296,7 +302,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         for (const file of chapterFiles) {
             try {
                 // `script.js` から `js/syllabus/` への正しい相対パス
-                const chapterModule = await import(`./syllabus/${file}`); // ★修正点：パスから余分な 'js/' を削除★
+                const chapterModule = await import(`./syllabus/${file}`); 
                 loadedChapters.push(chapterModule.default);
                 console.log(`[Syllabus] Successfully loaded ${file}`); // ログ追加
             } catch (error) {
@@ -320,17 +326,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         syllabusNavigation.innerHTML = '';
-        syllabusContent.innerHTML = '';
+        syllabusContent.innerHTML = ''; // コンテンツエリアをクリア
+        syllabusMemo.value = ''; // メモエリアもクリア
+        syllabusSearchInput.value = ''; // 検索入力もクリア
+        syllabusClearSearchButton.classList.add('hidden'); // クリアボタンを非表示
 
         syllabusChapters.forEach((chapter, index) => {
             const navItem = document.createElement('a');
-            navItem.href = `#chapter-${index}`;
+            navItem.href = `#chapter-${chapter.chapter}`; // 章番号をIDに含める
+            // 要望1: 章番号を表示
+            navItem.textContent = `${chapter.chapter}章 ${chapter.title}`;
             navItem.classList.add('syllabus-nav-item');
-            navItem.textContent = chapter.title;
+            navItem.dataset.chapterIndex = index; // インデックスを保持
             navItem.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log(`[Syllabus] Nav clicked: ${chapter.title}`); // ログ追加
-                displaySyllabusChapter(chapter);
+                const clickedIndex = parseInt(e.target.dataset.chapterIndex);
+                displaySyllabusChapter(clickedIndex); // インデックスを渡す
                 syllabusNavigation.querySelectorAll('.syllabus-nav-item').forEach(item => {
                     item.classList.remove('active');
                 });
@@ -339,32 +350,109 @@ document.addEventListener('DOMContentLoaded', async () => {
             syllabusNavigation.appendChild(navItem);
         });
 
+        // 要望2: デフォルトで最初の章を表示
         if (syllabusChapters.length > 0) {
-            displaySyllabusChapter(syllabusChapters[0]);
-            if (syllabusNavigation.querySelector('.syllabus-nav-item')) { // nullチェックを追加
+            displaySyllabusChapter(0); // 最初の章を表示
+            if (syllabusNavigation.querySelector('.syllabus-nav-item')) {
                 syllabusNavigation.querySelector('.syllabus-nav-item').classList.add('active');
             }
         }
     }
 
-    function displaySyllabusChapter(chapter) {
-        console.log(`[Syllabus] Displaying chapter: ${chapter.title}`); // ログ追加
-        syllabusContent.innerHTML = `<h3>${chapter.title}</h3>`;
+    function displaySyllabusChapter(index) {
+        currentSyllabusChapterIndex = index; // 現在の章インデックスを更新
+        const chapter = syllabusChapters[index];
+        console.log(`[Syllabus] Displaying chapter: ${chapter.chapter} - ${chapter.title}`); // ログ追加
+
+        let chapterHtml = `<h3>${chapter.chapter}章 ${chapter.title}</h3>`;
         chapter.sections.forEach(section => {
-            syllabusContent.innerHTML += `<h4>${section.section} ${section.title}</h4>`;
+            chapterHtml += `<h4>${section.section} ${section.title}</h4>`;
             if (section.objectives && section.objectives.length > 0) {
-                syllabusContent.innerHTML += `<h5>学習目標:</h5><ul>${section.objectives.map(obj => `<li>${obj}</li>`).join('')}</ul>`;
+                chapterHtml += `<h5>学習目標:</h5><ul>${section.objectives.map(obj => `<li>${obj}</li>`).join('')}</ul>`;
             }
             if (section.keyTerms && section.keyTerms.length > 0) {
-                syllabusContent.innerHTML += `<h5>キーワード:</h5><ul>${section.keyTerms.map(term => `<li>${term.term}: ${term.definition}</li>`).join('')}</ul>`;
+                chapterHtml += `<h5>キーワード:</h5><ul>${section.keyTerms.map(term => `<li>${term.term}: ${term.definition}</li>`).join('')}</ul>`;
             }
             if (section.content && section.content.length > 0) {
-                syllabusContent.innerHTML += `<div>${section.content.map(c => `<p>${c}</p>`).join('')}</div>`;
+                chapterHtml += `<div>${section.content.map(c => `<p>${c}</p>`).join('')}</div>`;
             }
         });
-        syllabusContent.scrollTop = 0;
+        syllabusContent.innerHTML = chapterHtml;
+        syllabusContent.scrollTop = 0; // コンテンツのスクロール位置をリセット
+
+        // メモ機能を読み込み
+        loadMemoForChapter(chapter.chapter);
+
+        // 検索結果をクリア
+        resetSearchHighlight();
     }
 
+    // メモ機能: メモの読み込み
+    function loadMemoForChapter(chapterId) {
+        const memoKey = `syllabus_memo_${chapterId}`;
+        const savedMemo = localStorage.getItem(memoKey);
+        syllabusMemo.value = savedMemo || '';
+        console.log(`[Memo] Loaded memo for chapter ${chapterId}: ${savedMemo ? 'exists' : 'empty'}`); // ログ追加
+    }
+
+    // メモ機能: メモの保存
+    saveMemoButton.addEventListener('click', () => {
+        const chapter = syllabusChapters[currentSyllabusChapterIndex];
+        if (!chapter) return;
+        const memoKey = `syllabus_memo_${chapter.chapter}`;
+        localStorage.setItem(memoKey, syllabusMemo.value);
+        alert('メモを保存しました！');
+        console.log(`[Memo] Saved memo for chapter ${chapter.chapter}`); // ログ追加
+    });
+
+    // 検索機能
+    syllabusSearchButton.addEventListener('click', performSyllabusSearch);
+    syllabusSearchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            performSyllabusSearch();
+        }
+    });
+    syllabusClearSearchButton.addEventListener('click', resetSearchHighlight);
+
+    function performSyllabusSearch() {
+        resetSearchHighlight(); // まず既存のハイライトをクリア
+        const searchText = syllabusSearchInput.value.trim();
+        if (searchText === '') {
+            alert('検索キーワードを入力してください。');
+            return;
+        }
+
+        console.log(`[Search] Searching for "${searchText}" in chapter ${syllabusChapters[currentSyllabusChapterIndex].chapter}`); // ログ追加
+
+        const contentHtml = syllabusContent.innerHTML;
+        const regex = new RegExp(searchText, 'gi'); // 大文字小文字を区別せず、グローバルに検索
+
+        let highlightedHtml = contentHtml.replace(regex, (match) => `<mark>${match}</mark>`);
+        
+        // 検索結果があるか確認
+        if (highlightedHtml !== contentHtml) {
+            syllabusContent.innerHTML = highlightedHtml;
+            syllabusClearSearchButton.classList.remove('hidden');
+            // 最初のヒット箇所にスクロール
+            const firstHighlight = syllabusContent.querySelector('mark');
+            if (firstHighlight) {
+                firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        } else {
+            alert('指定されたキーワードは見つかりませんでした。');
+        }
+    }
+
+    function resetSearchHighlight() {
+        const highlightedElements = syllabusContent.querySelectorAll('mark');
+        highlightedElements.forEach(mark => {
+            const parent = mark.parentNode;
+            parent.replaceChild(document.createTextNode(mark.textContent), mark);
+            parent.normalize(); // 隣接するテキストノードを結合
+        });
+        syllabusClearSearchButton.classList.add('hidden');
+        console.log('[Search] Search highlight reset.'); // ログ追加
+    }
 
     // ===============================================
     // 想定問題関連機能
@@ -374,7 +462,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function fetchAssumedProblems() {
         console.log('[Assumed Problems] Fetching assumedProblemsData.js'); // ログ追加
         try {
-            const assumedProblemsModule = await import('./assumedProblemsData.js'); // ★修正点：パスから余分な 'js/' を削除★
+            const assumedProblemsModule = await import('./assumedProblemsData.js'); 
             return assumedProblemsModule.default;
         } catch (error) {
             console.error(`[Assumed Problems Error] Failed to load assumedProblemsData.js:`, error);
