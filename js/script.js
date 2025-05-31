@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 画面切り替え関数
     // ===============================================
     function showScreen(screenToShow) {
+        console.log(`[App] Showing screen: ${screenToShow.id}`); // ログ追加
         const screens = [welcomeScreen, quizScreen, resultScreen, syllabusScreen, assumedProblemsScreen];
         screens.forEach(screen => {
             if (screen === screenToShow) {
@@ -80,6 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // パンくずリスト関連
     // ===============================================
     function updateBreadcrumb(currentScreenId) {
+        console.log(`[Breadcrumb] Updating for screen: ${currentScreenId}`); // ログ追加
         breadcrumbNav.innerHTML = `<span class="breadcrumb-item" data-screen-id="welcome-screen">トップ</span>`;
         if (currentScreenId !== 'welcome-screen') {
             const currentScreenName = {
@@ -101,6 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!item.classList.contains('active-breadcrumb')) {
                 item.addEventListener('click', (event) => {
                     const screenId = event.target.dataset.screenId;
+                    console.log(`[Breadcrumb] Clicked: ${screenId}`); // ログ追加
                     const screenMap = {
                         'welcome-screen': welcomeScreen,
                         'quiz-screen': quizScreen,
@@ -125,25 +128,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // questions.csv の読み込みとパース
     async function fetchQuestions() {
+        console.log('[Quiz] Fetching questions from data/questions.csv'); // ログ追加
         const response = await fetch('data/questions.csv'); // パスを修正
         if (!response.ok) {
-            console.error(`HTTP error! status: ${response.status} - Could not load questions.csv`);
+            console.error(`[Quiz Error] HTTP error! status: ${response.status} - Could not load questions.csv`);
             alert("問題データの読み込みに失敗しました。");
             return [];
         }
         const csvText = await response.text();
+        console.log('[Quiz] CSV text loaded, parsing...'); // ログ追加
         return parseCsvQuestions(csvText);
     }
 
     // CSVをパースして問題データ形式に変換する関数
     function parseCsvQuestions(csv) {
         const lines = csv.trim().split('\n');
-        // ヘッダー行をスキップし、データ行のみを処理
-        const dataLines = lines.slice(1);
+        const dataLines = lines.slice(1); // ヘッダー行をスキップ
         
+        console.log(`[Quiz] Parsing ${dataLines.length} data lines.`); // ログ追加
         return dataLines.map((line, index) => {
-            const parts = line.split(','); // CSVの区切り文字がカンマであることを仮定
-            // 必要に応じてデータの整形（例: 文字列のトリム、数値への変換など）
+            const parts = line.split(',');
             const questionText = parts[0].trim();
             const choices = [
                 parts[1].trim(),
@@ -151,11 +155,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 parts[3].trim(),
                 parts[4].trim()
             ];
-            const correctAnswerIndex = parseInt(parts[5].trim()); // 数値に変換
+            const correctAnswerIndex = parseInt(parts[5].trim());
             const explanation = parts[6].trim();
 
             return {
-                id: index + 1, // 連番IDを付与
+                id: index + 1,
                 question: questionText,
                 choices: choices,
                 correctAnswerIndex: correctAnswerIndex,
@@ -166,6 +170,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     function loadQuestion(questions) {
+        console.log(`[Quiz] Loading question ${currentQuestionIndex + 1}/${questions.length}`); // ログ追加
         selectedChoice = null;
         feedbackContainer.classList.add('hidden');
         submitAnswerButton.disabled = true;
@@ -190,11 +195,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             submitAnswerButton.removeEventListener('click', showResultOrNextQuestion);
             submitAnswerButton.addEventListener('click', submitAnswer);
         } else {
+            console.log('[Quiz] All questions answered, showing result.'); // ログ追加
             showResult();
         }
     }
 
     function selectChoice(button) {
+        console.log(`[Quiz] Choice selected: ${button.textContent}`); // ログ追加
         choicesContainer.querySelectorAll('.choice-button').forEach(btn => {
             btn.classList.remove('selected');
         });
@@ -204,6 +211,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function submitAnswer() {
+        console.log(`[Quiz] Submitting answer for question ${currentQuestionIndex + 1}`); // ログ追加
         if (selectedChoice === null) {
             alert('選択肢を選んでください。');
             return;
@@ -225,12 +233,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             correctAnswersCount++;
             resultMessageElement.textContent = '正解です！';
             resultMessageElement.style.color = 'var(--secondary-color)';
+            console.log('[Quiz] Correct answer!'); // ログ追加
         } else {
             resultMessageElement.textContent = '不正解です。';
             resultMessageElement.style.color = '#dc3545';
             choicesContainer.children[selectedChoice].style.backgroundColor = '#dc3545';
             choicesContainer.children[selectedChoice].style.color = 'white';
             choicesContainer.children[selectedChoice].style.borderColor = '#dc3545';
+            console.log('[Quiz] Incorrect answer.'); // ログ追加
         }
 
         explanationTextElement.innerHTML = `<p>${question.explanation}</p>`;
@@ -242,6 +252,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function showResultOrNextQuestion() {
+        console.log(`[Quiz] Moving to next question or showing result.`); // ログ追加
         if (currentQuestionIndex < questionsData.length - 1) {
             currentQuestionIndex++;
             loadQuestion(questionsData);
@@ -251,6 +262,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function showResult() {
+        console.log('[Quiz] Displaying final result.'); // ログ追加
         correctAnswersCountElement.textContent = correctAnswersCount;
         totalQuestionsCountElement.textContent = questionsData.length;
         showScreen(resultScreen);
@@ -258,6 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function resetQuiz() {
+        console.log('[Quiz] Resetting quiz state.'); // ログ追加
         currentQuestionIndex = 0;
         correctAnswersCount = 0;
         selectedChoice = null;
@@ -274,6 +287,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // シラバスの全章を動的にインポート
     async function fetchSyllabusChapters() {
+        console.log('[Syllabus] Starting to fetch chapters.'); // ログ追加
         const chapterFiles = [
             'chapter0.js', 'chapter1.js', 'chapter2.js', 'chapter3.js',
             'chapter4.js', 'chapter5.js', 'chapter6.js', 'chapter7.js', 'chapter8.js'
@@ -281,22 +295,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         const loadedChapters = [];
         for (const file of chapterFiles) {
             try {
-                // `js/syllabus/` フォルダからの相対パス
-                const chapterModule = await import(`./js/syllabus/${file}`); 
-                loadedChapters.push(chapterModule.default); // default export を取得
+                // `script.js` から `js/syllabus/` への正しい相対パス
+                const chapterModule = await import(`./syllabus/${file}`); // ★修正点：パスから余分な 'js/' を削除★
+                loadedChapters.push(chapterModule.default);
+                console.log(`[Syllabus] Successfully loaded ${file}`); // ログ追加
             } catch (error) {
-                console.error(`Failed to load chapter ${file}:`, error);
+                console.error(`[Syllabus Error] Failed to load chapter ${file}:`, error);
                 // alert(`シラバスの章 ${file} の読み込みに失敗しました。`); // エラーが多すぎるのでコメントアウト
             }
         }
+        console.log(`[Syllabus] Finished fetching chapters. Loaded ${loadedChapters.length} chapters.`); // ログ追加
         return loadedChapters;
     }
 
     async function loadSyllabusContent() {
-        if (syllabusChapters.length === 0) { // まだ読み込んでいない場合のみ
+        console.log('[Syllabus] Loading syllabus content.'); // ログ追加
+        if (syllabusChapters.length === 0) {
             syllabusChapters = await fetchSyllabusChapters();
             if (syllabusChapters.length === 0) {
                 syllabusContent.innerHTML = '<p>シラバスデータの読み込みに失敗しました。ブラウザのコンソールを確認してください。</p>';
+                console.error('[Syllabus Error] No syllabus chapters loaded.'); // ログ追加
                 return;
             }
         }
@@ -304,16 +322,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         syllabusNavigation.innerHTML = '';
         syllabusContent.innerHTML = '';
 
-        // ナビゲーションの生成
         syllabusChapters.forEach((chapter, index) => {
             const navItem = document.createElement('a');
-            navItem.href = `#chapter-${index}`; // IDを修正
+            navItem.href = `#chapter-${index}`;
             navItem.classList.add('syllabus-nav-item');
-            navItem.textContent = chapter.title; // chapter.title を使用
+            navItem.textContent = chapter.title;
             navItem.addEventListener('click', (e) => {
                 e.preventDefault();
-                displaySyllabusChapter(chapter); // chapterオブジェクト全体を渡す
-                // ナビゲーションアイテムのアクティブ状態を切り替える
+                console.log(`[Syllabus] Nav clicked: ${chapter.title}`); // ログ追加
+                displaySyllabusChapter(chapter);
                 syllabusNavigation.querySelectorAll('.syllabus-nav-item').forEach(item => {
                     item.classList.remove('active');
                 });
@@ -322,15 +339,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             syllabusNavigation.appendChild(navItem);
         });
 
-        // 初期表示として最初のチャプターを表示
         if (syllabusChapters.length > 0) {
             displaySyllabusChapter(syllabusChapters[0]);
-            syllabusNavigation.querySelector('.syllabus-nav-item').classList.add('active');
+            if (syllabusNavigation.querySelector('.syllabus-nav-item')) { // nullチェックを追加
+                syllabusNavigation.querySelector('.syllabus-nav-item').classList.add('active');
+            }
         }
     }
 
-    // シラバスの章を表示する関数
     function displaySyllabusChapter(chapter) {
+        console.log(`[Syllabus] Displaying chapter: ${chapter.title}`); // ログ追加
         syllabusContent.innerHTML = `<h3>${chapter.title}</h3>`;
         chapter.sections.forEach(section => {
             syllabusContent.innerHTML += `<h4>${section.section} ${section.title}</h4>`;
@@ -340,7 +358,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (section.keyTerms && section.keyTerms.length > 0) {
                 syllabusContent.innerHTML += `<h5>キーワード:</h5><ul>${section.keyTerms.map(term => `<li>${term.term}: ${term.definition}</li>`).join('')}</ul>`;
             }
-            // Chapter 7や8のように'content'フィールドがある場合に対応
             if (section.content && section.content.length > 0) {
                 syllabusContent.innerHTML += `<div>${section.content.map(c => `<p>${c}</p>`).join('')}</div>`;
             }
@@ -355,22 +372,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // assumedProblemsData.js の読み込み
     async function fetchAssumedProblems() {
-        // js/assumedProblemsData.js を動的にインポート
+        console.log('[Assumed Problems] Fetching assumedProblemsData.js'); // ログ追加
         try {
-            const assumedProblemsModule = await import('./js/assumedProblemsData.js');
-            return assumedProblemsModule.default; // default export を取得
+            const assumedProblemsModule = await import('./assumedProblemsData.js'); // ★修正点：パスから余分な 'js/' を削除★
+            return assumedProblemsModule.default;
         } catch (error) {
-            console.error(`Failed to load assumedProblemsData.js:`, error);
+            console.error(`[Assumed Problems Error] Failed to load assumedProblemsData.js:`, error);
             alert("想定問題データの読み込みに失敗しました。");
             return [];
         }
     }
 
     async function loadAssumedProblems() {
-        if (assumedProblemsData.length === 0) { // まだ読み込んでいない場合のみ
+        console.log('[Assumed Problems] Loading content.'); // ログ追加
+        if (assumedProblemsData.length === 0) {
             assumedProblemsData = await fetchAssumedProblems();
             if (assumedProblemsData.length === 0) {
                 assumedProblemsList.innerHTML = '<p>想定問題がありません。</p>';
+                console.error('[Assumed Problems Error] No assumed problems loaded.'); // ログ追加
                 return;
             }
         }
@@ -399,6 +418,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const feedbackDiv = event.target.nextElementSibling;
                 feedbackDiv.classList.toggle('hidden');
                 event.target.textContent = feedbackDiv.classList.contains('hidden') ? '解答を見る' : '解答を隠す';
+                console.log(`[Assumed Problems] Toggled answer for problem ${event.target.dataset.problemIndex}`); // ログ追加
             });
         });
     }
@@ -409,6 +429,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // メイン画面のボタン
     startQuizButton.addEventListener('click', async () => {
+        console.log('[Event] Start Quiz button clicked.'); // ログ追加
         showScreen(quizScreen);
         currentQuestionIndex = 0;
         correctAnswersCount = 0;
@@ -422,46 +443,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     viewSyllabusButton.addEventListener('click', () => {
+        console.log('[Event] View Syllabus button clicked.'); // ログ追加
         showScreen(syllabusScreen);
         loadSyllabusContent();
     });
 
     viewAssumedProblemsButton.addEventListener('click', () => {
+        console.log('[Event] View Assumed Problems button clicked.'); // ログ追加
         showScreen(assumedProblemsScreen);
         loadAssumedProblems();
     });
 
     // クイズ画面のボタン (submitAnswer は loadQuestion 内で設定し直される)
     nextQuestionButton.addEventListener('click', () => {
+        console.log('[Event] Next Question button clicked.'); // ログ追加
         currentQuestionIndex++;
         loadQuestion(questionsData);
     });
 
     // 各画面からのTOPに戻るボタン
     restartQuizButton.addEventListener('click', () => {
+        console.log('[Event] Restart Quiz button clicked.'); // ログ追加
         showScreen(welcomeScreen);
     });
     backToWelcomeButton.addEventListener('click', () => {
+        console.log('[Event] Back to Welcome (Syllabus) button clicked.'); // ログ追加
         showScreen(welcomeScreen);
     });
     backFromAssumedProblemsButton.addEventListener('click', () => {
+        console.log('[Event] Back to Welcome (Assumed Problems) button clicked.'); // ログ追加
         showScreen(welcomeScreen);
     });
     backToWelcomeFromQuizButton.addEventListener('click', () => {
+        console.log('[Event] Back to Welcome (from Quiz) button clicked.'); // ログ追加
         showScreen(welcomeScreen);
-        resetQuiz(); // クイズ途中でTOPに戻った場合もリセット
+        resetQuiz();
     });
     backToWelcomeFromResultButton.addEventListener('click', () => {
+        console.log('[Event] Back to Welcome (from Result) button clicked.'); // ログ追加
         showScreen(welcomeScreen);
     });
 
     // ハンバーガーメニュー関連
     menuIcon.addEventListener('click', () => {
+        console.log('[Event] Menu icon clicked. Toggling main nav.'); // ログ追加
         mainNav.classList.toggle('hidden');
     });
 
     // ハンバーガーメニュー内のボタン
     navStartQuizButton.addEventListener('click', async () => {
+        console.log('[Event] Nav Start Quiz button clicked.'); // ログ追加
         showScreen(quizScreen);
         currentQuestionIndex = 0;
         correctAnswersCount = 0;
@@ -474,18 +505,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
     navViewSyllabusButton.addEventListener('click', () => {
+        console.log('[Event] Nav View Syllabus button clicked.'); // ログ追加
         showScreen(syllabusScreen);
         loadSyllabusContent();
     });
     navViewAssumedProblemsButton.addEventListener('click', () => {
+        console.log('[Event] Nav View Assumed Problems button clicked.'); // ログ追加
         showScreen(assumedProblemsScreen);
         loadAssumedProblems();
     });
     navBackToWelcomeButton.addEventListener('click', () => {
+        console.log('[Event] Nav Back to Welcome button clicked.'); // ログ追加
         showScreen(welcomeScreen);
     });
 
     // 初期表示
+    console.log('[App] Initializing application.'); // ログ追加
     showScreen(welcomeScreen);
     updateBreadcrumb('welcome-screen');
 });
