@@ -36,555 +36,333 @@ body {
   App Container & Layout
 =====================================*/
 #app-container {
-    max-width: 900px !important;
-    width: 95% !important;
-    margin: 20px auto !important;
-    flex-grow: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    box-sizing: border-box !important;
+    max-width: 900px;
+    width: 95%;
+    margin: 20px auto;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/*=====================================
-  Header
-=====================================*/
 header {
-    background-color: var(--primary-color) !important;
-    color: white !important;
-    padding: 15px 0 !important;
-    text-align: center !important;
-    box-shadow: var(--shadow-light) !important;
-    width: 100% !important;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    box-shadow: var(--shadow-light);
+    width: 100%;
+    box-sizing: border-box;
+    position: relative; /* ハンバーガーメニューの基準 */
+    z-index: 1000;
 }
 
 .header-content {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    padding: 0 20px !important;
-    max-width: 900px !important;
-    margin: 0 auto !important;
+    display: flex;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 header h1 {
-    margin: 0 !important;
-    font-size: 1.8em !important;
-    color: white !important;
-    flex-grow: 1 !important;
-    text-align: center !important;
-}
-
-.menu-icon {
-    cursor: pointer !important;
-    font-size: 32px !important;
-    color: white !important;
+    color: white;
+    font-size: 1.8em;
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+    padding-left: 20px;
 }
 
 .spacer {
-    width: 32px !important;
+    flex-grow: 1;
 }
 
-/*=====================================
-  Main Navigation (Hamburger Menu)
-=====================================*/
+.menu-icon {
+    font-size: 30px !important;
+    cursor: pointer;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+/* ナビゲーションメニュー */
 #main-nav {
-    background-color: rgba(0, 0, 0, 0.9) !important; /* より濃く */
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important; /* ビューポート幅 */
-    height: 100vh !important; /* ビューポート高さ */
-    z-index: 1000 !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    flex-direction: column !important;
-    overflow-y: auto !important;
-    transition: opacity 0.3s ease, visibility 0.3s ease !important; /* 表示切り替えを滑らかに */
+    position: absolute;
+    top: 100%; /* ヘッダーのすぐ下に配置 */
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-color);
+    box-shadow: var(--shadow-light);
+    z-index: 999; /* ヘッダーより下 */
+    padding-bottom: 10px; /* メニューの底に少し余白 */
+    overflow: hidden; /* transitionのために必要 */
+    max-height: 250px; /* 最大高さを設定 */
+    transition: max-height 0.3s ease-out; /* アニメーション */
 }
 
 #main-nav.hidden {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important; /* クリックイベントを無効化 */
+    max-height: 0;
+    padding-bottom: 0;
 }
 
 #main-nav ul {
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    text-align: center !important;
-    width: 100% !important;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #main-nav li {
-    margin: 15px 0 !important;
+    width: 100%;
+    text-align: center;
 }
 
 #main-nav button {
-    background-color: transparent !important;
-    color: white !important;
-    border: 2px solid white !important;
-    padding: 15px 30px !important;
-    font-size: 1.5em !important;
-    width: 80% !important;
-    max-width: 300px !important;
-    transition: background-color 0.3s ease !important;
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: none; /* メニュー内のボタンは影なし */
+    margin: 0; /* メニュー内のボタンはマージンなし */
+    border-radius: 0; /* メニュー内のボタンは角丸なし */
 }
 
 #main-nav button:hover {
-    background-color: rgba(255, 255, 255, 0.2) !important;
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: none; /* ホバー時の変形なし */
 }
 
-/*=====================================
-  Breadcrumb Navigation
-=====================================*/
+/* パンくずリスト */
 #breadcrumb-nav {
-    background-color: #e9ecef !important;
-    padding: 10px 20px !important;
-    font-size: 0.9em !important;
-    text-align: left !important;
-    width: 100% !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important;
-    margin-bottom: 20px !important;
+    background-color: #e9ecef;
+    padding: 10px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 0.9em;
+    color: var(--text-color);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 
 .breadcrumb-item {
-    color: var(--primary-color) !important;
-    cursor: pointer !important;
+    cursor: pointer;
+    padding: 0 5px;
+    color: #007bff; /* アクティブでないパンくずの色 */
 }
 
-.breadcrumb-item:hover {
-    text-decoration: underline !important;
+.breadcrumb-item:not(:last-child)::after {
+    content: '›';
+    margin-left: 5px;
+    color: #6c757d;
 }
 
-.breadcrumb-item.active-breadcrumb {
-    color: var(--text-color) !important;
-    cursor: default !important;
-    text-decoration: none !important;
-    font-weight: bold !important;
+.active-breadcrumb {
+    font-weight: 700;
+    color: var(--text-color);
+    cursor: default;
 }
 
-.breadcrumb-separator {
-    margin: 0 5px !important;
-    color: #6c757d !important;
-}
-
-/*=====================================
-  General Section Styles
-=====================================*/
-section {
-    background-color: var(--card-background) !important;
-    padding: 30px !important;
-    border-radius: 8px !important;
-    box-shadow: var(--shadow-light) !important;
-    margin-bottom: 20px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    display: block !important; /* 念のため */
-}
-
-h1, h2 {
-    color: var(--primary-color) !important;
-    text-align: center !important;
-    margin-top: 0 !important;
-    margin-bottom: 20px !important;
-}
-
-.hidden {
-    display: none !important; /* 強制的に非表示 */
-    visibility: hidden !important; /* アクセシビリティのため追加 */
-}
-
-/*=====================================
-  Button Styles
-=====================================*/
+/* ボタンの共通スタイル */
 button {
-    background-color: var(--primary-color) !important;
-    color: white !important;
-    padding: 12px 25px !important;
-    border: none !important;
-    border-radius: 5px !important;
-    cursor: pointer !important;
-    font-size: 1.1em !important;
-    margin: 8px !important;
-    transition: background-color 0.3s ease, transform 0.2s ease !important;
-    text-decoration: none !important;
-    display: inline-block !important;
-    vertical-align: middle !important; /* ボタンの配置を改善 */
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin: 10px auto; /* 上下10px、左右中央 */
+    width: fit-content;
+    display: block; /* 中央寄せのためにブロック要素に */
 }
 
 button:hover {
-    background-color: #0056b3 !important;
-    transform: translateY(-2px) !important;
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 button:disabled {
-    background-color: #cccccc !important;
-    cursor: not-allowed !important;
-    transform: none !important;
+    background-color: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
-/*=====================================
-  Welcome Screen Specific
-=====================================*/
-#welcome-screen {
-    text-align: center !important;
-}
-
-#welcome-screen button {
-    display: block !important;
-    width: 80% !important;
-    max-width: 300px !important;
-    margin: 15px auto !important;
-}
-
-/*=====================================
-  Quiz Screen Specific
-=====================================*/
-.quiz-container {
-    margin-bottom: 20px !important;
-}
-
-#question-number {
-    font-size: 1.1em !important;
-    font-weight: bold !important;
-    margin-bottom: 10px !important;
-    text-align: center !important;
-}
-
-#question-text {
-    font-size: 1.2em !important;
-    margin-bottom: 20px !important;
-    text-align: center !important;
-    font-weight: bold;
-}
-
-.choices-container {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    margin-bottom: 20px !important;
-}
-
-/* Choice Button Styles (Quiz) */
-.choice-button {
-    display: block !important;
-    width: calc(100% - 16px) !important;
-    margin: 8px auto !important;
-    background-color: var(--background-color) !important;
-    color: var(--text-color) !important;
-    border: 1px solid var(--border-color) !important;
-    text-align: left !important;
-    padding: 15px 20px !important;
-    font-size: 1em !important;
-    cursor: pointer !important;
-    border-radius: 5px !important;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease !important;
-}
-
-.choice-button:hover {
-    background-color: #e2f0ff !important;
-    border-color: var(--primary-color) !important;
-    transform: translateY(-1px) !important;
-}
-
-.choice-button.selected {
-    background-color: var(--primary-color) !important;
-    color: white !important;
-    border-color: var(--primary-color) !important;
-}
-
-.choice-button:disabled {
-    cursor: default !important;
-    opacity: 0.8 !important;
-    transform: none !important;
-}
-
-/* Quiz Feedback Container */
-#feedback-container {
-    margin-top: 20px !important;
-    padding: 20px !important;
-    background-color: #e9f7ef !important;
-    border: 1px solid #d4edda !important;
-    border-radius: 5px !important;
-}
-
-#result-message {
-    font-weight: bold !important;
-    font-size: 1.2em !important;
-    margin-bottom: 10px !important;
-}
-
-#explanation-text {
-    font-size: 0.95em !important;
-    color: #555 !important;
-}
-
-#explanation-text p {
-    margin-bottom: 5px !important;
-}
-
-/*=====================================
-  Result Screen Specific
-=====================================*/
-#result-screen p {
-    text-align: center !important;
-    font-size: 1.2em !important;
-    margin-bottom: 20px !important;
-}
-#result-screen #correct-answers-count,
-#result-screen #total-questions-count {
-    font-weight: bold !important;
-    color: var(--primary-color) !important;
-}
-
-/*=====================================
-  Syllabus Display
-=====================================*/
-.syllabus-layout {
-    display: flex !important;
-    gap: 20px !important;
-    margin-top: 20px !important;
-    max-height: 70vh; /* 高さ調整 */
-    overflow-y: hidden !important; /* 親でスクロールさせない */
-    width: 100%;
-}
-
-#syllabus-navigation {
-    flex: 0 0 250px !important; /* ナビゲーションの幅を固定 */
-    background-color: #f0f4f8 !important;
-    padding: 15px !important;
-    border-radius: 5px !important;
-    overflow-y: auto !important; /* ナビゲーション自体をスクロール可能に */
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.05) !important;
-    height: auto; /* コンテンツに合わせて高さを自動調整 */
-}
-
-.syllabus-nav-item {
-    display: block !important;
-    padding: 10px 5px !important;
-    color: var(--primary-color) !important;
-    text-decoration: none !important;
-    font-weight: bold !important;
-    transition: color 0.2s ease, background-color 0.2s ease !important;
-    border-radius: 4px !important;
-    white-space: nowrap; /* テキストを改行しない */
-    overflow: hidden; /* はみ出したテキストを非表示 */
-    text-overflow: ellipsis; /* はみ出したテキストを三点リーダーで表示 */
-}
-
-.syllabus-nav-item:hover {
-    color: #0056b3 !important;
-    background-color: #e2f0ff !important;
-}
-
-.syllabus-nav-item.active {
-    background-color: var(--primary-color) !important;
-    color: white !important;
-    text-decoration: none !important;
-}
-
-#syllabus-content-area { /* 新しいコンテンツエリアのコンテナ */
-    flex-grow: 1 !important;
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* メモ・検索セクションとの間隔 */
-    height: auto; /* コンテンツに合わせて高さを自動調整 */
-    overflow-y: auto; /* コンテンツエリア全体をスクロール可能に */
-    padding-right: 15px; /* 右端のスクロールバーとの余白 */
-}
-
-#syllabus-content {
-    padding-left: 15px !important; /* 左のナビゲーションとの間隔 */
-    height: auto; /* コンテンツに合わせて高さを自動調整 */
-    box-sizing: border-box;
-}
-
-#syllabus-content h3 {
-    color: var(--primary-color) !important;
-    margin-top: 0 !important;
-    margin-bottom: 15px !important;
-    font-size: 1.6em !important;
-}
-
-#syllabus-content h4 {
-    color: var(--text-color) !important;
-    margin-top: 20px !important;
-    margin-bottom: 8px !important;
-    font-size: 1.2em !important;
-}
-
-#syllabus-content h5 { /* 学習目標・キーワードのタイトル */
-    color: #495057 !important;
-    margin-top: 15px !important;
-    margin-bottom: 5px !important;
-    font-size: 1em !important;
-    border-bottom: 1px dashed #e9ecef;
-    padding-bottom: 3px;
-}
-
-
-#syllabus-content p {
-    margin-bottom: 10px !important;
-    text-align: justify !important;
-}
-
-#syllabus-content ul {
-    list-style-type: disc !important;
-    margin-left: 20px !important;
-    margin-bottom: 10px !important;
-}
-
-#syllabus-content mark {
-    background-color: var(--accent-color); /* 検索ハイライトの色 */
-    padding: 0 3px;
-    border-radius: 3px;
-}
-
-/* メモ機能のスタイル */
-#syllabus-memo-section,
-#syllabus-search-section {
-    background-color: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: var(--shadow-light);
-    margin-top: 20px; /* 上のコンテンツとの間隔 */
-}
-
-#syllabus-memo-section h3,
-#syllabus-search-section h3 {
-    text-align: left;
-    margin-bottom: 15px;
-    color: var(--primary-color);
-    font-size: 1.4em;
-}
-
-#syllabus-memo {
-    width: 100%;
-    min-height: 150px;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: 1em;
-    resize: vertical; /* 垂直方向のみリサイズ可能 */
-    margin-bottom: 10px;
-}
-
-#save-memo-button {
-    margin-left: 0; /* 左に寄せる */
-}
-
-/* 検索機能のスタイル */
-#syllabus-search-input {
-    width: calc(100% - 10px); /* ボタンとの余白を考慮 */
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    font-size: 1em;
-    margin-bottom: 10px;
-}
-
-#syllabus-search-section button {
-    margin-left: 0; /* 左に寄せる */
-    margin-right: 10px; /* ボタン同士の間隔 */
-}
-
-
-/*=====================================
-  Assumed Problems Display
-=====================================*/
-.assumed-problems-list {
-    margin-top: 20px !important;
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
-    gap: 20px !important;
-}
-
-.assumed-problem-item {
-    background-color: var(--card-background) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 8px !important;
-    padding: 20px !important;
-    box-shadow: var(--shadow-light) !important;
-    display: flex !important;
-    flex-direction: column !important;
-}
-
-.assumed-problem-item h3 {
-    color: var(--primary-color) !important;
-    margin-top: 0 !important;
-    margin-bottom: 10px !important;
-    font-size: 1.3em !important;
-    text-align: left !important;
-}
-
-.assumed-problem-item .choices p {
-    margin: 5px 0 !important;
-    padding-left: 10px !important;
-    font-size: 0.95em !important;
-}
-
-.show-answer-button {
-    margin-top: auto !important;
-    background-color: var(--secondary-color) !important;
-    align-self: flex-start !important;
-}
-
-.show-answer-button:hover {
-    background-color: #218838 !important;
-}
-
-.answer-feedback {
-    margin-top: 15px !important;
-    padding: 15px !important;
-    background-color: #d4edda !important;
-    border: 1px solid #c3e6cb !important;
-    border-radius: 5px !important;
-    font-size: 0.9em !important;
-}
-
-.answer-feedback p {
-    margin-bottom: 5px !important;
-}
-
-/*=====================================
-  Common Back Button
-=====================================*/
+/* 「TOPに戻る」ボタン */
 .back-to-top-button {
-    background-color: #6c757d !important;
-    margin-top: 20px !important;
+    background-color: #6c757d; /* グレー */
+    margin-top: 30px;
 }
 
 .back-to-top-button:hover {
-    background-color: #5a6268 !important;
+    background-color: #5a6268;
 }
 
-/*=====================================
-  Footer
-=====================================*/
-footer {
-    width: 100% !important;
-    text-align: center !important;
-    padding: 15px 0 !important;
-    background-color: var(--primary-color) !important;
-    color: white !important;
-    font-size: 0.9em !important;
-    margin-top: auto !important;
+/* カード風のセクション */
+section {
+    background-color: var(--card-background);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/*=====================================
-  Responsive Adjustments
-=====================================*/
+/* テーブル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+    background-color: white;
+}
+
+table th, table td {
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f2f2f2;
+    font-weight: 700;
+}
+
+/* フォーム要素 (ラジオボタン) */
+.option-label {
+    display: block;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.option-label:hover {
+    background-color: #e2e6ea;
+    border-color: #007bff;
+}
+
+.option-label input[type="radio"] {
+    margin-right: 10px;
+    /* デフォルトのラジオボタンのスタイルを調整 */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; /* 小さくならないように */
+}
+
+.option-label input[type="radio"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.option-label input[type="radio"]:checked::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+/* 正解・不正解時のスタイル */
+.option-label.correct {
+    background-color: #d4edda; /* 薄い緑 */
+    border-color: var(--secondary-color);
+}
+
+.option-label.incorrect {
+    background-color: #f8d7da; /* 薄い赤 */
+    border-color: #dc3545;
+}
+
+.option-label.correct input[type="radio"] {
+    border-color: var(--secondary-color);
+    background-color: var(--secondary-color);
+}
+
+.option-label.incorrect input[type="radio"] {
+    border-color: #dc3545;
+    background-color: #dc3545;
+}
+
+
+/* テキストコンテンツの調整 */
+.syllabus-content h3 {
+    color: var(--primary-color);
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+.syllabus-content h4 {
+    color: var(--text-color);
+    margin-top: 1em;
+    margin-bottom: 0.3em;
+}
+
+.syllabus-content ul {
+    list-style-type: disc;
+    margin-left: 25px;
+    margin-bottom: 1em;
+}
+
+.syllabus-content ol {
+    list-style-type: decimal;
+    margin-left: 25px;
+    margin-bottom: 1em;
+}
+
+.syllabus-content p {
+    margin-bottom: 0.8em;
+}
+
+.key-term {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.key-term-definition {
+    margin-left: 20px;
+    font-style: italic;
+    color: var(--text-color);
+}
+
+/* スマホ対応の調整 */
 @media (max-width: 768px) {
-    .header-content {
-        padding: 0 10px !important;
-    }
     header h1 {
         font-size: 1.5em !important;
+        padding-left: 10px !important;
     }
     .menu-icon {
         font-size: 28px !important;
@@ -632,23 +410,29 @@ footer {
     }
     
     #syllabus-content {
-        padding-left: 0 !important; /* 左のナビゲーションとの間隔 */
+        padding-left: 0 !important;
+    }
+
+    .syllabus-chapter-button {
+        flex: 1 1 auto !important;
+        min-width: 120px !important;
+        margin: 5px !important;
     }
 
     .assumed-problems-list {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr !important; /* スマートフォンでは1列 */
     }
-}
 
-@media (max-width: 480px) {
-    header h1 {
-        font-size: 1.3em !important;
+    .assumed-problem-item {
+        padding: 15px !important;
     }
-    .menu-icon {
-        font-size: 24px !important;
+
+    .option-label {
+        padding: 10px !important;
     }
-    button {
-        padding: 8px 15px !important;
-        font-size: 0.9em !important;
+
+    /* クイズ画面の調整 */
+    #quiz-container {
+        padding: 20px !important;
     }
 }
