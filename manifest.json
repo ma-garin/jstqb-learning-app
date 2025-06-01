@@ -1,0 +1,22 @@
+{
+  "name": "JSTQB-テストアナリスト 学習アプリ",
+  "short_name": "JSTQB-TA学習",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#007bff",
+  "description": "JSTQBテストアナリスト試験対策のための学習アプリ",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "img/JSTQB_TA.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/JSTQB_TA.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
