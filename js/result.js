@@ -1,7 +1,10 @@
 // js/result.js
-import { showScreen } from './main.js'; // main.js から showScreen をインポート
+import { setupCommonNavigation, setupBackToTopButtons } from './utils.js'; // showScreenのインポートを削除
 
-export function initResultScreen() {
+document.addEventListener('DOMContentLoaded', () => {
+    setupCommonNavigation();
+    setupBackToTopButtons();
+
     const correctAnswersCountElement = document.getElementById('correct-answers-count');
     const totalQuestionsCountElement = document.getElementById('total-questions-count');
     const restartQuizButton = document.getElementById('restart-quiz-button');
@@ -25,17 +28,21 @@ export function initResultScreen() {
         restartQuizButton.addEventListener('click', restartQuiz);
     }
     if (backToWelcomeFromResultButton) {
-        backToWelcomeFromResultButton.removeEventListener('click', () => showScreen('welcome-screen'));
-        backToWelcomeFromResultButton.addEventListener('click', () => showScreen('welcome-screen'));
+        backToWelcomeFromResultButton.removeEventListener('click', () => {
+            window.location.href = 'index.html'; // TOP画面に戻る
+        });
+        backToWelcomeFromResultButton.addEventListener('click', () => {
+            window.location.href = 'index.html'; // TOP画面に戻る
+        });
     }
 
     console.log("Result Screen Initialized.");
-}
+});
 
 function restartQuiz() {
     // localStorageのクイズ状態をクリアして、学習開始画面に戻る
     localStorage.removeItem('quizQuestions');
     localStorage.removeItem('currentQuestionIndex');
     localStorage.removeItem('correctAnswersCount');
-    showScreen('learning-start-screen'); // 学習開始ページへ
+    window.location.href = 'study.html'; // 学習開始ページへ
 }

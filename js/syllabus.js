@@ -1,10 +1,41 @@
 // js/syllabus.js
 
+// 各章のデータをインポート
+import chapter0 from './syllabus/chapter0.js';
+import chapter1 from './syllabus/chapter1.js';
+import chapter2 from './syllabus/chapter2.js';
+import chapter3 from './syllabus/chapter3.js';
+import chapter4 from './syllabus/chapter4.js';
+import chapter5 from './syllabus/chapter5.js';
+import chapter6 from './syllabus/chapter6.js';
+import chapter7 from './syllabus/chapter7.js';
+import chapter8 from './syllabus/chapter8.js';
+
+import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
+
+// 全ての章のデータを配列にまとめる
+const allChapters = [
+    chapter0,
+    chapter1,
+    chapter2,
+    chapter3,
+    chapter4,
+    chapter5,
+    chapter6,
+    chapter7,
+    chapter8
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupCommonNavigation();
+    setupBackToTopButtons();
+    initSyllabusScreen();
+});
+
 /**
  * シラバス画面の初期化関数
- * @param {Array} allChapters - 全ての章のデータ配列
  */
-export function initSyllabusScreen(allChapters) {
+function initSyllabusScreen() {
     const syllabusNavigation = document.getElementById('syllabus-navigation');
     const syllabusContent = document.getElementById('syllabus-content');
 
@@ -20,7 +51,9 @@ export function initSyllabusScreen(allChapters) {
     allChapters.forEach(chapter => {
         const chapterButton = document.createElement('button');
         chapterButton.classList.add('syllabus-chapter-button');
-        chapterButton.textContent = `${chapter.chapter}章 ${chapter.title}`;
+        // タイトルから時間表記を削除
+        const chapterTitleWithoutTime = chapter.title.includes(' - ') ? chapter.title.split(' - ')[0] : chapter.title;
+        chapterButton.textContent = `${chapter.chapter}章 ${chapterTitleWithoutTime}`;
         chapterButton.dataset.chapter = chapter.chapter; // データ属性に章番号を保存
 
         syllabusNavigation.appendChild(chapterButton);
@@ -81,8 +114,11 @@ function displayChapterContent(chapterData, contentElement) {
 
         // 本文コンテンツ
         if (section.content && section.content.length > 0) {
-            sectionDiv.innerHTML += '<h4>内容</h4>' +
-                section.content.map(p => `<p>${p.replace(/\\n/g, '<br>')}</p>`).join('');
+            section.content.forEach(paragraph => {
+                const p = document.createElement('p');
+                p.innerHTML = paragraph.replace(/\\n/g, '<br>'); // 改行コードを<br>に変換
+                sectionDiv.appendChild(p);
+            });
         }
 
         contentElement.appendChild(sectionDiv);

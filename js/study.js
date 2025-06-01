@@ -1,7 +1,5 @@
 // js/study.js
-
-// main.js から showScreen をインポートするが、
-// study.js 内のボタンイベントは main.js で設定されるため、ここでは不要。
+import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions } from './utils.js';
 
 // 試験情報を保持する変数（ここではダミーデータ）
 const examInfo = {
@@ -22,6 +20,33 @@ const examInfo = {
         { chapter: "5章", kLevel: "K1-K4", questions: "10問", scorePerQuestion: "1点", totalScore: "10点" }
     ]
 };
+
+document.addEventListener('DOMContentLoaded', async () => {
+    setupCommonNavigation();
+    setupBackToTopButtons();
+    initStudyScreen();
+
+    // クイズ開始ボタン
+    const startActualQuizButton = document.getElementById('start-actual-quiz-button');
+    if (startActualQuizButton) {
+        startActualQuizButton.addEventListener('click', async () => {
+            // クイズデータを取得
+            const questions = await fetchQuestions();
+            if (questions.length === 0) {
+                console.error('問題データの読み込みに失敗しました。');
+                return;
+            }
+
+            // localStorageにクイズの状態を保存してクイズ画面へ遷移
+            localStorage.setItem('quizQuestions', JSON.stringify(questions));
+            localStorage.setItem('currentQuestionIndex', '0');
+            localStorage.setItem('correctAnswersCount', '0');
+
+            window.location.href = 'quiz.html'; // クイズ画面へ
+        });
+    }
+});
+
 
 export function initStudyScreen() {
     // DOM要素が存在するか確認

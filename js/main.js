@@ -11,11 +11,8 @@ import chapter6 from './syllabus/chapter6.js';
 import chapter7 from './syllabus/chapter7.js';
 import chapter8 from './syllabus/chapter8.js';
 
-
-// assumedProblemsData.js も将来的にここでインポートする可能性あり
-// import { assumedProblems } from './assumedProblemsData.js'; // この行を削除またはコメントアウト
-import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions } from './utils.js'; // fetchQuestionsをインポートに追加
-
+// assumedProblemsData.js もインポート
+import { assumedProblems } from './assumedProblemsData.js';
 
 // 全ての章のデータを配列にまとめる
 const allChapters = [
@@ -31,250 +28,161 @@ const allChapters = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 画面要素の取得
-    const welcomeScreen = document.getElementById('welcome-screen');
-    const quizScreen = document.getElementById('quiz-screen');
-    const resultScreen = document.getElementById('result-screen');
-    const syllabusScreen = document.getElementById('syllabus-screen');
-    const assumedProblemsScreen = document.getElementById('assumed-problems-screen');
+    // シラバス画面の初期化
+    initSyllabusScreen();
 
-    // ボタン要素の取得
-    const startQuizButton = document.getElementById('start-quiz-button');
-    const viewSyllabusButton = document.getElementById('view-syllabus-button');
-    const viewAssumedProblemsButton = document.getElementById('view-assumed-problems-button');
-    const backToWelcomeFromQuizButton = document.getElementById('back-to-welcome-from-quiz-button');
-    const restartQuizButton = document.getElementById('restart-quiz-button');
-    const backToWelcomeFromResultButton = document.getElementById('back-to-welcome-from-result-button');
-    const backToWelcomeButton = document.getElementById('back-to-welcome-button'); // シラバス画面からのTOPに戻るボタン
-    const backFromAssumedProblemsButton = document.getElementById('back-from-assumed-problems-button'); // 想定問題画面からのTOPに戻るボタン
-
-    // パンくずリスト要素の取得
-    const breadcrumbNav = document.getElementById('breadcrumb-nav');
-
-    // 共通ナビゲーションのセットアップ
-    setupCommonNavigation();
-    setupBackToTopButtons(); // TOPに戻るボタンのイベントリスナーを設定
-
-    // 各画面表示関数
-    const showScreen = (screenToShow) => {
-        const screens = [welcomeScreen, quizScreen, resultScreen, syllabusScreen, assumedProblemsScreen];
-        screens.forEach(screen => {
-            if (screen) { // screenが存在するか確認
-                screen.classList.add('hidden');
-            }
-        });
-        if (screenToShow) { // screenToShowが存在するか確認
-            screenToShow.classList.remove('hidden');
-        }
-        updateBreadcrumbs(screenToShow.id); // パンくずリストを更新
-    };
-
-    // パンくずリストの更新
-    const updateBreadcrumbs = (activeScreenId) => {
-        breadcrumbNav.innerHTML = ''; // クリア
-
-        const breadcrumbs = [
-            { id: 'welcome-screen', text: 'トップ' },
-            { id: 'quiz-screen', text: 'クイズ', parent: 'welcome-screen' },
-            { id: 'result-screen', text: '結果', parent: 'quiz-screen' },
-            { id: 'syllabus-screen', text: 'シラバス', parent: 'welcome-screen' },
-            { id: 'assumed-problems-screen', text: '想定問題', parent: 'welcome-screen' }
-        ];
-
-        let currentPath = [];
-        let currentScreen = breadcrumbs.find(b => b.id === activeScreenId);
-
-        while (currentScreen) {
-            currentPath.unshift(currentScreen);
-            currentScreen = breadcrumbs.find(b => b.id === currentScreen.parent);
-        }
-
-        currentPath.forEach((item, index) => {
-            const span = document.createElement('span');
-            span.classList.add('breadcrumb-item');
-            span.textContent = item.text;
-            span.dataset.screenId = item.id;
-
-            if (item.id === activeScreenId) {
-                span.classList.add('active-breadcrumb');
-                span.style.cursor = 'default';
-            } else {
-                span.addEventListener('click', () => {
-                    const targetScreen = document.getElementById(item.id);
-                    if (targetScreen) {
-                        showScreen(targetScreen);
-                    }
-                });
-            }
-            breadcrumbNav.appendChild(span);
-            if (index < currentPath.length - 1) {
-                const separator = document.createElement('span');
-                separator.classList.add('breadcrumb-separator');
-                separator.textContent = ' > ';
-                breadcrumbNav.appendChild(separator);
-            }
-        });
-    };
-
-
-    // ウェルカムスクリーン関連
-    if (startQuizButton) {
-        startQuizButton.addEventListener('click', () => showScreen(quizScreen));
-    }
-    if (viewSyllabusButton) {
-        viewSyllabusButton.addEventListener('click', () => {
-            showScreen(syllabusScreen);
-            renderSyllabus(); // シラバスコンテンツをレンダリング
-        });
-    }
-    if (viewAssumedProblemsButton) {
-        viewAssumedProblemsButton.addEventListener('click', () => {
-            showScreen(assumedProblemsScreen);
-            renderAssumedProblems(); // 想定問題をレンダリング
-        });
-    }
-
-    // クイズスクリーン関連 (このファイルでは画面遷移のみ)
-    if (backToWelcomeFromQuizButton) {
-        backToWelcomeFromQuizButton.addEventListener('click', () => showScreen(welcomeScreen));
-    }
-
-    // 結果スクリーン関連 (このファイルでは画面遷移のみ)
-    if (restartQuizButton) {
-        restartQuizButton.addEventListener('click', () => showScreen(quizScreen)); // クイズをリスタート
-    }
-    if (backToWelcomeFromResultButton) {
-        backToWelcomeFromResultButton.addEventListener('click', () => showScreen(welcomeScreen));
-    }
-
-    // シラバススクリーン関連 (このファイルでは画面遷移のみ)
-    if (backToWelcomeButton) {
-        backToWelcomeButton.addEventListener('click', () => showScreen(welcomeScreen));
-    }
-
-    // 想定問題スクリーン関連 (このファイルでは画面遷移のみ)
-    if (backFromAssumedProblemsButton) {
-        backFromAssumedProblemsButton.addEventListener('click', () => showScreen(welcomeScreen));
-    }
-
-
-    // シラバスコンテンツのレンダリング
-    const renderSyllabus = () => {
-        const syllabusNavigation = document.getElementById('syllabus-navigation');
-        const syllabusContent = document.getElementById('syllabus-content');
-        if (!syllabusNavigation || !syllabusContent) return;
-
-        syllabusNavigation.innerHTML = '';
-        syllabusContent.innerHTML = '';
-
-        allChapters.forEach(chapterData => {
-            const chapterButton = document.createElement('button');
-            chapterButton.classList.add('syllabus-chapter-button');
-            chapterButton.textContent = `第${chapterData.chapter}章 ${chapterData.title.split(' - ')[0]}`; // タイトルから時間表記を削除
-            chapterButton.dataset.chapter = chapterData.chapter;
-            syllabusNavigation.appendChild(chapterButton);
-
-            chapterButton.addEventListener('click', () => {
-                // すべてのアクティブクラスを解除
-                document.querySelectorAll('.syllabus-chapter-button').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                // クリックされたボタンにアクティブクラスを追加
-                chapterButton.classList.add('active');
-                displayChapterContent(chapterData);
-            });
-        });
-
-        // デフォルトで最初の章を表示
-        if (allChapters.length > 0) {
-            document.querySelector('.syllabus-chapter-button').click();
-        }
-    };
-
-    const displayChapterContent = (chapterData) => {
-        const syllabusContent = document.getElementById('syllabus-content');
-        syllabusContent.innerHTML = `<h2>第${chapterData.chapter}章 ${chapterData.title}</h2>`;
-
-        chapterData.sections.forEach(section => {
-            const sectionDiv = document.createElement('div');
-            sectionDiv.classList.add('syllabus-section');
-            sectionDiv.innerHTML += `<h3>${section.section} ${section.title}</h3>`;
-
-            if (section.objectives && section.objectives.length > 0) {
-                sectionDiv.innerHTML += `<h4>学習目標:</h4><ul>${section.objectives.map(obj => `<li>${obj}</li>`).join('')}</ul>`;
-            }
-
-            if (section.keyTerms && section.keyTerms.length > 0) {
-                sectionDiv.innerHTML += `<h4>キーワード:</h4><ul>${section.keyTerms.map(term => `<li><strong>${term.term}</strong>: ${term.definition}</li>`).join('')}</ul>`;
-            }
-
-            if (section.content && section.content.length > 0) {
-                section.content.forEach(paragraph => {
-                    sectionDiv.innerHTML += `<p>${paragraph.replace(/\\n/g, '<br>')}</p>`;
-                });
-            }
-            syllabusContent.appendChild(sectionDiv);
-        });
-    };
-
-    // 想定問題のレンダリング
-    const renderAssumedProblems = async () => { // async を追加
-        const assumedProblemsList = document.getElementById('assumed-problems-list');
-        if (!assumedProblemsList) return;
-
-        assumedProblemsList.innerHTML = ''; // Clear previous content
-
-        // assumedProblems を fetchQuestions から取得するように変更
-        const problems = await fetchQuestions(); // utils.jsから問題をフェッチ
-
-        if (problems.length === 0) {
-            assumedProblemsList.innerHTML = '<p>問題の読み込みに失敗しました。</p>';
-            return;
-        }
-
-        problems.forEach(problem => {
-            const problemContainer = document.createElement('div');
-            problemContainer.classList.add('assumed-problem-item');
-            problemContainer.innerHTML = `
-                <h3>問題 ${problem.id}</h3>
-                <p class="problem-syllabus-info">シラバス: ${problem.syllabusChapter}章 ${problem.syllabusSection}</p>
-                <p class="question-text">${problem.question.replace(/\\n/g, '<br>')}</p>
-            `;
-
-            const choicesContainer = document.createElement('div');
-            choicesContainer.classList.add('choices');
-            problem.choices.forEach((choice, index) => {
-                const choiceLetter = String.fromCharCode(97 + index); // 'a', 'b', 'c', 'd'
-                const p = document.createElement('p');
-                p.classList.add('choice-item');
-                p.innerHTML = `<span class="choice-letter">${choiceLetter}.</span> ${choice.replace(/\\n/g, '<br>')}`;
-                choicesContainer.appendChild(p);
-            });
-            problemContainer.appendChild(choicesContainer);
-
-            const answerToggle = document.createElement('button');
-            answerToggle.classList.add('answer-toggle-button');
-            answerToggle.textContent = '解答・解説を表示';
-            problemContainer.appendChild(answerToggle);
-
-            const explanationArea = document.createElement('div');
-            explanationArea.classList.add('problem-explanation-area', 'hidden'); // 最初は非表示
-            explanationArea.innerHTML = `<p class="correct-answer-text">正解: <span class="correct-answer-letter">${problem.correctAnswerLetter.toUpperCase()}</span></p><p class="explanation-text">${problem.explanation.replace(/\\n/g, '<br>')}</p>`;
-            problemContainer.appendChild(explanationArea);
-
-            answerToggle.addEventListener('click', () => {
-                explanationArea.classList.toggle('hidden');
-                if (explanationArea.classList.contains('hidden')) {
-                    answerToggle.textContent = '解答・解説を表示';
-                } else {
-                    answerToggle.textContent = '解答・解説を隠す';
-                }
-            });
-
-            assumedProblemsList.appendChild(problemContainer);
-        });
-    };
-
-    // 初期表示
-    showScreen(welcomeScreen);
+    // 想定問題画面の初期化
+    initAssumedProblemsScreen();
 });
+
+/**
+ * シラバス画面の初期化関数
+ * main.js が syllabus.html で読み込まれることを想定
+ */
+function initSyllabusScreen() {
+    const syllabusNavigation = document.getElementById('syllabus-navigation');
+    const syllabusContent = document.getElementById('syllabus-content');
+
+    if (!syllabusNavigation || !syllabusContent) {
+        // console.error("Syllabus navigation or content element not found.");
+        return; // syllabus.html 以外のページでは要素がないため処理を中断
+    }
+
+    syllabusNavigation.innerHTML = ''; // ナビゲーションをクリア
+    syllabusContent.innerHTML = ''; // コンテンツをクリア
+
+    // ナビゲーションの動的生成
+    allChapters.forEach(chapter => {
+        const chapterButton = document.createElement('button');
+        chapterButton.classList.add('syllabus-chapter-button');
+        // タイトルから時間表記を削除
+        const chapterTitleWithoutTime = chapter.title.includes(' - ') ? chapter.title.split(' - ')[0] : chapter.title;
+        chapterButton.textContent = `${chapter.chapter}章 ${chapterTitleWithoutTime}`;
+        chapterButton.dataset.chapter = chapter.chapter; // データ属性に章番号を保存
+
+        syllabusNavigation.appendChild(chapterButton);
+
+        chapterButton.addEventListener('click', () => {
+            displayChapterContent(chapter, syllabusContent);
+            // アクティブなボタンのスタイルを更新
+            document.querySelectorAll('.syllabus-chapter-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            chapterButton.classList.add('active');
+        });
+    });
+
+    // 初期表示として最初の章のコンテンツを表示
+    if (allChapters.length > 0) {
+        displayChapterContent(allChapters[0], syllabusContent);
+        // 最初のボタンをアクティブにする
+        const firstButton = syllabusNavigation.querySelector('.syllabus-chapter-button');
+        if (firstButton) {
+            firstButton.classList.add('active');
+        }
+    }
+
+    console.log("Syllabus Screen Initialized.");
+}
+
+/**
+ * 指定された章のコンテンツを表示する
+ * @param {Object} chapterData - 表示する章のデータ
+ * @param {HTMLElement} contentElement - コンテンツを表示するDOM要素
+ */
+function displayChapterContent(chapterData, contentElement) {
+    contentElement.innerHTML = `
+        <h2>${chapterData.chapter}章 ${chapterData.title}</h2>
+    `;
+
+    chapterData.sections.forEach(section => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.classList.add('syllabus-section');
+        sectionDiv.innerHTML = `
+            <h3>${section.section} ${section.title}</h3>
+        `;
+
+        // 学習目標
+        if (section.objectives && section.objectives.length > 0) {
+            sectionDiv.innerHTML += '<h4>学習目標</h4><ul>' +
+                section.objectives.map(obj => `<li>${obj}</li>`).join('') +
+                '</ul>';
+        }
+
+        // 主要用語 (ツールチップ対応)
+        if (section.keyTerms && section.keyTerms.length > 0) {
+            sectionDiv.innerHTML += '<h4>主要用語</h4><ul>' +
+                section.keyTerms.map(term => `<li><span class="key-term" title="${term.definition}">${term.term}</span></li>`).join('') +
+                '</ul>';
+        }
+
+        // 本文コンテンツ
+        if (section.content && section.content.length > 0) {
+            section.content.forEach(paragraph => {
+                const p = document.createElement('p');
+                p.innerHTML = paragraph.replace(/\\n/g, '<br>'); // 改行コードを<br>に変換
+                sectionDiv.appendChild(p);
+            });
+        }
+
+        contentElement.appendChild(sectionDiv);
+    });
+}
+
+/**
+ * 想定問題画面の初期化関数
+ * main.js が question.html で読み込まれることを想定
+ */
+function initAssumedProblemsScreen() {
+    const assumedProblemsList = document.getElementById('assumed-problems-list');
+    if (!assumedProblemsList) {
+        // console.error("Error: #assumed-problems-list element not found.");
+        return; // question.html 以外のページでは要素がないため処理を中断
+    }
+    assumedProblemsList.innerHTML = ''; // クリア
+
+    if (!assumedProblems || assumedProblems.length === 0) {
+        assumedProblemsList.innerHTML = '<p>問題の読み込みに失敗しました。</p>';
+        return;
+    }
+
+    assumedProblems.forEach(problem => {
+        const problemDiv = document.createElement('div');
+        problemDiv.classList.add('assumed-problem-item');
+        problemDiv.innerHTML = `
+            <h3>問題 ${problem.id}</h3>
+            <p class="problem-syllabus-info">シラバス: ${problem.syllabusChapter}章 ${problem.syllabusSection}</p>
+            <p class="question-text">${problem.question.replace(/\\n/g, '<br>')}</p>
+            <div class="choices">
+                ${problem.choices.map((choice, index) => {
+                    const optionLetter = String.fromCharCode(97 + index); // 'a', 'b', 'c', 'd'
+                    return `<p class="choice-item"><span class="choice-letter">${optionLetter}.</span> ${choice.replace(/\\n/g, '<br>')}</p>`;
+                }).join('')}
+            </div>
+            <button class="answer-toggle-button" data-problem-id="${problem.id}">解答・解説を表示</button>
+            <div class="problem-explanation-area hidden" id="feedback-${problem.id}">
+                <p class="correct-answer-text">正解: <span class="correct-answer-letter">${problem.correctAnswerLetter.toUpperCase()}</span></p>
+                <p class="explanation-text">解説:<br>${problem.explanation.replace(/\\n/g, '<br>')}</p>
+            </div>
+        `;
+        assumedProblemsList.appendChild(problemDiv);
+    });
+
+    // 解答表示ボタンのイベントリスナー設定
+    document.querySelectorAll('.answer-toggle-button').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const problemId = event.target.dataset.problemId;
+            const feedbackDiv = document.getElementById(`feedback-${problemId}`);
+            if (feedbackDiv) {
+                feedbackDiv.classList.toggle('hidden');
+                if (feedbackDiv.classList.contains('hidden')) {
+                    event.target.textContent = '解答・解説を表示';
+                } else {
+                    event.target.textContent = '解答・解説を隠す';
+                }
+            }
+        });
+    });
+
+    console.log("Assumed Problems Screen Initialized.");
+}

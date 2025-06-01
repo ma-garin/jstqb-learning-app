@@ -19,6 +19,8 @@ header {
     box-shadow: var(--shadow-light);
     width: 100%;
     box-sizing: border-box; /* paddingを含めて幅を計算 */
+    position: relative; /* ハンバーガーメニューの基準 */
+    z-index: 1000; /* 他のコンテンツより手前に */
 }
 
 .header-content {
@@ -43,7 +45,7 @@ header h1 {
 }
 
 .menu-icon {
-    font-size: 30px !important;
+    font-size: 30px;
     cursor: pointer;
     margin-right: 15px;
     flex-shrink: 0;
@@ -53,17 +55,21 @@ header h1 {
 #main-nav {
     background-color: var(--primary-color);
     position: absolute;
-    top: 60px; /* ヘッダーの高さに合わせて調整 */
+    top: 100%; /* ヘッダーのすぐ下に配置 */
     left: 0;
     width: 100%;
     box-shadow: var(--shadow-light);
-    z-index: 999;
+    z-index: 999; /* ヘッダーより下 */
     padding: 10px 0;
     text-align: center;
+    overflow: hidden; /* transitionのために必要 */
+    max-height: 250px; /* 最大高さを設定 */
+    transition: max-height 0.3s ease-out; /* アニメーション */
 }
 
 #main-nav.hidden {
-    display: none;
+    max-height: 0;
+    padding-bottom: 0;
 }
 
 #main-nav ul {
@@ -90,6 +96,9 @@ header h1 {
     font-size: 1.1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    box-shadow: none; /* メニュー内のボタンは影なし */
+    margin: 0; /* メニュー内のボタンはマージンなし */
+    border-radius: 0; /* メニュー内のボタンは角丸なし */
 }
 
 #main-nav button:hover {

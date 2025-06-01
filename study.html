@@ -27,13 +27,11 @@
             </ul>
         </nav>
         <nav id="breadcrumb-nav">
-            <span class="breadcrumb-item" data-screen-id="welcome-screen">トップ</span>
-            <span class="breadcrumb-item active-breadcrumb" data-screen-id="learning-start-screen">学習開始</span>
-        </nav>
+            </nav>
     </header>
     <main id="app-container">
         <section id="learning-start-screen">
-            <h2>JSTQBテストアナリスト 試験情報</h2>
+            <h2>学習開始・試験情報</h2>
             <div class="exam-info-section">
                 <h3>試験概要</h3>
                 <p>試験時間: <span id="exam-duration"></span></p>
@@ -75,12 +73,13 @@
             </div>
 
             <button id="start-actual-quiz-button">今すぐクイズを開始する</button>
-            <button class="back-to-top-button">TOPに戻る</button>
+            <button class="back-to-top-button" id="back-to-welcome-from-study-button">TOPに戻る</button>
         </section>
     </main>
     <footer>
         <p>© 2025 JSTQB TA Learning App</p>
     </footer>
+    <script type="module" src="js/utils.js"></script>
     <script type="module" src="js/study.js"></script>
 </body>
 </html>

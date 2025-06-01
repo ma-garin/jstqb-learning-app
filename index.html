@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSTQB-テストアナリスト 学習アプリ</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -24,17 +27,18 @@
             </ul>
         </nav>
         <nav id="breadcrumb-nav">
-            <span class="breadcrumb-item active-breadcrumb" data-screen-id="welcome-screen">トップ</span>
-        </nav>
+            </nav>
     </header>
 
     <main id="app-container">
         <section id="welcome-screen" class="screen">
-            <h2>JSTQBテストアナリスト 学習アプリ</h2>
-            <p>JSTQBテストアナリスト資格取得のための学習をサポートします。</p>
-            <button id="start-learning-button">学習を開始する</button>
-            <button id="view-syllabus-button">シラバスを見る</button>
-            <button id="view-assumed-problems-button">想定問題を見る</button>
+            <h2>JSTQB-テストアナリスト学習アプリ</h2>
+            <p>Advanced Level Test Analyst シラバスの学習をサポートします。</p>
+            <div class="button-group">
+                <button id="start-learning-button">学習を開始する</button>
+                <button id="view-syllabus-button">シラバスを見る</button>
+                <button id="view-assumed-problems-button">想定問題を見る</button>
+            </div>
         </section>
     </main>
 
@@ -42,7 +46,7 @@
         <p>© 2025 JSTQB TA Learning App</p>
     </footer>
 
-    <script type="module" src="js/top.js"></script>
     <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/top.js"></script>
 </body>
 </html>

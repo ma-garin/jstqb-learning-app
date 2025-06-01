@@ -1,13 +1,17 @@
 // js/question.js
-// utils.js から setupCommonNavigation, setupBackToTopButtons をインポートするが、
-// これらは main.js で一元的に呼び出されるため、ここではインポートしない。
-// assumedProblemsData.js は main.js でインポートし、initAssumedProblemsScreen に渡す。
+import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
+import { assumedProblems } from './assumedProblemsData.js'; // assumedProblemsData.js から問題をインポート
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupCommonNavigation();
+    setupBackToTopButtons();
+    loadAssumedProblems();
+});
 
 /**
- * 想定問題画面の初期化関数
- * @param {Array} problems - 想定問題データの配列
+ * 想定問題データをロードして表示する
  */
-export function initAssumedProblemsScreen(problems) {
+function loadAssumedProblems() {
     const assumedProblemsList = document.getElementById('assumed-problems-list');
     if (!assumedProblemsList) {
         console.error("Error: #assumed-problems-list element not found.");
@@ -15,12 +19,12 @@ export function initAssumedProblemsScreen(problems) {
     }
     assumedProblemsList.innerHTML = ''; // クリア
 
-    if (!problems || problems.length === 0) {
+    if (!assumedProblems || assumedProblems.length === 0) {
         assumedProblemsList.innerHTML = '<p>問題の読み込みに失敗しました。</p>';
         return;
     }
 
-    problems.forEach(problem => {
+    assumedProblems.forEach(problem => {
         const problemDiv = document.createElement('div');
         problemDiv.classList.add('assumed-problem-item');
         problemDiv.innerHTML = `
@@ -58,8 +62,5 @@ export function initAssumedProblemsScreen(problems) {
         });
     });
 
-    console.log("Assumed Problems Screen Initialized");
+    console.log("Assumed Problems Screen Initialized.");
 }
-
-// document.addEventListener('DOMContentLoaded', ...); は main.js で一元管理されるので削除
-// loadAssumedProblems() 関数は initAssumedProblemsScreen に統合

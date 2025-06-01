@@ -1,5 +1,5 @@
 // js/quiz.js
-import { showScreen } from './main.js'; // main.js から showScreen をインポート
+import { setupCommonNavigation, setupBackToTopButtons } from './utils.js'; // showScreenのインポートを削除
 
 let questionsData = [];
 let currentQuestionIndex = 0;
@@ -23,7 +23,10 @@ const nextQuestionButton = document.getElementById('next-question-button');
 const backToWelcomeFromQuizButton = document.getElementById('back-to-welcome-from-quiz-button');
 
 
-export function initQuizScreen() {
+document.addEventListener('DOMContentLoaded', () => {
+    setupCommonNavigation();
+    setupBackToTopButtons();
+
     // localStorageからクイズの状態を読み込む
     const savedQuestions = localStorage.getItem('quizQuestions');
     const savedIndex = localStorage.getItem('currentQuestionIndex');
@@ -35,9 +38,8 @@ export function initQuizScreen() {
         correctAnswersCount = parseInt(savedCorrectCount || '0', 10);
     } else {
         // 問題データがない場合はエラーハンドリングするか、デフォルトの動作を定義
-        console.error("クイズ問題データがLocalStorageにありません。");
-        // 必要に応じてTOP画面に戻るなどの処理
-        showScreen('welcome-screen');
+        console.error("クイズ問題データがLocalStorageにありません。学習開始画面に戻ります。");
+        window.location.href = 'study.html'; // 学習開始画面に戻る
         return;
     }
 
@@ -51,13 +53,17 @@ export function initQuizScreen() {
         nextQuestionButton.addEventListener('click', goToNextQuestion);
     }
     if (backToWelcomeFromQuizButton) {
-        backToWelcomeFromQuizButton.removeEventListener('click', () => showScreen('welcome-screen'));
-        backToWelcomeFromQuizButton.addEventListener('click', () => showScreen('welcome-screen'));
+        backToWelcomeFromQuizButton.removeEventListener('click', () => {
+            window.location.href = 'index.html'; // TOP画面に戻る
+        });
+        backToWelcomeFromQuizButton.addEventListener('click', () => {
+            window.location.href = 'index.html'; // TOP画面に戻る
+        });
     }
 
     loadQuestion();
     console.log("Quiz Screen Initialized.");
-}
+});
 
 /**
  * 現在の問題をロードして表示する
@@ -79,7 +85,7 @@ function loadQuestion() {
 
     if (currentQuestionIndex >= questionsData.length) {
         // 全問終了したら結果画面へ
-        showScreen('result-screen');
+        window.location.href = 'result.html'; // 結果画面へ遷移
         return;
     }
 
@@ -114,7 +120,9 @@ function submitAnswer() {
     const selectedOption = document.querySelector('input[name="answer"]:checked');
     if (!selectedOption) {
         // 解答が選択されていない場合
-        alert('解答を選択してください。'); // カスタムモーダルに置き換える
+        // alert('解答を選択してください。'); // カスタムモーダルに置き換える
+        // 今回はシンプルにconsole.logで対応
+        console.log('解答を選択してください。');
         return;
     }
 
@@ -158,6 +166,6 @@ function goToNextQuestion() {
         loadQuestion();
     } else {
         // 全問終了したら結果画面へ
-        showScreen('result-screen');
+        window.location.href = 'result.html'; // 結果画面へ遷移
     }
 }

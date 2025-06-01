@@ -49,3 +49,26 @@ ol {
 strong {
     font-weight: 700;
 }
+
+/* 共通の隠すクラス */
+.hidden {
+    display: none !important; /* 他のスタイルより優先して非表示にする */
+}
+
+/* 強調表示 */
+.highlight {
+    background-color: var(--accent-color);
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+/* 正解・不正解時のテキスト色 */
+.correct-text {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.incorrect-text {
+    color: var(--accent-color);
+    font-weight: bold;
+}

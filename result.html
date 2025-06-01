@@ -27,23 +27,20 @@
             </ul>
         </nav>
         <nav id="breadcrumb-nav">
-            <span class="breadcrumb-item" data-screen-id="welcome-screen">トップ</span>
-            <span class="breadcrumb-item" data-screen-id="learning-start-screen">学習開始</span>
-            <span class="breadcrumb-item" data-screen-id="quiz-screen">クイズ</span>
-            <span class="breadcrumb-item active-breadcrumb" data-screen-id="result-screen">結果</span>
-        </nav>
+            </nav>
     </header>
     <main id="app-container">
         <section id="result-screen">
             <h2>学習結果</h2>
             <p>正答数: <span id="correct-answers-count">0</span> / <span id="total-questions-count">0</span></p>
             <button id="restart-quiz-button">もう一度学習する</button>
-            <button class="back-to-top-button">TOPに戻る</button>
+            <button class="back-to-top-button" id="back-to-welcome-from-result-button">TOPに戻る</button>
         </section>
     </main>
     <footer>
         <p>© 2025 JSTQB TA Learning App</p>
     </footer>
+    <script type="module" src="js/utils.js"></script>
     <script type="module" src="js/result.js"></script>
 </body>
 </html>

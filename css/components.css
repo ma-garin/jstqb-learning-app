@@ -85,6 +85,8 @@ table th {
     margin-bottom: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+    display: flex; /* テキストとラジオボタンを横並びにする */
+    align-items: center; /* 垂直方向の中央揃え */
 }
 
 .option-label:hover {
@@ -110,4 +112,201 @@ table th {
 .option-label.incorrect {
     background-color: #f8d7da; /* 薄い赤 */
     border-color: #dc3545; /* 赤 */
+}
+
+/* 解答・解説エリアのスタイル */
+.feedback-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: #f1f1f1;
+}
+
+.feedback-container p {
+    margin-bottom: 8px;
+}
+
+.feedback-container strong {
+    color: var(--primary-color);
+}
+
+/* 想定問題リストのアイテム */
+.assumed-problem-item {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.assumed-problem-item h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+.problem-syllabus-info {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.question-text {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.choices {
+    margin-bottom: 15px;
+}
+
+.choice-item {
+    background-color: #e9ecef;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.choice-letter {
+    font-weight: bold;
+    margin-right: 8px;
+    color: var(--primary-color);
+}
+
+.answer-toggle-button {
+    background-color: #17a2b8; /* インフォメーションカラー */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.answer-toggle-button:hover {
+    background-color: #138496;
+}
+
+.problem-explanation-area {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f0f8ff; /* 薄い水色 */
+    border: 1px solid #b3e0ff;
+    border-radius: 5px;
+}
+
+.problem-explanation-area strong {
+    color: var(--primary-color);
+}
+
+.correct-answer-text {
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.explanation-text {
+    margin-top: 10px;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* シラバスナビゲーションボタン */
+.syllabus-chapter-button {
+    background-color: #f2f2f2;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    text-align: left;
+    width: 100%; /* 幅を固定 */
+    min-height: 45px; /* 最小高さを設定して安定させる */
+    display: flex; /* アイテムを垂直中央に */
+    align-items: center;
+    justify-content: flex-start; /* テキストを左寄せ */
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    box-shadow: none; /* ボタンの影をなくす */
+}
+
+.syllabus-chapter-button:hover {
+    background-color: #e9ecef;
+    border-color: var(--primary-color);
+    transform: none; /* ホバー時の変形をなくす */
+}
+
+.syllabus-chapter-button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* シラバスコンテンツのスタイル */
+.syllabus-section-title {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+.syllabus-objective-list {
+    list-style-type: none; /* デフォルトのリストスタイルを削除 */
+    padding-left: 0;
+    margin-bottom: 15px;
+}
+
+.syllabus-objective-list li {
+    background-color: #e9f7ef; /* 薄い緑の背景 */
+    border-left: 5px solid var(--secondary-color); /* 左に緑の線 */
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    font-size: 0.95em;
+}
+
+.syllabus-key-terms-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 15px;
+}
+
+.syllabus-key-terms-list li {
+    background-color: #fff3cd; /* 薄い黄色の背景 */
+    border-left: 5px solid var(--accent-color); /* 左に黄色の線 */
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    font-size: 0.95em;
+}
+
+.syllabus-key-terms-list .term {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.syllabus-content-text {
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.syllabus-content-text ul {
+    list-style-type: disc;
+    margin-left: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.syllabus-content-text ul li {
+    margin-bottom: 5px;
 }
