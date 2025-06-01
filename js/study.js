@@ -1,5 +1,7 @@
 // js/study.js
-import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions } from './utils.js';
+
+// main.js から showScreen をインポートするが、
+// study.js 内のボタンイベントは main.js で設定されるため、ここでは不要。
 
 // 試験情報を保持する変数（ここではダミーデータ）
 const examInfo = {
@@ -21,55 +23,49 @@ const examInfo = {
     ]
 };
 
-document.addEventListener('DOMContentLoaded', async () => {
-    setupCommonNavigation();
-    setupBackToTopButtons();
-
-    // 試験情報の表示
-    document.getElementById('exam-duration').textContent = examInfo.duration;
-    document.getElementById('exam-total-questions').textContent = examInfo.totalQuestions;
-    document.getElementById('exam-total-score').textContent = examInfo.totalScore;
-
+export function initStudyScreen() {
+    // DOM要素が存在するか確認
+    const examDurationElement = document.getElementById('exam-duration');
+    const examTotalQuestionsElement = document.getElementById('exam-total-questions');
+    const examTotalScoreElement = document.getElementById('exam-total-score');
     const kLevelTableBody = document.querySelector('#k-level-distribution-table tbody');
-    examInfo.kLevelDistribution.forEach(item => {
-        const row = kLevelTableBody.insertRow();
-        row.innerHTML = `
-            <td>${item.level}</td>
-            <td>${item.questions}</td>
-            <td>${item.scorePerQuestion}</td>
-            <td>${item.totalScore}</td>
-        `;
-    });
-
     const chapterTableBody = document.querySelector('#chapter-distribution-table tbody');
-    examInfo.chapterDistribution.forEach(item => {
-        const row = chapterTableBody.insertRow();
-        row.innerHTML = `
-            <td>${item.chapter}</td>
-            <td>${item.kLevel}</td>
-            <td>${item.questions}</td>
-            <td>${item.scorePerQuestion}</td>
-            <td>${item.totalScore}</td>
-        `;
-    });
 
-    // クイズ開始ボタン
-    const startActualQuizButton = document.getElementById('start-actual-quiz-button');
-    if (startActualQuizButton) {
-        startActualQuizButton.addEventListener('click', async () => {
-            // クイズデータを取得
-            const questions = await fetchQuestions();
-            if (questions.length === 0) {
-                alert('問題データの読み込みに失敗しました。');
-                return;
-            }
+    if (examDurationElement) {
+        examDurationElement.textContent = examInfo.duration;
+    }
+    if (examTotalQuestionsElement) {
+        examTotalQuestionsElement.textContent = examInfo.totalQuestions;
+    }
+    if (examTotalScoreElement) {
+        examTotalScoreElement.textContent = examInfo.totalScore;
+    }
 
-            // localStorageにクイズの状態を保存してクイズ画面へ遷移
-            localStorage.setItem('quizQuestions', JSON.stringify(questions));
-            localStorage.setItem('currentQuestionIndex', '0');
-            localStorage.setItem('correctAnswersCount', '0');
-
-            window.location.href = 'quiz.html'; // クイズ画面へ
+    if (kLevelTableBody) {
+        kLevelTableBody.innerHTML = ''; // クリア
+        examInfo.kLevelDistribution.forEach(item => {
+            const row = kLevelTableBody.insertRow();
+            row.innerHTML = `
+                <td>${item.level}</td>
+                <td>${item.questions}</td>
+                <td>${item.scorePerQuestion}</td>
+                <td>${item.totalScore}</td>
+            `;
         });
     }
-});
+
+    if (chapterTableBody) {
+        chapterTableBody.innerHTML = ''; // クリア
+        examInfo.chapterDistribution.forEach(item => {
+            const row = chapterTableBody.insertRow();
+            row.innerHTML = `
+                <td>${item.chapter}</td>
+                <td>${item.kLevel}</td>
+                <td>${item.questions}</td>
+                <td>${item.scorePerQuestion}</td>
+                <td>${item.totalScore}</td>
+            `;
+        });
+    }
+    console.log("Study Screen Initialized.");
+}

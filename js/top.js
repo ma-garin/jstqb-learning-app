@@ -1,30 +1,10 @@
-// js/index.js
-import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
+// js/top.js
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 共通ナビゲーションのセットアップ
-    setupCommonNavigation();
-    setupBackToTopButtons(); // TOPに戻るボタン（もしあれば）
+// main.js から showScreen をインポートする必要はない。
+// main.js が initWelcomeScreen を呼び出し、main.js 自身がボタンイベントを設定する。
 
-    // ボタン要素
-    const startLearningButton = document.getElementById('start-learning-button');
-    const viewSyllabusButton = document.getElementById('view-syllabus-button');
-    const viewAssumedProblemsButton = document.getElementById('view-assumed-problems-button');
-
-    // ボタンのイベントリスナー（ページ遷移）
-    if (startLearningButton) {
-        startLearningButton.addEventListener('click', () => {
-            window.location.href = 'study.html'; // 学習開始ページへ
-        });
-    }
-    if (viewSyllabusButton) {
-        viewSyllabusButton.addEventListener('click', () => {
-            window.location.href = 'syllabus.html'; // シラバスページへ
-        });
-    }
-    if (viewAssumedProblemsButton) {
-        viewAssumedProblemsButton.addEventListener('click', () => {
-            window.location.href = 'question.html'; // 想定問題ページへ
-        });
-    }
-});
+export function initWelcomeScreen() {
+    // welcome-screen に固有の初期化処理があればここに追加
+    // 現在は main.js でボタンイベントを設定するため、ここでは特に処理なし
+    console.log("Welcome Screen Initialized.");
+}
