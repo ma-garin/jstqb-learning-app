@@ -1,0 +1,144 @@
+
+/* css/layout.css */
+
+/* 全体のコンテナ */
+#app-container {
+    max-width: 900px;
+    width: 95%;
+    margin: 20px auto;
+    flex-grow: 1; /* フッターを下に固定するため */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 中央寄せ */
+}
+
+/* ヘッダー */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    box-shadow: var(--shadow-light);
+    width: 100%;
+    box-sizing: border-box; /* paddingを含めて幅を計算 */
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+header h1 {
+    color: white;
+    font-size: 1.8em;
+    margin: 0;
+    flex-grow: 1; /* タイトルが中央に寄るように */
+    text-align: center;
+    padding-left: 20px; /* メニューアイコンとのバランス */
+}
+
+.spacer {
+    flex-grow: 1; /* ハンバーガーメニューとタイトルの中央寄せに使う */
+}
+
+.menu-icon {
+    font-size: 30px !important;
+    cursor: pointer;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+/* メインナビゲーション (ハンバーガーメニュー) */
+#main-nav {
+    background-color: var(--primary-color);
+    position: absolute;
+    top: 60px; /* ヘッダーの高さに合わせて調整 */
+    left: 0;
+    width: 100%;
+    box-shadow: var(--shadow-light);
+    z-index: 1000; /* 他の要素の上に表示 */
+}
+
+#main-nav.hidden {
+    display: none;
+}
+
+#main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#main-nav li {
+    width: 100%;
+    text-align: center;
+}
+
+#main-nav button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#main-nav button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* パンくずリスト */
+#breadcrumb-nav {
+    background-color: #e9ecef; /* 薄いグレー */
+    padding: 10px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap; /* 小さい画面で折り返す */
+    align-items: center;
+    font-size: 0.9em;
+    color: var(--text-color);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,0.1); /* 下部に薄い影 */
+}
+
+.breadcrumb-item {
+    cursor: pointer;
+    padding: 0 5px;
+    color: #6c757d; /* 少し暗めの色 */
+}
+
+.breadcrumb-item:not(:last-child)::after {
+    content: ' / ';
+    margin-left: 5px;
+    color: #adb5bd;
+}
+
+.breadcrumb-item.active-breadcrumb {
+    font-weight: 700;
+    color: var(--primary-color);
+    cursor: default;
+}
+
+/* フッター */
+footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    width: 100%;
+    margin-top: auto; /* コンテンツが少ない時にフッターを下に固定 */
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08); /* 上部に影 */
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9em;
+}

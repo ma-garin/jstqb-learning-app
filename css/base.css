@@ -1,0 +1,51 @@
+/* css/base.css */
+
+/* 基本的なリセットとフォント設定 */
+:root {
+    --primary-color: #007bff; /* JSTQBの青を意識 */
+    --secondary-color: #28a745; /* 正解時の緑 */
+    --accent-color: #ffc107; /* 警告や注目時の黄 */
+    --text-color: #343a40;
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --border-color: #e9ecef;
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif; /* Google Fontsなどから読み込む */
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-color);
+    margin-top: 0.8em;
+    margin-bottom: 0.4em;
+}
+
+p {
+    margin-bottom: 0.5em;
+}
+
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    margin-bottom: 1em;
+}
+
+ol {
+    list-style-type: decimal;
+    margin-left: 20px;
+    margin-bottom: 1em;
+}
+
+strong {
+    font-weight: 700;
+}

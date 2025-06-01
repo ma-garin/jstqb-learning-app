@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSTQB-テストアナリスト 学習アプリ - クイズ</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <span class="material-icons menu-icon" id="menu-icon">menu</span>
+            <h1>JSTQB-テストアナリスト 学習アプリ</h1>
+            <div class="spacer"></div>
+        </div>
+        <nav id="main-nav" class="hidden">
+            <ul>
+                <li><button id="nav-start-learning-button">学習を始める</button></li>
+                <li><button id="nav-view-syllabus-button">シラバスを見る</button></li>
+                <li><button id="nav-view-assumed-problems-button">想定問題を見る</button></li>
+                <li><button id="nav-back-to-welcome-button">TOPに戻る</button></li>
+            </ul>
+        </nav>
+        <nav id="breadcrumb-nav">
+            <span class="breadcrumb-item" data-screen-id="welcome-screen">トップ</span>
+            <span class="breadcrumb-item" data-screen-id="learning-start-screen">学習を始める</span>
+            <span class="breadcrumb-item active-breadcrumb" data-screen-id="quiz-screen">クイズ</span>
+        </nav>
+    </header>
+    <main id="app-container">
+        <section id="quiz-screen">
+            <div id="question-container">
+                <p>問題 <span id="question-number">1</span> / <span id="total-questions">10</span></p>
+                <div id="question-text-container">
+                    <p id="question-text"></p>
+                    <div id="question-image-container" class="hidden">
+                        <img id="question-image" src="" alt="問題画像">
+                    </div>
+                </div>
+                <div id="options-container">
+                    <label class="option-label"><input type="radio" name="answer" value="a"> <span class="option-text"></span></label>
+                    <label class="option-label"><input type="radio" name="answer" value="b"> <span class="option-text"></span></label>
+                    <label class="option-label"><input type="radio" name="answer" value="c"> <span class="option-text"></span></label>
+                    <label class="option-label"><input type="radio" name="answer" value="d"> <span class="option-text"></span></label>
+                </div>
+                <button id="submit-answer-button">解答する</button>
+                <div id="feedback-container">
+                    <p id="result-message"></p>
+                    <p id="explanation-text"></p>
+                    <button id="next-question-button">次の問題へ</button>
+                </div>
+            </div>
+            <button id="back-to-welcome-from-quiz-button" class="back-to-top-button">TOPに戻る</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 JSTQB-テストアナリスト 学習アプリ</p>
+    </footer>
+
+    <script type="module" src="js/quiz.js"></script> <script type="module" src="js/assumedProblemsData.js"></script>
+</body>
+</html>

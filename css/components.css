@@ -1,0 +1,113 @@
+/* css/components.css */
+
+/* ボタンの共通スタイル */
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin: 10px 0;
+    width: fit-content; /* 内容に合わせて幅を調整 */
+    display: block; /* 常に新しい行に表示 */
+    margin-left: auto; /* 中央寄せ */
+    margin-right: auto; /* 中央寄せ */
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* 「TOPに戻る」ボタン */
+.back-to-top-button {
+    background-color: #6c757d; /* グレー */
+    margin-top: 30px;
+}
+
+.back-to-top-button:hover {
+    background-color: #5a6268;
+}
+
+/* カード風のセクション */
+section {
+    background-color: var(--card-background);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    margin-bottom: 20px; /* 各セクション間の余白 */
+    width: 100%; /* 親要素に合わせて幅100% */
+    box-sizing: border-box; /* paddingを含めて幅を計算 */
+}
+
+/* テーブル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+    background-color: white;
+}
+
+table th, table td {
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f2f2f2;
+    font-weight: 700;
+}
+
+/* フォーム要素 (ラジオボタン) */
+.option-label {
+    display: block;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.option-label:hover {
+    background-color: #e9ecef;
+}
+
+.option-label input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.2); /* ラジオボタンを少し大きく */
+    vertical-align: middle;
+}
+
+.option-text {
+    vertical-align: middle;
+}
+
+/* 正解・不正解時のスタイル */
+.option-label.correct {
+    background-color: #d4edda; /* 薄い緑 */
+    border-color: var(--secondary-color);
+}
+
+.option-label.incorrect {
+    background-color: #f8d7da; /* 薄い赤 */
+    border-color: #dc3545; /* 赤 */
+}
