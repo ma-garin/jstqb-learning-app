@@ -7,6 +7,82 @@
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* top.html 専用のスタイルを index.html に統合 */
+        body {
+            /* スプラッシュスクリーン表示中はflex、その後はblockにJSで切り替え */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: flex-start; /* 初期は上寄せ */
+            align-items: stretch; /* 初期は引き伸ばし */
+            background-color: var(--background-color); /* デフォルト背景色 */
+            color: var(--text-color); /* デフォルト文字色 */
+        }
+        #splash-screen {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            opacity: 0; /* 初期は透明 */
+            transform: translateY(20px);
+            animation: fadeInSlideUp 1s forwards ease-out; /* アニメーション適用 */
+            display: flex; /* 中央寄せのため */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* 全画面表示 */
+            background-color: var(--primary-color); /* メインカラーで背景 */
+            color: white;
+            position: fixed; /* 常に前面に表示 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000; /* 他の要素より手前に */
+        }
+        #splash-screen p {
+            font-size: 0.5em;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* 各画面を非表示にするための共通クラス */
+        .screen.hidden {
+            display: none !important;
+        }
+
+        /* シラバスナビゲーションのボタンの高さと幅を固定 */
+        .syllabus-chapter-button {
+            width: 100%; /* 親要素の幅いっぱいに */
+            padding: 10px 15px; /* パディングで高さを調整 */
+            box-sizing: border-box; /* パディングを含めて幅を計算 */
+            text-align: left; /* テキストを左寄せ */
+            white-space: normal; /* テキストの折り返しを許可 */
+            height: auto; /* コンテンツに合わせて高さを自動調整 */
+            min-height: 45px; /* 最小高さを設定して安定させる */
+            display: flex; /* アイテムを垂直中央に */
+            align-items: center;
+            justify-content: flex-start; /* テキストを左寄せ */
+        }
+        /* アクティブなボタンのスタイル */
+        .syllabus-chapter-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+        .syllabus-chapter-button:hover:not(.active) {
+            background-color: rgba(0, 123, 255, 0.1); /* ホバー時の背景色 */
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -17,7 +93,7 @@
         </div>
         <nav id="main-nav" class="hidden">
             <ul>
-                <li><button id="nav-start-quiz-button">学習を開始する</button></li>
+                <li><button id="nav-start-learning-button">学習を開始する</button></li>
                 <li><button id="nav-view-syllabus-button">シラバスを見る</button></li>
                 <li><button id="nav-view-assumed-problems-button">想定問題を見る</button></li>
                 <li><button id="nav-back-to-welcome-button">TOPに戻る</button></li>
@@ -28,30 +104,90 @@
         </nav>
     </header>
 
-    <main>
-        <section id="welcome-screen" class="screen">
+    <main id="app-container">
+        <section id="splash-screen" class="screen">
+            <p>JSTQB-テストアナリスト</p>
+            <p>学習アプリ</p>
+        </section>
+
+        <section id="welcome-screen" class="hidden screen">
             <h2>ようこそ！</h2>
             <p>JSTQBテストアナリストの学習を始めましょう。</p>
-            <div class="button-group">
-                <button id="start-quiz-button">学習を開始する</button>
-                <button id="view-syllabus-button">シラバスを見る</button>
-                <button id="view-assumed-problems-button">想定問題を見る</button>
+            <button id="start-quiz-button">学習を開始する</button>
+            <button id="view-syllabus-button">シラバスを見る</button>
+            <button id="view-assumed-problems-button">想定問題を見る</button>
+        </section>
+
+        <section id="learning-start-screen" class="hidden screen">
+            <h2>学習開始・試験情報</h2>
+            <p>ここでは、JSTQBテストアナリスト試験の概要と、学習の進め方について説明します。</p>
+
+            <div class="exam-info-section">
+                <h3>試験概要</h3>
+                <p>試験時間: <span id="exam-duration"></span></p>
+                <p>総問題数: <span id="exam-total-questions"></span></p>
+                <p>満点: <span id="exam-total-score"></span></p>
             </div>
+
+            <div class="exam-info-section">
+                <h3>Kレベル別出題比率 (例)</h3>
+                <table id="k-level-distribution-table">
+                    <thead>
+                        <tr>
+                            <th>Kレベル</th>
+                            <th>問題数</th>
+                            <th>1問あたりの配点</th>
+                            <th>合計配点</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="exam-info-section">
+                <h3>章別出題比率 (例)</h3>
+                <table id="chapter-distribution-table">
+                    <thead>
+                        <tr>
+                            <th>章</th>
+                            <th>Kレベル</th>
+                            <th>問題数</th>
+                            <th>1問あたりの配点</th>
+                            <th>合計配点</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <button id="start-actual-quiz-button">今すぐクイズを開始する</button>
+            <button id="back-to-top-from-learning-start" class="back-to-top-button">TOPに戻る</button>
         </section>
 
         <section id="quiz-screen" class="hidden screen">
-            <h2>学習を開始する</h2>
-            <div id="quiz-area">
-                <p id="question-number">問題 1 / 10</p>
-                <p id="question-text">ここに問題文が表示されます。</p>
-                <div id="choices-container" class="choices-container">
+            <h2>クイズ</h2>
+            <div id="quiz-container">
+                <p>問題 <span id="question-number">1</span> / <span id="total-questions">10</span></p>
+                <div id="question-text-container">
+                    <p id="question-text"></p>
+                    <div id="question-image-container" class="hidden">
+                        <img id="question-image" src="" alt="問題の画像">
                     </div>
-                <button id="submit-answer-button">解答する</button>
-                <div id="feedback-area" class="hidden">
-                    <p id="feedback-text"></p>
-                    <p id="explanation-text"></p>
-                    <button id="next-question-button">次の問題へ</button>
                 </div>
+                <div id="options-container">
+                    <label class="option-label"><input type="radio" name="answer" value="a"><span class="option-text"></span></label>
+                    <label class="option-label"><input type="radio" name="answer" value="b"><span class="option-text"></span></label>
+                    <label class="option-label"><input type="radio" name="answer" value="c"><span class="option-text"></span></label>
+                    <label class="option-label"><input type="radio" name="answer" value="d"><span class="option-text"></span></label>
+                </div>
+                <button id="submit-answer-button">解答する</button>
+            </div>
+            <div id="feedback-container" class="hidden">
+                <p id="result-message"></p>
+                <p id="explanation-text"></p>
+                <button id="next-question-button" class="hidden">次の問題へ</button>
             </div>
             <button id="back-to-welcome-from-quiz-button" class="back-to-top-button">TOPに戻る</button>
         </section>
@@ -71,7 +207,7 @@
                 <div id="syllabus-content">
                     </div>
             </div>
-            <button id="back-to-welcome-button" class="back-to-top-button">TOPに戻る</button>
+            <button id="back-to-welcome-from-syllabus-button" class="back-to-top-button">TOPに戻る</button>
         </section>
 
         <section id="assumed-problems-screen" class="hidden screen">
@@ -83,9 +219,15 @@
     </main>
 
     <footer>
-        <p>&copy; 2025 JSTQB-TA Learning App</p>
+        <p>© 2025 JSTQB TA Learning App</p>
     </footer>
 
     <script type="module" src="js/main.js"></script>
-</body>
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/top.js"></script>
+    <script type="module" src="js/study.js"></script>
+    <script type="module" src="js/quiz.js"></script>
+    <script type="module" src="js/result.js"></script>
+    <script type="module" src="js/question.js"></script>
+    <script type="module" src="js/syllabus.js"></script> </body>
 </html>
