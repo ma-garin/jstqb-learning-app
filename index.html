@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSTQB-テストアナリスト 学習アプリ - トップ</title>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/screens.css"> 
+    <title>JSTQB-テストアナリスト 学習アプリ</title>
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -20,7 +17,7 @@
         </div>
         <nav id="main-nav" class="hidden">
             <ul>
-                <li><button id="nav-start-learning-button">学習を始める</button></li>
+                <li><button id="nav-start-quiz-button">学習を開始する</button></li>
                 <li><button id="nav-view-syllabus-button">シラバスを見る</button></li>
                 <li><button id="nav-view-assumed-problems-button">想定問題を見る</button></li>
                 <li><button id="nav-back-to-welcome-button">TOPに戻る</button></li>
@@ -30,19 +27,65 @@
             <span class="breadcrumb-item active-breadcrumb" data-screen-id="welcome-screen">トップ</span>
         </nav>
     </header>
-    <main id="app-container">
-        <section id="welcome-screen" class="active">
+
+    <main>
+        <section id="welcome-screen" class="screen">
             <h2>ようこそ！</h2>
-            <p>JSTQBテストアナリスト試験の学習をサポートします。</p>
-            <button id="start-learning-button">学習を始める</button>
-            <button id="view-syllabus-button">シラバスを見る</button>
-            <button id="view-assumed-problems-button">想定問題を見る</button>
+            <p>JSTQBテストアナリストの学習を始めましょう。</p>
+            <div class="button-group">
+                <button id="start-quiz-button">学習を開始する</button>
+                <button id="view-syllabus-button">シラバスを見る</button>
+                <button id="view-assumed-problems-button">想定問題を見る</button>
+            </div>
+        </section>
+
+        <section id="quiz-screen" class="hidden screen">
+            <h2>学習を開始する</h2>
+            <div id="quiz-area">
+                <p id="question-number">問題 1 / 10</p>
+                <p id="question-text">ここに問題文が表示されます。</p>
+                <div id="choices-container" class="choices-container">
+                    </div>
+                <button id="submit-answer-button">解答する</button>
+                <div id="feedback-area" class="hidden">
+                    <p id="feedback-text"></p>
+                    <p id="explanation-text"></p>
+                    <button id="next-question-button">次の問題へ</button>
+                </div>
+            </div>
+            <button id="back-to-welcome-from-quiz-button" class="back-to-top-button">TOPに戻る</button>
+        </section>
+
+        <section id="result-screen" class="hidden screen">
+            <h2>学習結果</h2>
+            <p>正答数: <span id="correct-answers-count">0</span> / <span id="total-questions-count">0</span></p>
+            <button id="restart-quiz-button">もう一度学習する</button>
+            <button id="back-to-welcome-from-result-button" class="back-to-top-button">TOPに戻る</button>
+        </section>
+
+        <section id="syllabus-screen" class="hidden screen">
+            <h2>JSTQBテストアナリスト シラバス</h2>
+            <div class="syllabus-layout">
+                <nav id="syllabus-navigation">
+                    </nav>
+                <div id="syllabus-content">
+                    </div>
+            </div>
+            <button id="back-to-welcome-button" class="back-to-top-button">TOPに戻る</button>
+        </section>
+
+        <section id="assumed-problems-screen" class="hidden screen">
+            <h2>想定問題</h2>
+            <div id="assumed-problems-list" class="assumed-problems-list">
+                </div>
+            <button id="back-from-assumed-problems-button" class="back-to-top-button">TOPに戻る</button>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 JSTQB-テストアナリスト 学習アプリ</p>
+        <p>&copy; 2025 JSTQB-TA Learning App</p>
     </footer>
 
-    <script type="module" src="js/index.js"></script> </body>
+    <script type="module" src="js/main.js"></script>
+</body>
 </html>
