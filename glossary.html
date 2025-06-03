@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用語集 - JSTQB-TA学習アプリ</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="img/JSTQB_TA.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/JSTQB_TA.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="JSTQB-TA学習">
+    <style>
+        /* 用語集固有のスタイル */
+        #glossary-screen h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #glossary-search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #glossary-search-input {
+            width: calc(100% - 40px);
+            max-width: 500px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .glossary-term-item {
+            background-color: var(--card-background);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-light);
+            margin-bottom: 15px;
+        }
+
+        .glossary-term-item h3 {
+            color: var(--primary-color);
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+
+        .glossary-term-item p {
+            font-size: 1em;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .no-results {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <span class="material-icons menu-icon" id="menu-icon">menu</span>
+            <h1>JSTQB-テストアナリスト 学習アプリ</h1>
+            <div class="spacer"></div>
+        </div>
+        <nav id="main-nav" class="hidden">
+            <ul>
+                <li><button id="nav-start-learning-button">学習を開始する</button></li>
+                <li><button id="nav-view-syllabus-button">シラバスを見る</button></li>
+                <li><button id="nav-view-assumed-problems-button">想定問題を見る</button></li>
+                <li><button id="nav-view-release-notes-button">リリースノートを見る</button></li>
+                <li><button id="nav-view-glossary-button">用語集を見る</button></li> <li><button id="nav-back-to-welcome-button">TOPに戻る</button></li>
+            </ul>
+        </nav>
+        <nav id="breadcrumb-nav">
+            <span class="breadcrumb-item" data-screen-id="welcome-screen">トップ</span>
+            <span class="breadcrumb-item active-breadcrumb" data-screen-id="glossary-screen">用語集</span> </nav>
+    </header>
+    <main id="app-container">
+        <section id="glossary-screen">
+            <h2>用語集</h2>
+            <div id="glossary-search-container">
+                <input type="text" id="glossary-search-input" placeholder="用語を検索...">
+            </div>
+            <div id="glossary-list">
+                <p class="no-results hidden">検索結果はありません。</p>
+            </div>
+            <button class="back-to-top-button" id="back-to-welcome-from-glossary-button">TOPに戻る</button>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 JSTQB TA Learning App</p>
+    </footer>
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/glossary.js"></script> </body>
+</html>

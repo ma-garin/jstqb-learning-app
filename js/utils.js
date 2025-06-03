@@ -19,7 +19,8 @@ export function setupCommonNavigation() {
     const navStartLearningButton = document.getElementById('nav-start-learning-button');
     const navViewSyllabusButton = document.getElementById('nav-view-syllabus-button');
     const navViewAssumedProblemsButton = document.getElementById('nav-view-assumed-problems-button');
-    const navViewReleaseNotesButton = document.getElementById('nav-view-release-notes-button'); // リリースノートボタン
+    const navViewReleaseNotesButton = document.getElementById('nav-view-release-notes-button');
+    const navViewGlossaryButton = document.getElementById('nav-view-glossary-button'); // 追加
     const navBackToWelcomeButton = document.getElementById('nav-back-to-welcome-button');
 
     if (navStartLearningButton) {
@@ -37,10 +38,15 @@ export function setupCommonNavigation() {
             window.location.href = 'question.html';
         });
     }
-    // リリースノートボタンのイベントリスナーを追加
     if (navViewReleaseNotesButton) {
         navViewReleaseNotesButton.addEventListener('click', () => {
             window.location.href = 'release_notes.html';
+        });
+    }
+    // 用語集ボタンのイベントリスナーを追加
+    if (navViewGlossaryButton) {
+        navViewGlossaryButton.addEventListener('click', () => {
+            window.location.href = 'glossary.html';
         });
     }
     if (navBackToWelcomeButton) {
@@ -73,7 +79,8 @@ function setupBreadcrumb(breadcrumbNav) {
         'result.html': { id: 'result-screen', text: '結果', parent: 'quiz.html' },
         'syllabus.html': { id: 'syllabus-screen', text: 'シラバス', parent: 'index.html' },
         'question.html': { id: 'assumed-problems-screen', text: '想定問題', parent: 'index.html' },
-        'release_notes.html': { id: 'release-notes-screen', text: 'リリースノート', parent: 'index.html' } // リリースノートページを追加
+        'release_notes.html': { id: 'release-notes-screen', text: 'リリースノート', parent: 'index.html' },
+        'glossary.html': { id: 'glossary-screen', text: '用語集', parent: 'index.html' } // 用語集ページを追加
     };
 
     const currentPage = window.location.pathname.split('/').pop();
@@ -108,6 +115,7 @@ function setupBreadcrumb(breadcrumbNav) {
                     case 'syllabus-screen': targetPage = 'syllabus.html'; break;
                     case 'assumed-problems-screen': targetPage = 'question.html'; break;
                     case 'release-notes-screen': targetPage = 'release_notes.html'; break;
+                    case 'glossary-screen': targetPage = 'glossary.html'; break; // 用語集ページを追加
                 }
                 if (targetPage) {
                     window.location.href = targetPage;
