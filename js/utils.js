@@ -20,7 +20,8 @@ export function setupCommonNavigation() {
     const navViewSyllabusButton = document.getElementById('nav-view-syllabus-button');
     const navViewAssumedProblemsButton = document.getElementById('nav-view-assumed-problems-button');
     const navViewReleaseNotesButton = document.getElementById('nav-view-release-notes-button');
-    const navViewGlossaryButton = document.getElementById('nav-view-glossary-button'); // 追加
+    const navViewGlossaryButton = document.getElementById('nav-view-glossary-button');
+    // const navViewAiTutorButton = document.getElementById('nav-view-ai-tutor-button'); // 削除
     const navBackToWelcomeButton = document.getElementById('nav-back-to-welcome-button');
 
     if (navStartLearningButton) {
@@ -43,12 +44,17 @@ export function setupCommonNavigation() {
             window.location.href = 'release_notes.html';
         });
     }
-    // 用語集ボタンのイベントリスナーを追加
     if (navViewGlossaryButton) {
         navViewGlossaryButton.addEventListener('click', () => {
             window.location.href = 'glossary.html';
         });
     }
+    // AIチューターボタンのイベントリスナーを削除
+    // if (navViewAiTutorButton) {
+    //     navViewAiTutorButton.addEventListener('click', () => {
+    //         window.location.href = 'ai_tutor.html';
+    //     });
+    // }
     if (navBackToWelcomeButton) {
         navBackToWelcomeButton.addEventListener('click', () => {
             window.location.href = 'index.html';
@@ -80,7 +86,8 @@ function setupBreadcrumb(breadcrumbNav) {
         'syllabus.html': { id: 'syllabus-screen', text: 'シラバス', parent: 'index.html' },
         'question.html': { id: 'assumed-problems-screen', text: '想定問題', parent: 'index.html' },
         'release_notes.html': { id: 'release-notes-screen', text: 'リリースノート', parent: 'index.html' },
-        'glossary.html': { id: 'glossary-screen', text: '用語集', parent: 'index.html' } // 用語集ページを追加
+        'glossary.html': { id: 'glossary-screen', text: '用語集', parent: 'index.html' },
+        // 'ai_tutor.html': { id: 'ai-tutor-screen', text: 'AIチューター', parent: 'index.html' } // AIチューターページを削除
     };
 
     const currentPage = window.location.pathname.split('/').pop();
@@ -114,8 +121,9 @@ function setupBreadcrumb(breadcrumbNav) {
                     case 'result-screen': targetPage = 'result.html'; break;
                     case 'syllabus-screen': targetPage = 'syllabus.html'; break;
                     case 'assumed-problems-screen': targetPage = 'question.html'; break;
-                    case 'release-notes-screen': targetPage = 'release_notes.html'; break;
-                    case 'glossary-screen': targetPage = 'glossary.html'; break; // 用語集ページを追加
+                    case 'release_notes-screen': targetPage = 'release_notes.html'; break;
+                    case 'glossary-screen': targetPage = 'glossary.html'; break;
+                    // case 'ai-tutor-screen': targetPage = 'ai_tutor.html'; break; // AIチューターページを削除
                 }
                 if (targetPage) {
                     window.location.href = targetPage;

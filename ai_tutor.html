@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIチューター - JSTQB-TA学習アプリ</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="img/JSTQB_TA.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/JSTQB_TA.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="JSTQB-TA学習">
+    <style>
+        /* AIチューター固有のスタイル */
+        #ai-tutor-screen {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - var(--header-height) - var(--footer-height) - 40px); /* ヘッダーとフッターの高さ、パディングを考慮 */
+            padding: 20px;
+        }
+
+        #chat-area {
+            flex-grow: 1;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: var(--shadow-light);
+            padding: 20px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .chat-message.user {
+            background-color: var(--primary-color);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-message.ai {
+            background-color: #e0e0e0;
+            color: var(--text-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+        .chat-message.ai pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap; /* コードの折り返し */
+        }
+        .chat-message.ai p {
+            margin-bottom: 0.5em; /* AIの回答内の段落間隔 */
+        }
+        .chat-message.ai ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 0;
+            margin-bottom: 0.5em;
+        }
+        .chat-message.ai ol {
+            list-style-type: decimal;
+            margin-left: 20px;
+            padding-left: 0;
+            margin-bottom: 0.5em;
+        }
+
+        #input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto; /* 下部に固定 */
+        }
+
+        #question-options {
+            background-color: var(--card-background);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-light);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        #question-options div {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        #question-options label {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        #question-options select,
+        #question-options input[type="number"] {
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .checkbox-group label {
+            font-weight: normal; /* チェックボックスのラベルは太字にしない */
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #chat-input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        #user-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1em;
+            resize: vertical; /* 縦方向のみリサイズ可能 */
+            min-height: 40px;
+            max-height: 150px;
+        }
+
+        #send-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+
+        #loading-indicator {
+            text-align: center;
+            margin-top: 10px;
+            color: #6c757d;
+            font-style: italic;
+            display: none; /* 初期は非表示 */
+        }
+
+        /* レスポンシブデザイン */
+        @media (max-width: 768px) {
+            #ai-tutor-screen {
+                padding: 10px;
+                height: calc(100vh - var(--header-height-mobile) - var(--footer-height) - 20px);
+            }
+            #question-options {
+                grid-template-columns: 1fr; /* スマホでは1カラム */
+                padding: 10px;
+            }
+            .chat-message {
+                max-width: 95%;
+            }
+            #user-input {
+                min-height: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <span class="material-icons menu-icon" id="menu-icon">menu</span>
+            <h1>JSTQB-テストアナリスト 学習アプリ</h1>
+            <div class="spacer"></div>
+        </div>
+        <nav id="main-nav" class="hidden">
+            <ul>
+                <li><button id="nav-start-learning-button">学習を開始する</button></li>
+                <li><button id="nav-view-syllabus-button">シラバスを見る</button></li>
+                <li><button id="nav-view-assumed-problems-button">想定問題を見る</button></li>
+                <li><button id="nav-view-release-notes-button">リリースノートを見る</button></li>
+                <li><button id="nav-view-glossary-button">用語集を見る</button></li>
+                <li><button id="nav-view-ai-tutor-button">AIチューター</button></li> <li><button id="nav-back-to-welcome-button">TOPに戻る</button></li>
+            </ul>
+        </nav>
+        <nav id="breadcrumb-nav">
+            <span class="breadcrumb-item" data-screen-id="welcome-screen">トップ</span>
+            <span class="breadcrumb-item active-breadcrumb" data-screen-id="ai-tutor-screen">AIチューター</span> </nav>
+    </header>
+    <main id="app-container">
+        <section id="ai-tutor-screen">
+            <h2>AIチューター</h2>
+            <div id="chat-area">
+                <div class="chat-message ai">
+                    <p>JSTQBテストアナリストについて、何でも質問してください。また、想定問題の作成もできます。</p>
+                </div>
+            </div>
+            <div id="input-area">
+                <div id="question-options">
+                    <div>
+                        <label for="question-type">問題形式:</label>
+                        <select id="question-type">
+                            <option value="">指定なし (質問)</option>
+                            <option value="multiple_choice">4択問題</option>
+                            <option value="fill_in_the_blank">穴埋め問題</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="chapter-select">章:</label>
+                        <select id="chapter-select">
+                            <option value="">指定なし</option>
+                            <option value="1">1章 テストプロセスにおけるテストアナリストのタスク</option>
+                            <option value="2">2章 リスクベースドテストにおけるタスク</option>
+                            <option value="3">3章 テスト技法</option>
+                            <option value="4">4章 ソフトウェア品質特性のテスト</option>
+                            <option value="5">5章 レビュー</option>
+                            <option value="6">6章 テストツールおよび自動化</option>
+                            </select>
+                    </div>
+                    <div>
+                        <label>Kレベル:</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="k-level" value="K1"> K1</label>
+                            <label><input type="checkbox" name="k-level" value="K2"> K2</label>
+                            <label><input type="checkbox" name="k-level" value="K3"> K3</label>
+                            <label><input type="checkbox" name="k-level" value="K4"> K4</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="difficulty">難易度:</label>
+                        <select id="difficulty">
+                            <option value="">指定なし</option>
+                            <option value="easy">易しい</option>
+                            <option value="normal">普通</option>
+                            <option value="hard">難しい</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="question-count">問題数:</label>
+                        <select id="question-count">
+                            <option value="">指定なし</option>
+                            <option value="1">1問</option>
+                            <option value="3">3問</option>
+                            <option value="5">5問</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="include-explanation">解説:</label>
+                        <select id="include-explanation">
+                            <option value="yes">解説あり</option>
+                            <option value="no">解説なし</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="chat-input-container">
+                    <textarea id="user-input" placeholder="質問を入力してください、または問題作成の指示を入力してください"></textarea>
+                    <button id="send-button">
+                        <span class="material-icons">send</span> 送信
+                    </button>
+                </div>
+                <p id="loading-indicator" class="hidden">AIが回答を生成中...</p>
+            </div>
+            <button class="back-to-top-button" id="back-to-welcome-from-ai-tutor-button">TOPに戻る</button>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 JSTQB TA Learning App</p>
+    </footer>
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/aiTutor.js"></script> </body>
+</html>
