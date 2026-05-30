@@ -21,6 +21,15 @@ const examInfo = {
     ]
 };
 
+function shuffleQuestions(questions) {
+    const shuffledQuestions = [...questions];
+    for (let i = shuffledQuestions.length - 1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+        [shuffledQuestions[i], shuffledQuestions[randomIndex]] = [shuffledQuestions[randomIndex], shuffledQuestions[i]];
+    }
+    return shuffledQuestions;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     setupCommonNavigation();
     setupBackToTopButtons();
@@ -28,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // クイズ開始ボタン
     const startActualQuizButton = document.getElementById('start-actual-quiz-button');
+    const shuffleQuizCheckbox = document.getElementById('shuffle-quiz-checkbox');
     if (startActualQuizButton) {
         startActualQuizButton.addEventListener('click', async () => {
             // クイズデータを取得
@@ -36,9 +46,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.error('問題データの読み込みに失敗しました。');
                 return;
             }
+            const quizQuestions = shuffleQuizCheckbox?.checked ? shuffleQuestions(questions) : questions;
 
             // localStorageにクイズの状態を保存してクイズ画面へ遷移
-            localStorage.setItem('quizQuestions', JSON.stringify(questions));
+            localStorage.setItem('quizQuestions', JSON.stringify(quizQuestions));
             localStorage.setItem('currentQuestionIndex', '0');
             localStorage.setItem('correctAnswersCount', '0');
 
