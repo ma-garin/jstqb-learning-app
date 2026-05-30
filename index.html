@@ -50,15 +50,49 @@
 
     <main id="app-container">
         <section id="welcome-screen" class="screen">
-            <h2>JSTQB-テストアナリスト学習アプリ</h2>
-            <p>Advanced Level Test Analyst シラバスの学習をサポートします。</p>
-            <p class="syllabus-version-note">JSTQB Advanced Level テストアナリストシラバス Version 3.1.1.J03 対応</p>
-            <div class="button-group">
-                <button id="start-learning-button">学習を開始する</button>
-                <button id="view-syllabus-button">シラバスを見る</button>
-                <button id="view-assumed-problems-button">想定問題を見る</button>
-                <button id="view-release-notes-button">リリースノートを見る</button>
-                <button id="view-glossary-button">用語集を見る</button>
+            <div class="welcome-dashboard">
+                <div class="welcome-overview">
+                    <p class="screen-kicker">Advanced Level Test Analyst</p>
+                    <h2>テストアナリスト試験対策</h2>
+                    <p class="welcome-lead">JSTQB Advanced Level テストアナリストシラバスに沿って、要点確認から問題演習まで進められます。</p>
+                    <p class="syllabus-version-note">JSTQB Advanced Level テストアナリストシラバス Version 3.1.1.J03 対応</p>
+                    <div class="study-summary" aria-label="学習範囲の概要">
+                        <div>
+                            <span class="summary-value">6</span>
+                            <span class="summary-label">主要章</span>
+                        </div>
+                        <div>
+                            <span class="summary-value">33</span>
+                            <span class="summary-label">想定問題</span>
+                        </div>
+                        <div>
+                            <span class="summary-value">K1-K4</span>
+                            <span class="summary-label">出題レベル</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-group" aria-label="主要機能">
+                    <button id="start-learning-button" class="primary-action">
+                        <span class="material-icons" aria-hidden="true">play_arrow</span>
+                        <span>学習を開始する</span>
+                    </button>
+                    <button id="view-syllabus-button">
+                        <span class="material-icons" aria-hidden="true">menu_book</span>
+                        <span>シラバスを見る</span>
+                    </button>
+                    <button id="view-assumed-problems-button">
+                        <span class="material-icons" aria-hidden="true">quiz</span>
+                        <span>想定問題を見る</span>
+                    </button>
+                    <button id="view-glossary-button">
+                        <span class="material-icons" aria-hidden="true">sort_by_alpha</span>
+                        <span>用語集を見る</span>
+                    </button>
+                    <button id="view-release-notes-button">
+                        <span class="material-icons" aria-hidden="true">history</span>
+                        <span>リリースノートを見る</span>
+                    </button>
+                </div>
             </div>
         </section>
     </main>

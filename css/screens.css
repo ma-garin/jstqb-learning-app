@@ -2,24 +2,147 @@
 
 /* Welcome Screen (index.html) */
 #welcome-screen {
-    text-align: center;
-    padding: 40px 20px;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    text-align: left;
 }
 
 #welcome-screen h2 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
+    color: var(--text-color);
+    font-size: 2.1em;
+    line-height: 1.25;
+    margin-bottom: 14px;
 }
 
 #welcome-screen p {
-    font-size: 1.2em;
-    margin-bottom: 18px;
+    font-size: 1em;
+    margin-bottom: 16px;
 }
 
 #welcome-screen button {
-    width: 80%; /* ボタン幅を少し広げる */
-    max-width: 350px;
-    margin-bottom: 15px;
+    margin: 0;
+    max-width: none;
+    width: 100%;
+}
+
+.welcome-dashboard {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+    min-height: 520px;
+}
+
+.welcome-overview,
+.button-group {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+}
+
+.welcome-overview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 56px 64px;
+}
+
+.screen-kicker {
+    color: var(--primary-color);
+    font-size: 0.88em !important;
+    font-weight: 700;
+    letter-spacing: 0;
+    margin-bottom: 10px !important;
+}
+
+.welcome-lead {
+    color: var(--muted-text-color);
+    font-size: 1.08em !important;
+    line-height: 1.8;
+    max-width: 620px;
+}
+
+.study-summary {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 22px;
+}
+
+.study-summary div {
+    border-left: 3px solid var(--primary-color);
+    background-color: #f9fbfd;
+    padding: 12px 14px;
+}
+
+.summary-value,
+.summary-label {
+    display: block;
+}
+
+.summary-value {
+    color: var(--primary-color);
+    font-size: 1.35em;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.summary-label {
+    color: var(--muted-text-color);
+    font-size: 0.86em;
+    margin-top: 4px;
+}
+
+.button-group {
+    align-content: center;
+    display: grid;
+    gap: 12px;
+    padding: 28px;
+}
+
+.button-group button {
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: none;
+    color: var(--text-color);
+    display: flex;
+    font-size: 1em;
+    font-weight: 700;
+    gap: 12px;
+    justify-content: flex-start;
+    min-height: 56px;
+    padding: 14px 16px;
+    text-align: left;
+}
+
+.button-group button:hover {
+    background-color: #f4f8fb;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: none;
+}
+
+.button-group .material-icons {
+    color: var(--primary-color);
+    font-size: 24px;
+}
+
+.button-group .primary-action {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.button-group .primary-action .material-icons,
+.button-group .primary-action:hover {
+    color: #ffffff;
+}
+
+.button-group .primary-action:hover {
+    background-color: #174d72;
 }
 
 /* Learning Start Screen (study.html) */
@@ -54,8 +177,8 @@
     color: #24465f;
     font-size: 0.95em !important;
     line-height: 1.6;
-    margin: 12px auto 24px;
-    max-width: 760px;
+    margin: 18px 0 0;
+    max-width: 620px;
     padding: 10px 14px;
 }
 
@@ -402,22 +525,22 @@
 /* スマートフォン向けの調整 */
 @media (max-width: 768px) {
     header .header-content {
-        flex-wrap: wrap; /* 要素が収まらない場合に折り返す */
-        justify-content: center; /* 中央寄せ */
+        flex-wrap: nowrap;
+        justify-content: flex-start;
     }
 
     header h1 {
-        font-size: 1.5em !important;
-        padding-left: 0 !important;
-        text-align: center;
-        width: 100%; /* 全幅を使う */
-        margin-top: 10px; /* アイコンとの間に余白 */
+        font-size: 1.1em !important;
+        padding-left: 8px !important;
+        text-align: left;
+        width: auto;
+        margin-top: 0;
     }
 
     .menu-icon {
-        margin-right: 0 !important;
-        width: 100%; /* 全幅 */
-        text-align: left; /* 左寄せ */
+        margin-right: 8px !important;
+        width: auto;
+        text-align: left;
     }
 
     #main-nav {
@@ -447,7 +570,7 @@
         font-size: 0.85em !important;
     }
 
-    section {
+    section:not(#welcome-screen) {
         padding: 20px !important;
     }
 
@@ -456,8 +579,22 @@
         font-size: 1em !important;
     }
 
+    .welcome-dashboard {
+        grid-template-columns: 1fr;
+        min-height: 0;
+    }
+
+    .welcome-overview,
+    .button-group {
+        padding: 24px;
+    }
+
+    .study-summary {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     #welcome-screen button {
-        width: 90% !important;
+        width: 100% !important;
     }
 
     /* シラバスレイアウトの調整 */
@@ -522,11 +659,16 @@
 /* 小さなスマートフォン向けのさらなる調整 */
 @media (max-width: 480px) {
     #welcome-screen h2 {
-        font-size: 2em;
+        font-size: 1.7em;
     }
 
     #welcome-screen p {
         font-size: 1em;
+    }
+
+    .welcome-overview,
+    .button-group {
+        padding: 18px;
     }
 
     .syllabus-chapter-button {
