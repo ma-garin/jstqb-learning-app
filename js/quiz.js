@@ -16,12 +16,41 @@ const optionLabels = optionsContainer ? optionsContainer.querySelectorAll('.opti
 const optionInputs = optionsContainer ? optionsContainer.querySelectorAll('input[type="radio"]') : [];
 const optionTexts = optionsContainer ? optionsContainer.querySelectorAll('.option-text') : [];
 const submitAnswerButton = document.getElementById('submit-answer-button');
+const answerWarningElement = document.getElementById('answer-warning');
 const feedbackContainer = document.getElementById('feedback-container');
 const resultMessageElement = document.getElementById('result-message');
+const answerSummaryElement = document.getElementById('answer-summary');
 const explanationTextElement = document.getElementById('explanation-text');
 const nextQuestionButton = document.getElementById('next-question-button');
 const backToWelcomeFromQuizButton = document.getElementById('back-to-welcome-from-quiz-button');
 
+function normalizeAnswerLetter(answer) {
+    return String(answer || '').trim().toLowerCase();
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function getAnswerText(answerLetter) {
+    const answerIndex = normalizeAnswerLetter(answerLetter).charCodeAt(0) - 97;
+    const currentQuestion = questionsData[currentQuestionIndex];
+    if (!currentQuestion || answerIndex < 0 || answerIndex >= currentQuestion.choices.length) {
+        return '';
+    }
+    return currentQuestion.choices[answerIndex].replace(/^[a-dA-D][).]\s*/, '');
+}
+
+function formatAnswerLabel(answerLetter) {
+    const normalizedAnswer = normalizeAnswerLetter(answerLetter);
+    const answerText = getAnswerText(normalizedAnswer);
+    return answerText ? `${normalizedAnswer.toUpperCase()}. ${answerText}` : normalizedAnswer.toUpperCase();
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     setupCommonNavigation();
@@ -82,6 +111,12 @@ function loadQuestion() {
         input.checked = false; // 選択をクリア
         input.disabled = false; // 有効化
     });
+    if (answerWarningElement) {
+        answerWarningElement.classList.add('hidden');
+    }
+    if (answerSummaryElement) {
+        answerSummaryElement.textContent = '';
+    }
 
     if (currentQuestionIndex >= questionsData.length) {
         // 全問終了したら結果画面へ
@@ -119,22 +154,32 @@ function loadQuestion() {
 function submitAnswer() {
     const selectedOption = document.querySelector('input[name="answer"]:checked');
     if (!selectedOption) {
-        // 解答が選択されていない場合
-        // alert('解答を選択してください。'); // カスタムモーダルに置き換える
-        // 今回はシンプルにconsole.logで対応
-        console.log('解答を選択してください。');
+        if (answerWarningElement) {
+            answerWarningElement.classList.remove('hidden');
+        }
         return;
     }
 
-    const userAnswer = selectedOption.value;
+    if (answerWarningElement) {
+        answerWarningElement.classList.add('hidden');
+    }
+
+    const userAnswer = normalizeAnswerLetter(selectedOption.value);
     const currentQuestion = questionsData[currentQuestionIndex];
-    const isCorrect = userAnswer === currentQuestion.correctAnswerLetter;
+    const correctAnswer = normalizeAnswerLetter(currentQuestion.correctAnswerLetter);
+    const isCorrect = userAnswer === correctAnswer;
 
     // フィードバックの表示
     resultMessageElement.textContent = isCorrect ? '正解です！' : '不正解です。';
     resultMessageElement.style.color = isCorrect ? 'var(--secondary-color)' : 'var(--accent-color)';
     if (isCorrect) {
         correctAnswersCount++;
+    }
+    if (answerSummaryElement) {
+        answerSummaryElement.innerHTML = `
+            <strong>あなたの選択:</strong> ${escapeHtml(formatAnswerLabel(userAnswer))}<br>
+            <strong>正解:</strong> ${escapeHtml(formatAnswerLabel(correctAnswer))}
+        `;
     }
     explanationTextElement.innerHTML = currentQuestion.explanation.replace(/\\n/g, '<br>');
     feedbackContainer.classList.remove('hidden');
@@ -145,9 +190,9 @@ function submitAnswer() {
     optionInputs.forEach(input => {
         input.disabled = true; // 解答後は選択肢を無効化
         const label = input.parentElement;
-        if (input.value === currentQuestion.correctAnswerLetter) {
+        if (normalizeAnswerLetter(input.value) === correctAnswer) {
             label.classList.add('correct'); // 正解の選択肢
-        } else if (input.value === userAnswer) {
+        } else if (normalizeAnswerLetter(input.value) === userAnswer) {
             label.classList.add('incorrect'); // ユーザーが選んだ不正解の選択肢
         }
     });

@@ -62,13 +62,14 @@ header h1 {
     z-index: 999; /* ヘッダーより下 */
     padding: 10px 0;
     text-align: center;
-    overflow: hidden; /* transitionのために必要 */
-    max-height: 250px; /* 最大高さを設定 */
+    overflow-y: auto;
+    max-height: min(75vh, 480px);
     transition: max-height 0.3s ease-out; /* アニメーション */
 }
 
 #main-nav.hidden {
     max-height: 0;
+    overflow: hidden;
     padding-bottom: 0;
 }
 
@@ -157,7 +158,8 @@ footer {
     gap: 20px;
     margin-top: 20px;
     width: 100%; /* 親要素に合わせる */
-    height: calc(100vh - 200px); /* ヘッダーとフッターを考慮した高さ */
+    min-height: 560px;
+    max-height: calc(100vh - 200px); /* ヘッダーとフッターを考慮した高さ */
     /* main#app-container の max-width: 900px が適用される */
 }
 
