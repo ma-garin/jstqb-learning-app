@@ -170,6 +170,31 @@
     margin-bottom: 8px;
 }
 
+.quiz-start-options {
+    background-color: #f9fbfd;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin: 24px auto 0;
+    max-width: 520px;
+    padding: 14px 16px;
+}
+
+.shuffle-option {
+    align-items: center;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    font-weight: 700;
+    gap: 10px;
+    justify-content: center;
+}
+
+.shuffle-option input {
+    accent-color: var(--primary-color);
+    height: 18px;
+    width: 18px;
+}
+
 .syllabus-version-note {
     background-color: var(--info-background);
     border: 1px solid #c7dfef;
