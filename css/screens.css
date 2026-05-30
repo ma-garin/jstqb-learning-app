@@ -13,7 +13,7 @@
 
 #welcome-screen p {
     font-size: 1.2em;
-    margin-bottom: 30px;
+    margin-bottom: 18px;
 }
 
 #welcome-screen button {
@@ -45,6 +45,18 @@
 
 .exam-info-section p {
     margin-bottom: 8px;
+}
+
+.syllabus-version-note {
+    background-color: var(--info-background);
+    border: 1px solid #c7dfef;
+    border-radius: 6px;
+    color: #24465f;
+    font-size: 0.95em !important;
+    line-height: 1.6;
+    margin: 12px auto 24px;
+    max-width: 760px;
+    padding: 10px 14px;
 }
 
 #start-actual-quiz-button {
@@ -117,8 +129,8 @@
 }
 
 #feedback-container {
-    background-color: #e2f0fb; /* 薄い青 */
-    border: 1px solid #b8daff;
+    background-color: var(--info-background);
+    border: 1px solid #b8d7e8;
     padding: 20px;
     border-radius: 8px;
     margin-top: 20px;
@@ -136,6 +148,27 @@
     font-size: 1em;
     line-height: 1.6;
     color: #495057;
+}
+
+#answer-summary {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    line-height: 1.7;
+    margin-bottom: 14px;
+    padding: 12px 14px;
+}
+
+.answer-warning {
+    background-color: var(--warning-background);
+    border: 1px solid #fed7aa;
+    border-radius: 6px;
+    color: var(--accent-color);
+    font-weight: 700;
+    margin: 0 0 12px;
+    padding: 10px 12px;
+    text-align: center;
 }
 
 #next-question-button, #submit-answer-button {
@@ -178,10 +211,10 @@
 }
 
 #syllabus-navigation {
-    background-color: var(--card-background);
+    background-color: #f9fbfd;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: var(--shadow-light);
+    box-shadow: none;
     flex: 0 0 280px; /* 固定幅 */
     overflow-y: auto; /* ナビゲーションが溢れたらスクロール */
     border-right: 1px solid var(--border-color);
@@ -220,7 +253,7 @@
     background-color: var(--card-background);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: var(--shadow-light);
+    box-shadow: none;
     overflow-y: auto; /* コンテンツが溢れたらスクロール */
 }
 
@@ -233,14 +266,14 @@
 }
 
 #syllabus-content h3 {
-    color: #555;
+    color: #3f4f5f;
     font-size: 1.4em;
     margin-top: 25px;
     margin-bottom: 10px;
 }
 
 #syllabus-content h4 {
-    color: #777;
+    color: var(--muted-text-color);
     font-size: 1.1em;
     margin-top: 15px;
     margin-bottom: 8px;

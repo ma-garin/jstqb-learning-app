@@ -2,14 +2,17 @@
 
 /* 基本的なリセットとフォント設定 */
 :root {
-    --primary-color: #007bff; /* JSTQBの青を意識 */
-    --secondary-color: #28a745; /* 正解時の緑 */
-    --accent-color: #ffc107; /* 警告や注目時の黄 */
-    --text-color: #343a40;
-    --background-color: #f8f9fa;
+    --primary-color: #1f5f8b; /* JSTQBの青を意識 */
+    --secondary-color: #2e7d50; /* 正解時の緑 */
+    --accent-color: #b54708; /* 警告や不正解時の橙 */
+    --text-color: #25313b;
+    --background-color: #f6f8fb;
     --card-background: #ffffff;
-    --border-color: #e9ecef;
-    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --border-color: #d9e1ea;
+    --muted-text-color: #5f6f7f;
+    --info-background: #eef6fb;
+    --warning-background: #fff7ed;
+    --shadow-light: 0 3px 10px rgba(25, 45, 70, 0.08);
 }
 
 body {
