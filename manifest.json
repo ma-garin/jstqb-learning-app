@@ -1,11 +1,11 @@
 {
-  "name": "JSTQB-テストアナリスト 学習アプリ",
-  "short_name": "JSTQB-TA学習",
+  "name": "JSTQB Advanced Level 学習アプリ",
+  "short_name": "JSTQB-AL学習",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#f8f9fa",
-  "theme_color": "#007bff",
-  "description": "JSTQBテストアナリスト試験対策のための学習アプリ",
+  "theme_color": "#4F46E5",
+  "description": "JSTQB Advanced Level（TA・TM）試験対策のための学習アプリ",
   "orientation": "portrait",
   "icons": [
     {

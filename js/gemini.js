@@ -19,11 +19,17 @@ export function hasApiKey() {
     return !!getApiKey();
 }
 
-export async function generateQuestions(apiKey, { count = 3, topic = '', kLevel = '' } = {}) {
+const EXAM_PROMPTS = {
+    alta: 'JSTQB Advanced Level テストアナリスト試験（シラバス v3.1.1.J03）',
+    altm: 'JSTQB Advanced Level テストマネジメント試験（シラバス v3.0.J03）',
+};
+
+export async function generateQuestions(apiKey, { count = 3, topic = '', kLevel = '', exam = 'alta' } = {}) {
     const topicLine = topic ? `テーマ: ${topic}` : '';
     const kLevelLine = kLevel ? `出題レベル: ${kLevel}` : 'K2〜K4レベルを混在';
+    const examLabel = EXAM_PROMPTS[exam] || EXAM_PROMPTS.alta;
 
-    const prompt = `あなたはJSTQB Advanced Level テストアナリスト試験（シラバス v3.1.1.J03）の専門家です。
+    const prompt = `あなたは${examLabel}の専門家です。
 以下の条件に従い、本番試験に即した日本語の問題を${count}問作成してください。
 
 ${topicLine}

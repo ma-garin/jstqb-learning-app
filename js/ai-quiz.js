@@ -2,6 +2,7 @@
 
 import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
 import { getApiKey, saveApiKey, clearApiKey, hasApiKey, generateQuestions } from './gemini.js';
+import { getExam } from './examContext.js';
 
 let generatedQuestions = [];
 let currentIndex = 0;
@@ -102,7 +103,7 @@ async function handleGenerate() {
     errorEl?.classList.add('hidden');
 
     try {
-        generatedQuestions = await generateQuestions(apiKey, { count, topic, kLevel });
+        generatedQuestions = await generateQuestions(apiKey, { count, topic, kLevel, exam: getExam() });
         currentIndex = 0;
         correctCount = 0;
         answerLogAI = [];

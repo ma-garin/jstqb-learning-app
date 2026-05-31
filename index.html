@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSTQB-TA 学習アプリ</title>
+    <title>JSTQB-AL学習アプリ</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/components.css">
@@ -16,7 +16,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="JSTQB-TA学習">
+    <meta name="apple-mobile-web-app-title" content="JSTQB-AL学習">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZ9EN5NX5F"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -40,7 +40,7 @@
 
             <!-- Greeting -->
             <div class="home-greeting">
-                <p class="greeting-sub">Advanced Level Test Analyst</p>
+                <p class="greeting-sub" id="greeting-sub">Advanced Level Test Analyst</p>
                 <h2>今日も試験対策を始めましょう</h2>
             </div>
 
@@ -73,7 +73,7 @@
                     <span class="material-icons action-icon">edit_note</span>
                     <div style="flex:1;">
                         <p class="action-title">クイズに挑戦</p>
-                        <p class="action-desc">想定問題33問で実力試し</p>
+                        <p class="action-desc" id="action-desc-quiz">想定問題33問で実力試し</p>
                     </div>
                     <span id="weak-badge" style="display:none;background:rgba(255,255,255,0.25);color:#fff;font-size:0.72em;font-weight:700;padding:3px 8px;border-radius:var(--radius-full);white-space:nowrap;"></span>
                 </a>
@@ -90,7 +90,7 @@
                     <span class="material-icons action-icon action-icon-default">menu_book</span>
                     <div>
                         <p class="action-title">シラバス</p>
-                        <p class="action-desc" style="color:var(--text-muted)">8章を章別に閲覧</p>
+                        <p class="action-desc" id="action-desc-syllabus" style="color:var(--text-muted)">8章を章別に閲覧</p>
                     </div>
                 </a>
 
@@ -98,7 +98,7 @@
                     <span class="material-icons action-icon action-icon-default">quiz</span>
                     <div>
                         <p class="action-title">問題集</p>
-                        <p class="action-desc" style="color:var(--text-muted)">全33問・解説付き</p>
+                        <p class="action-desc" id="action-desc-problems" style="color:var(--text-muted)">全33問・解説付き</p>
                     </div>
                 </a>
             </div>
@@ -113,7 +113,7 @@
             <!-- App info -->
             <div class="info-strip">
                 <span class="material-icons">info_outline</span>
-                <p class="info-strip-text">シラバス v3.1.1.J03 対応 ・ K1〜K4 ・ 33問収録</p>
+                <p class="info-strip-text" id="info-syllabus-version">シラバス v3.1.1.J03 対応 ・ K1〜K4 ・ 33問収録</p>
             </div>
 
         </section>

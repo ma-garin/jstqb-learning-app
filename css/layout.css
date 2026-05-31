@@ -58,6 +58,36 @@
     display: none !important;
 }
 
+/* ── Exam Tab Bar ────────────────────────────── */
+.exam-tabs {
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    position: sticky;
+    top: var(--header-height);
+    z-index: 99;
+}
+
+.exam-tab {
+    flex: 1;
+    padding: 10px 0;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.exam-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
 /* ── Main Content ────────────────────────────── */
 .app-main {
     flex: 1;

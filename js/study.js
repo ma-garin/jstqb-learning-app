@@ -1,25 +1,45 @@
 // js/study.js
 import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions } from './utils.js';
 import { getWrongQuestionIds } from './progress.js';
+import { getExam } from './examContext.js';
 
-const examInfo = {
-    duration: "180分",
-    totalQuestions: "90問",
-    totalScore: "90点",
-    kLevelDistribution: [
-        { level: "K1", questions: "10問", scorePerQuestion: "1点", totalScore: "10点" },
-        { level: "K2", questions: "30問", scorePerQuestion: "1点", totalScore: "30点" },
-        { level: "K3", questions: "30問", scorePerQuestion: "1点", totalScore: "30点" },
-        { level: "K4", questions: "20問", scorePerQuestion: "1点", totalScore: "20点" }
-    ],
-    chapterDistribution: [
-        { chapter: "1章", kLevel: "K1-K4", questions: "20問", scorePerQuestion: "1点", totalScore: "20点" },
-        { chapter: "2章", kLevel: "K1-K4", questions: "15問", scorePerQuestion: "1点", totalScore: "15点" },
-        { chapter: "3章", kLevel: "K1-K4", questions: "25問", scorePerQuestion: "1点", totalScore: "25点" },
-        { chapter: "4章", kLevel: "K1-K4", questions: "20問", scorePerQuestion: "1点", totalScore: "20点" },
-        { chapter: "5章", kLevel: "K1-K4", questions: "10問", scorePerQuestion: "1点", totalScore: "10点" }
-    ]
+const EXAM_INFO = {
+    alta: {
+        duration: "180分",
+        totalQuestions: "90問",
+        totalScore: "90点",
+        kLevelDistribution: [
+            { level: "K1", questions: "10問", scorePerQuestion: "1点", totalScore: "10点" },
+            { level: "K2", questions: "30問", scorePerQuestion: "1点", totalScore: "30点" },
+            { level: "K3", questions: "30問", scorePerQuestion: "1点", totalScore: "30点" },
+            { level: "K4", questions: "20問", scorePerQuestion: "1点", totalScore: "20点" }
+        ],
+        chapterDistribution: [
+            { chapter: "1章", kLevel: "K1-K4", questions: "20問", scorePerQuestion: "1点", totalScore: "20点" },
+            { chapter: "2章", kLevel: "K1-K4", questions: "15問", scorePerQuestion: "1点", totalScore: "15点" },
+            { chapter: "3章", kLevel: "K1-K4", questions: "25問", scorePerQuestion: "1点", totalScore: "25点" },
+            { chapter: "4章", kLevel: "K1-K4", questions: "20問", scorePerQuestion: "1点", totalScore: "20点" },
+            { chapter: "5章", kLevel: "K1-K4", questions: "10問", scorePerQuestion: "1点", totalScore: "10点" }
+        ]
+    },
+    altm: {
+        duration: "180分",
+        totalQuestions: "65問",
+        totalScore: "65点",
+        kLevelDistribution: [
+            { level: "K2", questions: "36問", scorePerQuestion: "1点", totalScore: "36点" },
+            { level: "K3", questions: "5問", scorePerQuestion: "1点", totalScore: "5点" },
+            { level: "K4", questions: "7問", scorePerQuestion: "1点", totalScore: "7点" }
+        ],
+        chapterDistribution: [
+            { chapter: "1章", kLevel: "K2-K4", questions: "34問", scorePerQuestion: "1点", totalScore: "34点" },
+            { chapter: "2章", kLevel: "K2-K4", questions: "18問", scorePerQuestion: "1点", totalScore: "18点" },
+            { chapter: "3章", kLevel: "K2-K4", questions: "13問", scorePerQuestion: "1点", totalScore: "13点" }
+        ]
+    }
 };
+
+const examInfo = EXAM_INFO[getExam()] ?? EXAM_INFO.alta;
 
 function shuffleQuestions(questions) {
     const arr = [...questions];

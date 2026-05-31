@@ -1,17 +1,22 @@
 // js/glossary.js
 
-import glossaryTerms from './glossaryData.js';
 import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
+import { getExam } from './examContext.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     setupCommonNavigation();
     setupBackToTopButtons();
+
+    const exam = getExam();
+    const mod = exam === 'altm'
+        ? await import('./glossaryData_altm.js')
+        : await import('./glossaryData_alta.js');
+    const glossaryTerms = mod.glossaryTerms;
 
     const glossaryList = document.getElementById('glossary-list');
     const searchInput = document.getElementById('glossary-search-input');
 
     function renderGlossary(termsToDisplay) {
-        // .no-results 要素は消さないようにリスト項目だけを再描画する
         const existingItems = glossaryList.querySelectorAll('.glossary-term-item');
         existingItems.forEach(el => el.remove());
 

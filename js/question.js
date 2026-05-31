@@ -1,66 +1,91 @@
 // js/question.js
-import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
-import { assumedProblems } from './assumedProblemsData.js'; // assumedProblemsData.js から問題をインポート
+import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions } from './utils.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     setupCommonNavigation();
     setupBackToTopButtons();
-    loadAssumedProblems();
+    await loadAssumedProblems();
 });
 
-/**
- * 想定問題データをロードして表示する
- */
-function loadAssumedProblems() {
-    const assumedProblemsList = document.getElementById('assumed-problems-list');
-    if (!assumedProblemsList) {
-        console.error("Error: #assumed-problems-list element not found.");
-        return;
-    }
-    assumedProblemsList.innerHTML = ''; // クリア
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+async function loadAssumedProblems() {
+    const list = document.getElementById('assumed-problems-list');
+    if (!list) return;
+    list.innerHTML = '';
+
+    const assumedProblems = await fetchQuestions();
 
     if (!assumedProblems || assumedProblems.length === 0) {
-        assumedProblemsList.innerHTML = '<p>問題の読み込みに失敗しました。</p>';
+        list.innerHTML = '<p>問題の読み込みに失敗しました。</p>';
         return;
     }
 
     assumedProblems.forEach(problem => {
-        const problemDiv = document.createElement('div');
-        problemDiv.classList.add('assumed-problem-item');
-        problemDiv.innerHTML = `
-            <h3>問題 ${problem.id}</h3>
-            <p class="problem-syllabus-info">シラバス: ${problem.syllabusChapter}章 ${problem.syllabusSection}</p>
-            <p class="question-text">${problem.question.replace(/\\n/g, '<br>')}</p>
-            <div class="choices">
-                ${problem.choices.map((choice, index) => {
-                    const optionLetter = String.fromCharCode(97 + index); // 'a', 'b', 'c', 'd'
-                    return `<p class="choice-item"><span class="choice-letter">${optionLetter}.</span> ${choice.replace(/\\n/g, '<br>')}</p>`;
-                }).join('')}
-            </div>
-            <button class="answer-toggle-button" data-problem-id="${problem.id}">解答・解説を表示</button>
-            <div class="problem-explanation-area hidden" id="feedback-${problem.id}">
-                <p class="correct-answer-text">正解: <span class="correct-answer-letter">${problem.correctAnswerLetter.toUpperCase()}</span></p>
-                <p class="explanation-text">解説:<br>${problem.explanation.replace(/\\n/g, '<br>')}</p>
-            </div>
-        `;
-        assumedProblemsList.appendChild(problemDiv);
+        const div = document.createElement('div');
+        div.classList.add('assumed-problem-item');
+
+        const h3 = document.createElement('h3');
+        h3.textContent = `問題 ${problem.id}`;
+
+        const syllabusInfo = document.createElement('p');
+        syllabusInfo.className = 'problem-syllabus-info';
+        syllabusInfo.textContent = `シラバス: ${problem.syllabusChapter}章 ${problem.syllabusSection}`;
+
+        const questionText = document.createElement('p');
+        questionText.className = 'question-text';
+        questionText.innerHTML = escapeHtml(problem.question).replace(/\\n/g, '<br>');
+
+        const choicesDiv = document.createElement('div');
+        choicesDiv.className = 'choices';
+        problem.choices.forEach((choice, index) => {
+            const p = document.createElement('p');
+            p.className = 'choice-item';
+            const letter = String.fromCharCode(97 + index);
+            p.innerHTML = `<span class="choice-letter">${letter}.</span> ${escapeHtml(choice).replace(/\\n/g, '<br>')}`;
+            choicesDiv.appendChild(p);
+        });
+
+        const toggleBtn = document.createElement('button');
+        toggleBtn.className = 'answer-toggle-button';
+        toggleBtn.dataset.problemId = problem.id;
+        toggleBtn.textContent = '解答・解説を表示';
+
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'problem-explanation-area hidden';
+        feedbackDiv.id = `feedback-${problem.id}`;
+
+        const correctP = document.createElement('p');
+        correctP.className = 'correct-answer-text';
+        correctP.innerHTML = `正解: <span class="correct-answer-letter">${escapeHtml(problem.correctAnswerLetter).toUpperCase()}</span>`;
+
+        const explP = document.createElement('p');
+        explP.className = 'explanation-text';
+        explP.innerHTML = `解説:<br>${escapeHtml(problem.explanation).replace(/\\n/g, '<br>')}`;
+
+        feedbackDiv.appendChild(correctP);
+        feedbackDiv.appendChild(explP);
+
+        div.appendChild(h3);
+        div.appendChild(syllabusInfo);
+        div.appendChild(questionText);
+        div.appendChild(choicesDiv);
+        div.appendChild(toggleBtn);
+        div.appendChild(feedbackDiv);
+        list.appendChild(div);
     });
 
-    // 解答表示ボタンのイベントリスナー設定
-    document.querySelectorAll('.answer-toggle-button').forEach(button => {
-        button.addEventListener('click', (event) => {
-            const problemId = event.target.dataset.problemId;
-            const feedbackDiv = document.getElementById(`feedback-${problemId}`);
-            if (feedbackDiv) {
-                feedbackDiv.classList.toggle('hidden');
-                if (feedbackDiv.classList.contains('hidden')) {
-                    event.target.textContent = '解答・解説を表示';
-                } else {
-                    event.target.textContent = '解答・解説を隠す';
-                }
-            }
+    list.querySelectorAll('.answer-toggle-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const fd = document.getElementById(`feedback-${btn.dataset.problemId}`);
+            if (!fd) return;
+            fd.classList.toggle('hidden');
+            btn.textContent = fd.classList.contains('hidden') ? '解答・解説を表示' : '解答・解説を隠す';
         });
     });
-
-    console.log("Assumed Problems Screen Initialized.");
 }

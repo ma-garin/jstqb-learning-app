@@ -1,6 +1,7 @@
 // js/releaseNotesLoader.js
 
 import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
+import { getExam } from './examContext.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     setupCommonNavigation();
@@ -26,7 +27,9 @@ async function loadReleaseNotes() {
     }
 
     try {
-        const response = await fetch('data/release_notes.csv');
+        const exam = getExam();
+        const csvFile = exam === 'altm' ? 'data/release_notes_altm.csv' : 'data/release_notes_alta.csv';
+        const response = await fetch(csvFile);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
