@@ -126,4 +126,30 @@ describe('generateQuestions — エラーハンドリング', () => {
         expect(result).toHaveLength(1);
         expect(result[0].question).toBe('Q');
     });
+
+    it('model パラメータがURLに反映される', async () => {
+        const mockText = JSON.stringify({
+            questions: [{ question: 'Q', choices: ['A.a', 'B.b', 'C.c', 'D.d'], correctAnswerLetter: 'a', explanation: 'ex' }],
+        });
+        fetch.mockResolvedValue({
+            ok: true,
+            json: async () => ({ candidates: [{ content: { parts: [{ text: mockText }] } }] }),
+        });
+        await generateQuestions('dummy-key', { model: 'gemini-1.5-flash' });
+        const calledUrl = fetch.mock.calls[0][0];
+        expect(calledUrl).toContain('gemini-1.5-flash');
+    });
+
+    it('model 未指定時は gemini-2.0-flash がデフォルト', async () => {
+        const mockText = JSON.stringify({
+            questions: [{ question: 'Q', choices: ['A.a', 'B.b', 'C.c', 'D.d'], correctAnswerLetter: 'a', explanation: 'ex' }],
+        });
+        fetch.mockResolvedValue({
+            ok: true,
+            json: async () => ({ candidates: [{ content: { parts: [{ text: mockText }] } }] }),
+        });
+        await generateQuestions('dummy-key');
+        const calledUrl = fetch.mock.calls[0][0];
+        expect(calledUrl).toContain('gemini-2.0-flash');
+    });
 });
