@@ -41,7 +41,7 @@ const EXAM_INFO = {
 
 const examInfo = EXAM_INFO[getExam()] ?? EXAM_INFO.alta;
 
-function shuffleQuestions(questions) {
+export function shuffleQuestions(questions) {
     const arr = [...questions];
     for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
