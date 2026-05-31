@@ -20,6 +20,14 @@ const EXAM_LABELS = {
     altm: 'JSTQB-TM 学習',
 };
 
+export function setTextWithBreaks(el, text) {
+    el.textContent = '';
+    String(text).split(/\\n/).forEach((line, i, arr) => {
+        el.appendChild(document.createTextNode(line));
+        if (i < arr.length - 1) el.appendChild(document.createElement('br'));
+    });
+}
+
 export function setupCommonNavigation() {
     const currentPage = window.location.pathname.split('/').pop() || '';
     const activeId = PAGE_TO_NAV[currentPage];

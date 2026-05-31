@@ -1,18 +1,18 @@
 // js/question.js
-import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions } from './utils.js';
+import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions, setTextWithBreaks } from './utils.js';
+
+export function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     setupCommonNavigation();
     setupBackToTopButtons();
     await loadAssumedProblems();
 });
-
-function escapeHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
 
 async function loadAssumedProblems() {
     const list = document.getElementById('assumed-problems-list');
@@ -39,7 +39,7 @@ async function loadAssumedProblems() {
 
         const questionText = document.createElement('p');
         questionText.className = 'question-text';
-        questionText.innerHTML = escapeHtml(problem.question).replace(/\\n/g, '<br>');
+        setTextWithBreaks(questionText, problem.question);
 
         const choicesDiv = document.createElement('div');
         choicesDiv.className = 'choices';
@@ -47,7 +47,14 @@ async function loadAssumedProblems() {
             const p = document.createElement('p');
             p.className = 'choice-item';
             const letter = String.fromCharCode(97 + index);
-            p.innerHTML = `<span class="choice-letter">${letter}.</span> ${escapeHtml(choice).replace(/\\n/g, '<br>')}`;
+            const letterSpan = document.createElement('span');
+            letterSpan.className = 'choice-letter';
+            letterSpan.textContent = `${letter}.`;
+            const textSpan = document.createElement('span');
+            setTextWithBreaks(textSpan, choice);
+            p.appendChild(letterSpan);
+            p.appendChild(document.createTextNode(' '));
+            p.appendChild(textSpan);
             choicesDiv.appendChild(p);
         });
 
@@ -62,11 +69,22 @@ async function loadAssumedProblems() {
 
         const correctP = document.createElement('p');
         correctP.className = 'correct-answer-text';
-        correctP.innerHTML = `正解: <span class="correct-answer-letter">${escapeHtml(problem.correctAnswerLetter).toUpperCase()}</span>`;
+        const correctLabel = document.createTextNode('正解: ');
+        const correctSpan = document.createElement('span');
+        correctSpan.className = 'correct-answer-letter';
+        correctSpan.textContent = problem.correctAnswerLetter.toUpperCase();
+        correctP.appendChild(correctLabel);
+        correctP.appendChild(correctSpan);
 
         const explP = document.createElement('p');
         explP.className = 'explanation-text';
-        explP.innerHTML = `解説:<br>${escapeHtml(problem.explanation).replace(/\\n/g, '<br>')}`;
+        const explLabel = document.createElement('strong');
+        explLabel.textContent = '解説:';
+        const explTextSpan = document.createElement('span');
+        setTextWithBreaks(explTextSpan, problem.explanation);
+        explP.appendChild(explLabel);
+        explP.appendChild(document.createElement('br'));
+        explP.appendChild(explTextSpan);
 
         feedbackDiv.appendChild(correctP);
         feedbackDiv.appendChild(explP);

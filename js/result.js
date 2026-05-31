@@ -1,7 +1,6 @@
 // js/result.js
 
 import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
-import { recordAnswer } from './progress.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     setupCommonNavigation();
@@ -11,18 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const correctCount = parseInt(localStorage.getItem('correctAnswersCount') || '0', 10);
     const accuracy = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
 
-    // Save progress for each answered question
-    const savedAnswers = JSON.parse(localStorage.getItem('quizAnswerLog') || '[]');
-    savedAnswers.forEach(isCorrect => recordAnswer(isCorrect));
-    localStorage.removeItem('quizAnswerLog');
-
-    // Render score circle
     const elScore = document.getElementById('result-score-value');
     const elScoreLabel = document.getElementById('result-score-label');
     if (elScore) elScore.textContent = `${correctCount}/${totalQuestions}`;
     if (elScoreLabel) elScoreLabel.textContent = `${accuracy}%`;
 
-    // Grade message
     const elGrade = document.getElementById('result-grade');
     if (elGrade) {
         if (accuracy >= 70) {
@@ -37,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Detail cards
     const elTotal = document.getElementById('detail-total');
     const elCorrect = document.getElementById('detail-correct');
     const elAccuracy = document.getElementById('detail-accuracy');
@@ -47,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('restart-quiz-button')?.addEventListener('click', () => {
         localStorage.removeItem('quizQuestions');
-        localStorage.removeItem('currentQuestionIndex');
+        localStorage.removeItem('quizNextIndex');
         localStorage.removeItem('correctAnswersCount');
         window.location.href = 'study.html';
     });

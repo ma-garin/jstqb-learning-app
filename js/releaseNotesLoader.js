@@ -93,7 +93,7 @@ async function loadReleaseNotes() {
  * @param {string} csvText - CSV形式の文字列
  * @returns {Array<Object>} パースされたデータ
  */
-function parseCsv(csvText) {
+export function parseCsv(csvText) {
     const lines = csvText.trim().split('\n');
     if (lines.length === 0) return [];
 
@@ -129,7 +129,7 @@ function parseCsv(csvText) {
  * @param {string} line - CSVの1行
  * @returns {Array<string>} パースされた値の配列
  */
-function parseCsvLine(line) {
+export function parseCsvLine(line) {
     const result = [];
     let inQuote = false;
     let currentField = '';
@@ -161,7 +161,7 @@ function parseCsvLine(line) {
  * @param {string} markdownText
  * @returns {string} HTML文字列
  */
-function convertMarkdownToHtml(markdownText) {
+export function convertMarkdownToHtml(markdownText) {
     let html = markdownText;
 
     // ヘッダー (H1, H2, H3)

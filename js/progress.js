@@ -5,11 +5,12 @@ import { getExam } from './examContext.js';
 function keys() {
     const e = getExam();
     return {
-        today:   `jstqb_${e}_progress_today`,
-        streak:  `jstqb_${e}_streak`,
-        lastDate:`jstqb_${e}_last_date`,
-        total:   `jstqb_${e}_total_answered`,
-        wrong:   `jstqb_${e}_wrong_questions`,
+        today:       `jstqb_${e}_progress_today`,
+        streak:      `jstqb_${e}_streak`,
+        lastDate:    `jstqb_${e}_last_date`,
+        total:       `jstqb_${e}_total_answered`,
+        wrong:       `jstqb_${e}_wrong_questions`,
+        answeredIds: `jstqb_${e}_answered_ids`,
     };
 }
 
@@ -28,7 +29,7 @@ function getTodayProgress() {
     }
 }
 
-export function recordAnswer(isCorrect) {
+export function recordAnswer(isCorrect, questionId = null) {
     const k = keys();
     const p = getTodayProgress();
     p.answered += 1;
@@ -49,6 +50,26 @@ export function recordAnswer(isCorrect) {
 
     const total = parseInt(localStorage.getItem(k.total) || '0', 10);
     localStorage.setItem(k.total, String(total + 1));
+
+    if (questionId) {
+        const ids = getAnsweredIds();
+        if (!ids.includes(questionId)) {
+            ids.push(questionId);
+            localStorage.setItem(k.answeredIds, JSON.stringify(ids));
+        }
+    }
+}
+
+function getAnsweredIds() {
+    try {
+        return JSON.parse(localStorage.getItem(keys().answeredIds) || '[]');
+    } catch {
+        return [];
+    }
+}
+
+export function getUniqueAnsweredCount() {
+    return getAnsweredIds().length;
 }
 
 export function getWrongQuestionIds() {
@@ -82,7 +103,7 @@ export function getDashboardStats() {
     const k = keys();
     const p = getTodayProgress();
     const streak = parseInt(localStorage.getItem(k.streak) || '0', 10);
-    const totalAnswered = parseInt(localStorage.getItem(k.total) || '0', 10);
+    const uniqueAnswered = getAnsweredIds().length;
     const accuracy = p.answered > 0 ? Math.round((p.correct / p.answered) * 100) : null;
-    return { todayAnswered: p.answered, todayCorrect: p.correct, accuracy, streak, totalAnswered };
+    return { todayAnswered: p.answered, todayCorrect: p.correct, accuracy, streak, totalAnswered: uniqueAnswered };
 }

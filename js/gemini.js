@@ -19,6 +19,26 @@ export function hasApiKey() {
     return !!getApiKey();
 }
 
+// Exported for testing
+export function parseGeminiJson(text) {
+    // Strip code fences if present (```json ... ``` or ``` ... ```)
+    const fenced = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    const jsonStr = fenced ? fenced[1] : (() => {
+        const start = text.indexOf('{');
+        const end = text.lastIndexOf('}');
+        if (start === -1 || end === -1 || end <= start) return null;
+        return text.slice(start, end + 1);
+    })();
+
+    if (!jsonStr) throw new Error('レスポンスからJSONを取得できませんでした');
+
+    const parsed = JSON.parse(jsonStr);
+    if (!Array.isArray(parsed.questions) || parsed.questions.length === 0) {
+        throw new Error('問題の生成に失敗しました');
+    }
+    return parsed.questions;
+}
+
 const EXAM_PROMPTS = {
     alta: 'JSTQB Advanced Level テストアナリスト試験（シラバス v3.1.1.J03）',
     altm: 'JSTQB Advanced Level テストマネジメント試験（シラバス v3.0.J03）',
@@ -65,12 +85,5 @@ ${kLevelLine}
 
     const data = await res.json();
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    const match = text.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('レスポンスからJSONを取得できませんでした');
-
-    const parsed = JSON.parse(match[0]);
-    if (!Array.isArray(parsed.questions) || parsed.questions.length === 0) {
-        throw new Error('問題の生成に失敗しました');
-    }
-    return parsed.questions;
+    return parseGeminiJson(text);
 }

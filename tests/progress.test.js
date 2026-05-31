@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { recordAnswer, getDashboardStats, getWrongQuestionIds, addWrongQuestion, removeCorrectQuestion } from '../js/progress.js';
+import { recordAnswer, getDashboardStats, getWrongQuestionIds, addWrongQuestion, removeCorrectQuestion, getUniqueAnsweredCount } from '../js/progress.js';
 
 const ALTA_KEYS = [
     'jstqb_alta_progress_today',
@@ -7,6 +7,7 @@ const ALTA_KEYS = [
     'jstqb_alta_last_date',
     'jstqb_alta_total_answered',
     'jstqb_alta_wrong_questions',
+    'jstqb_alta_answered_ids',
 ];
 const ALTM_KEYS = [
     'jstqb_altm_progress_today',
@@ -14,6 +15,7 @@ const ALTM_KEYS = [
     'jstqb_altm_last_date',
     'jstqb_altm_total_answered',
     'jstqb_altm_wrong_questions',
+    'jstqb_altm_answered_ids',
 ];
 
 beforeEach(() => {
@@ -50,8 +52,8 @@ describe('recordAnswer — ALTA/ALTM分離', () => {
 describe('getDashboardStats — 試験別データ返却', () => {
     it('altm選択中はALTMの進捗データのみ返す', () => {
         localStorage.setItem('jstqb_selected_exam', 'alta');
-        recordAnswer(true);
-        recordAnswer(true);
+        recordAnswer(true, 'TA-1.2.1-1');
+        recordAnswer(true, 'TA-1.2.1-2');
         localStorage.setItem('jstqb_selected_exam', 'altm');
         const stats = getDashboardStats();
         expect(stats.totalAnswered).toBe(0);
@@ -88,5 +90,70 @@ describe('苦手問題 — ALTA/ALTM分離', () => {
         const altmIds = getWrongQuestionIds();
         expect(altaIds).not.toContain('TA-1.2.1-1');
         expect(altmIds).toContain('TM-1.1.1-1');
+    });
+});
+
+describe('getUniqueAnsweredCount — 固有問題IDの追跡', () => {
+    it('questionIdなしで recordAnswer してもカウントは0のまま', () => {
+        localStorage.setItem('jstqb_selected_exam', 'alta');
+        recordAnswer(true);
+        expect(getUniqueAnsweredCount()).toBe(0);
+    });
+
+    it('新しいquestionIdを渡すとカウントが増える', () => {
+        localStorage.setItem('jstqb_selected_exam', 'alta');
+        recordAnswer(true, 'TA-1.2.1-1');
+        expect(getUniqueAnsweredCount()).toBe(1);
+    });
+
+    it('同じquestionIdを2回渡してもカウントは増えない', () => {
+        localStorage.setItem('jstqb_selected_exam', 'alta');
+        recordAnswer(true, 'TA-1.2.1-1');
+        recordAnswer(false, 'TA-1.2.1-1');
+        expect(getUniqueAnsweredCount()).toBe(1);
+    });
+
+    it('異なるquestionIdを渡すとそれぞれカウントされる', () => {
+        localStorage.setItem('jstqb_selected_exam', 'alta');
+        recordAnswer(true, 'TA-1.2.1-1');
+        recordAnswer(true, 'TA-1.2.1-2');
+        recordAnswer(false, 'TA-3.2.3-1');
+        expect(getUniqueAnsweredCount()).toBe(3);
+    });
+
+    it('altaとaltmの固有IDは独立して管理される', () => {
+        localStorage.setItem('jstqb_selected_exam', 'alta');
+        recordAnswer(true, 'TA-1.2.1-1');
+        localStorage.setItem('jstqb_selected_exam', 'altm');
+        expect(getUniqueAnsweredCount()).toBe(0);
+        recordAnswer(true, 'TM-1.1.1-1');
+        expect(getUniqueAnsweredCount()).toBe(1);
+    });
+});
+
+describe('getDashboardStats — totalAnsweredはuniqueAnsweredを返す', () => {
+    it('questionIdなしの recordAnswer は totalAnswered に反映されない', () => {
+        localStorage.setItem('jstqb_selected_exam', 'alta');
+        recordAnswer(true);
+        recordAnswer(true);
+        const stats = getDashboardStats();
+        expect(stats.totalAnswered).toBe(0);
+    });
+
+    it('questionIdありの recordAnswer は totalAnswered に反映される', () => {
+        localStorage.setItem('jstqb_selected_exam', 'alta');
+        recordAnswer(true, 'TA-1.2.1-1');
+        recordAnswer(false, 'TA-1.2.1-2');
+        const stats = getDashboardStats();
+        expect(stats.totalAnswered).toBe(2);
+    });
+
+    it('同じIDを複数回答しても totalAnswered は増えない', () => {
+        localStorage.setItem('jstqb_selected_exam', 'alta');
+        recordAnswer(true, 'TA-1.2.1-1');
+        recordAnswer(false, 'TA-1.2.1-1');
+        recordAnswer(true, 'TA-1.2.1-1');
+        const stats = getDashboardStats();
+        expect(stats.totalAnswered).toBe(1);
     });
 });

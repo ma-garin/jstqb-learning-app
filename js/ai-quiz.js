@@ -1,6 +1,6 @@
 // js/ai-quiz.js — AI問題生成ページ
 
-import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
+import { setupCommonNavigation, setupBackToTopButtons, setTextWithBreaks } from './utils.js';
 import { getApiKey, saveApiKey, clearApiKey, hasApiKey, generateQuestions } from './gemini.js';
 import { getExam } from './examContext.js';
 
@@ -15,15 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     initPage();
 });
-
-// Safely set text content with line-break support (no innerHTML with untrusted content)
-function setTextWithBreaks(el, text) {
-    el.textContent = '';
-    String(text).split(/\\n/).forEach((line, i, arr) => {
-        el.appendChild(document.createTextNode(line));
-        if (i < arr.length - 1) el.appendChild(document.createElement('br'));
-    });
-}
 
 function initPage() {
     renderApiKeySection();
