@@ -1,6 +1,7 @@
 // js/gemini.js — Gemini API クライアント
 
-const API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const API_BASE_PREFIX = 'https://generativelanguage.googleapis.com/v1beta/models/';
+const DEFAULT_MODEL = 'gemini-2.0-flash';
 const STORAGE_KEY = 'jstqb_gemini_key';
 
 export function getApiKey() {
@@ -44,7 +45,7 @@ const EXAM_PROMPTS = {
     altm: 'JSTQB Advanced Level テストマネジメント試験（シラバス v3.0.J03）',
 };
 
-export async function generateQuestions(apiKey, { count = 3, topic = '', kLevel = '', exam = 'alta' } = {}) {
+export async function generateQuestions(apiKey, { count = 3, topic = '', kLevel = '', exam = 'alta', model = DEFAULT_MODEL } = {}) {
     const topicLine = topic ? `テーマ: ${topic}` : '';
     const kLevelLine = kLevel ? `出題レベル: ${kLevel}` : 'K2〜K4レベルを混在';
     const examLabel = EXAM_PROMPTS[exam] || EXAM_PROMPTS.alta;
@@ -69,7 +70,7 @@ ${kLevelLine}
   ]
 }`;
 
-    const res = await fetch(`${API_BASE}?key=${apiKey}`, {
+    const res = await fetch(`${API_BASE_PREFIX}${model}:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

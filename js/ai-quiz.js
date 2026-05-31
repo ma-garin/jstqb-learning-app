@@ -84,6 +84,7 @@ async function handleGenerate() {
     const count = parseInt(document.getElementById('q-count')?.value || '3', 10);
     const topic = document.getElementById('q-topic')?.value || '';
     const kLevel = document.getElementById('q-klevel')?.value || '';
+    const model = document.getElementById('q-model')?.value || 'gemini-2.0-flash';
 
     const loadingEl = document.getElementById('loading-indicator');
     const generateBtn = document.getElementById('generate-btn');
@@ -94,7 +95,7 @@ async function handleGenerate() {
     errorEl?.classList.add('hidden');
 
     try {
-        generatedQuestions = await generateQuestions(apiKey, { count, topic, kLevel, exam: getExam() });
+        generatedQuestions = await generateQuestions(apiKey, { count, topic, kLevel, exam: getExam(), model });
         currentIndex = 0;
         correctCount = 0;
         answerLogAI = [];
