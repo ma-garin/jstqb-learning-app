@@ -1,7 +1,7 @@
 // js/study.js
 import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions } from './utils.js';
+import { getWrongQuestionIds } from './progress.js';
 
-// 試験情報を保持する変数（ここではダミーデータ）
 const examInfo = {
     duration: "180分",
     totalQuestions: "90問",
@@ -22,86 +22,94 @@ const examInfo = {
 };
 
 function shuffleQuestions(questions) {
-    const shuffledQuestions = [...questions];
-    for (let i = shuffledQuestions.length - 1; i > 0; i--) {
-        const randomIndex = Math.floor(Math.random() * (i + 1));
-        [shuffledQuestions[i], shuffledQuestions[randomIndex]] = [shuffledQuestions[randomIndex], shuffledQuestions[i]];
+    const arr = [...questions];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-    return shuffledQuestions;
+    return arr;
+}
+
+function startQuiz(questions) {
+    localStorage.setItem('quizQuestions', JSON.stringify(questions));
+    localStorage.setItem('currentQuestionIndex', '0');
+    localStorage.setItem('correctAnswersCount', '0');
+    localStorage.removeItem('quizAnswerLog');
+    window.location.href = 'quiz.html';
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
     setupCommonNavigation();
     setupBackToTopButtons();
     initStudyScreen();
+    renderWeakQuizSection();
 
-    // クイズ開始ボタン
-    const startActualQuizButton = document.getElementById('start-actual-quiz-button');
-    const shuffleQuizCheckbox = document.getElementById('shuffle-quiz-checkbox');
-    if (startActualQuizButton) {
-        startActualQuizButton.addEventListener('click', async () => {
-            // クイズデータを取得
+    // 全問クイズ開始
+    const startBtn = document.getElementById('start-actual-quiz-button');
+    const shuffleCheckbox = document.getElementById('shuffle-quiz-checkbox');
+    if (startBtn) {
+        startBtn.addEventListener('click', async () => {
             const questions = await fetchQuestions();
-            if (questions.length === 0) {
-                console.error('問題データの読み込みに失敗しました。');
+            if (!questions.length) { console.error('問題データの読み込みに失敗しました。'); return; }
+            const quizQuestions = shuffleCheckbox?.checked ? shuffleQuestions(questions) : questions;
+            startQuiz(quizQuestions);
+        });
+    }
+
+    // 苦手問題クイズ開始
+    const weakBtn = document.getElementById('start-weak-quiz-button');
+    if (weakBtn) {
+        weakBtn.addEventListener('click', async () => {
+            const wrongIds = getWrongQuestionIds();
+            if (!wrongIds.length) {
+                alert('苦手問題がまだ記録されていません。まず全問クイズに挑戦してください。');
                 return;
             }
-            const quizQuestions = shuffleQuizCheckbox?.checked ? shuffleQuestions(questions) : questions;
-
-            // localStorageにクイズの状態を保存してクイズ画面へ遷移
-            localStorage.setItem('quizQuestions', JSON.stringify(quizQuestions));
-            localStorage.setItem('currentQuestionIndex', '0');
-            localStorage.setItem('correctAnswersCount', '0');
-
-            window.location.href = 'quiz.html'; // クイズ画面へ
+            const allQuestions = await fetchQuestions();
+            const wrongQuestions = allQuestions.filter(q => wrongIds.includes(q.id));
+            if (!wrongQuestions.length) {
+                alert('苦手問題が見つかりません。');
+                return;
+            }
+            startQuiz(shuffleQuestions(wrongQuestions));
         });
     }
 });
 
-
 export function initStudyScreen() {
-    // DOM要素が存在するか確認
-    const examDurationElement = document.getElementById('exam-duration');
-    const examTotalQuestionsElement = document.getElementById('exam-total-questions');
-    const examTotalScoreElement = document.getElementById('exam-total-score');
-    const kLevelTableBody = document.querySelector('#k-level-distribution-table tbody');
-    const chapterTableBody = document.querySelector('#chapter-distribution-table tbody');
+    const examDurationEl = document.getElementById('exam-duration');
+    const examTotalQEl = document.getElementById('exam-total-questions');
+    const kLevelTbody = document.querySelector('#k-level-distribution-table tbody');
+    const chapterTbody = document.querySelector('#chapter-distribution-table tbody');
 
-    if (examDurationElement) {
-        examDurationElement.textContent = examInfo.duration;
-    }
-    if (examTotalQuestionsElement) {
-        examTotalQuestionsElement.textContent = examInfo.totalQuestions;
-    }
-    if (examTotalScoreElement) {
-        examTotalScoreElement.textContent = examInfo.totalScore;
-    }
+    if (examDurationEl) examDurationEl.textContent = examInfo.duration;
+    if (examTotalQEl) examTotalQEl.textContent = examInfo.totalQuestions;
 
-    if (kLevelTableBody) {
-        kLevelTableBody.innerHTML = ''; // クリア
+    if (kLevelTbody) {
+        kLevelTbody.innerHTML = '';
         examInfo.kLevelDistribution.forEach(item => {
-            const row = kLevelTableBody.insertRow();
-            row.innerHTML = `
-                <td>${item.level}</td>
-                <td>${item.questions}</td>
-                <td>${item.scorePerQuestion}</td>
-                <td>${item.totalScore}</td>
-            `;
+            const row = kLevelTbody.insertRow();
+            [item.level, item.questions, item.scorePerQuestion, item.totalScore].forEach(val => {
+                row.insertCell().textContent = val;
+            });
         });
     }
-
-    if (chapterTableBody) {
-        chapterTableBody.innerHTML = ''; // クリア
+    if (chapterTbody) {
+        chapterTbody.innerHTML = '';
         examInfo.chapterDistribution.forEach(item => {
-            const row = chapterTableBody.insertRow();
-            row.innerHTML = `
-                <td>${item.chapter}</td>
-                <td>${item.kLevel}</td>
-                <td>${item.questions}</td>
-                <td>${item.scorePerQuestion}</td>
-                <td>${item.totalScore}</td>
-            `;
+            const row = chapterTbody.insertRow();
+            [item.chapter, item.kLevel, item.questions, item.scorePerQuestion, item.totalScore].forEach(val => {
+                row.insertCell().textContent = val;
+            });
         });
     }
-    console.log("Study Screen Initialized.");
+}
+
+function renderWeakQuizSection() {
+    const section = document.getElementById('weak-quiz-section');
+    if (!section) return;
+    const wrongIds = getWrongQuestionIds();
+    const countEl = document.getElementById('weak-question-count');
+    if (countEl) countEl.textContent = wrongIds.length;
+    section.style.display = wrongIds.length > 0 ? 'block' : 'none';
 }

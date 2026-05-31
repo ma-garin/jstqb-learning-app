@@ -1,56 +1,53 @@
 // js/glossary.js
 
-import glossaryTerms from './glossaryData.js'; // 用語集データをインポート
-import { setupCommonNavigation, setupBackToTopButtons } from './utils.js'; // 共通関数をインポート
+import glossaryTerms from './glossaryData.js';
+import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    setupCommonNavigation(); // 共通ナビゲーションの初期化
-    setupBackToTopButtons(); // TOPに戻るボタンの初期化
+    setupCommonNavigation();
+    setupBackToTopButtons();
 
     const glossaryList = document.getElementById('glossary-list');
     const searchInput = document.getElementById('glossary-search-input');
-    const noResultsMessage = glossaryList.querySelector('.no-results');
 
-    /**
-     * 用語集リストをレンダリングする
-     * @param {Array} termsToDisplay - 表示する用語の配列
-     */
     function renderGlossary(termsToDisplay) {
-        glossaryList.innerHTML = ''; // 既存のリストをクリア
+        // .no-results 要素は消さないようにリスト項目だけを再描画する
+        const existingItems = glossaryList.querySelectorAll('.glossary-term-item');
+        existingItems.forEach(el => el.remove());
+
+        const noResults = glossaryList.querySelector('.no-results');
 
         if (termsToDisplay.length === 0) {
-            noResultsMessage.classList.remove('hidden');
+            noResults?.classList.remove('hidden');
             return;
-        } else {
-            noResultsMessage.classList.add('hidden');
         }
 
+        noResults?.classList.add('hidden');
+
         termsToDisplay.forEach(term => {
-            const termItem = document.createElement('div');
-            termItem.classList.add('glossary-term-item');
-            termItem.innerHTML = `
-                <h3>${term.term}</h3>
-                <p>${term.definition}</p>
-            `;
-            glossaryList.appendChild(termItem);
+            const div = document.createElement('div');
+            div.classList.add('glossary-term-item');
+
+            const h3 = document.createElement('h3');
+            h3.textContent = term.term;
+
+            const p = document.createElement('p');
+            p.textContent = term.definition;
+
+            div.appendChild(h3);
+            div.appendChild(p);
+            glossaryList.appendChild(div);
         });
     }
 
-    /**
-     * 検索入力に基づいて用語集をフィルタリングし、再レンダリングする
-     */
     function filterGlossary() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const filteredTerms = glossaryTerms.filter(term =>
-            term.term.toLowerCase().includes(searchTerm) ||
-            term.definition.toLowerCase().includes(searchTerm)
+        const q = searchInput.value.toLowerCase();
+        const filtered = glossaryTerms.filter(t =>
+            t.term.toLowerCase().includes(q) || t.definition.toLowerCase().includes(q)
         );
-        renderGlossary(filteredTerms);
+        renderGlossary(filtered);
     }
 
-    // 検索入力フィールドのイベントリスナー
     searchInput.addEventListener('input', filterGlossary);
-
-    // ページ読み込み時に全用語をレンダリング
     renderGlossary(glossaryTerms);
 });

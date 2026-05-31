@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI問題生成 - JSTQB-TA学習アプリ</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="img/JSTQB_TA.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/JSTQB_TA.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="JSTQB-TA学習">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZ9EN5NX5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BZ9EN5NX5F');
+    </script>
+    <nav id="main-nav" class="hidden"></nav>
+    <nav id="breadcrumb-nav" class="hidden"></nav>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-inner">
+            <a href="index.html" class="header-back" aria-label="ホームへ戻る">
+                <span class="material-icons">arrow_back_ios</span>
+            </a>
+            <h1 class="header-title">AI問題生成</h1>
+        </div>
+    </header>
+
+    <main class="app-main" id="app-container">
+        <section id="ai-quiz-screen">
+
+            <!-- ① APIキー設定 -->
+            <div id="api-section">
+                <div class="api-key-form">
+                    <h3><span class="material-icons" style="vertical-align:middle;font-size:18px;margin-right:4px;">vpn_key</span>Gemini APIキー設定</h3>
+                    <p style="font-size:0.85em;color:var(--text-muted);margin-bottom:12px;">
+                        Google AI Studio でAPIキーを取得してください。キーはこのデバイスのみに保存されます。
+                    </p>
+                    <input
+                        type="password"
+                        id="api-key-input"
+                        class="api-key-input"
+                        placeholder="AIza..."
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                    <button id="save-api-key-btn" class="btn-ai" style="width:100%;padding:12px;border-radius:var(--radius);" type="button">
+                        <span class="material-icons" style="font-size:18px;">save</span>
+                        保存して続ける
+                    </button>
+                </div>
+
+                <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-size:0.85em;color:var(--text-muted);">
+                    <p style="margin:0 0 6px;font-weight:600;color:var(--text);">現在のAPIキー</p>
+                    <p id="api-key-display" style="font-family:monospace;margin:0 0 10px;">未設定</p>
+                    <button id="clear-api-key-btn" type="button" style="background:var(--error-light);color:var(--error);border:none;border-radius:var(--radius-sm);padding:6px 14px;font-size:0.85em;cursor:pointer;">
+                        キーを削除
+                    </button>
+                </div>
+            </div>
+
+            <!-- ② 生成設定 -->
+            <div id="gen-section" class="hidden">
+                <div style="background:var(--ai-light);border:1px solid #DDD6FE;border-radius:var(--radius);padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+                    <span class="material-icons" style="color:var(--ai-color);font-size:18px;">vpn_key</span>
+                    <span style="font-size:0.82em;color:var(--text-muted);">APIキー: </span>
+                    <span id="api-key-display-gen" style="font-size:0.82em;font-family:monospace;color:var(--ai-color);flex:1;">****</span>
+                    <button type="button" id="clear-api-key-btn-gen"
+                        style="background:none;border:none;color:var(--error);font-size:0.78em;cursor:pointer;padding:0;">
+                        削除
+                    </button>
+                </div>
+
+                <div class="generation-controls">
+                    <h3><span class="material-icons" style="vertical-align:middle;font-size:18px;margin-right:4px;">tune</span>出題設定</h3>
+
+                    <div class="control-row">
+                        <span class="control-label">問題数</span>
+                        <select id="q-count" class="control-select">
+                            <option value="3">3問</option>
+                            <option value="5" selected>5問</option>
+                            <option value="10">10問</option>
+                        </select>
+                    </div>
+
+                    <div class="control-row">
+                        <span class="control-label">テーマ</span>
+                        <select id="q-topic" class="control-select">
+                            <option value="">おまかせ</option>
+                            <option value="テスト技法（同値分割・境界値分析）">同値分割・境界値分析</option>
+                            <option value="デシジョンテーブルテスト">デシジョンテーブル</option>
+                            <option value="状態遷移テスト">状態遷移テスト</option>
+                            <option value="ユースケーステスト">ユースケーステスト</option>
+                            <option value="リスクベースドテスト">リスクベースドテスト</option>
+                            <option value="ソフトウェア品質特性のテスト">品質特性テスト</option>
+                            <option value="レビュー技法">レビュー技法</option>
+                            <option value="テスト自動化">テスト自動化</option>
+                        </select>
+                    </div>
+
+                    <div class="control-row">
+                        <span class="control-label">Kレベル</span>
+                        <select id="q-klevel" class="control-select">
+                            <option value="">K2〜K4ミックス</option>
+                            <option value="K2（理解）レベルのみ">K2（理解）</option>
+                            <option value="K3（適用）レベルのみ">K3（適用）</option>
+                            <option value="K4（分析）レベルのみ">K4（分析）</option>
+                        </select>
+                    </div>
+
+                    <div id="error-section" class="ai-error hidden">
+                        <strong>エラー：</strong><span id="error-message"></span>
+                    </div>
+
+                    <div id="loading-indicator" class="ai-loading hidden">
+                        <div class="spinner"></div>
+                        <span>Gemini AIが問題を生成中…</span>
+                    </div>
+
+                    <button id="generate-btn" class="btn-ai" style="width:100%;padding:14px;border-radius:var(--radius-lg);margin-top:4px;" type="button">
+                        <span class="material-icons" style="font-size:18px;">auto_awesome</span>
+                        問題を生成する
+                    </button>
+                </div>
+
+                <button class="back-to-top-button" type="button">ホームに戻る</button>
+            </div>
+
+            <!-- ③ AIクイズ実施 -->
+            <div id="quiz-section" class="hidden">
+                <div class="quiz-progress-header">
+                    <span class="quiz-progress-text" id="ai-quiz-progress-text">1 / 5</span>
+                    <div class="quiz-progress-track">
+                        <div class="quiz-progress-fill" id="ai-quiz-progress-fill" style="width:0%"></div>
+                    </div>
+                </div>
+
+                <div id="question-container" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:14px;">
+                    <p id="ai-question-text" style="font-size:1.05em;font-weight:700;line-height:1.6;margin-bottom:16px;"></p>
+
+                    <div id="ai-options-container">
+                        <label class="option-label"><input type="radio" name="ai-answer" value="a"><span class="option-text"></span></label>
+                        <label class="option-label"><input type="radio" name="ai-answer" value="b"><span class="option-text"></span></label>
+                        <label class="option-label"><input type="radio" name="ai-answer" value="c"><span class="option-text"></span></label>
+                        <label class="option-label"><input type="radio" name="ai-answer" value="d"><span class="option-text"></span></label>
+                    </div>
+
+                    <p id="ai-warning" class="answer-warning hidden" role="alert">解答を選択してください。</p>
+                    <button id="ai-submit-btn" type="button" style="width:100%;margin-top:12px;padding:14px;border-radius:var(--radius-lg);background:var(--primary);color:#fff;border:none;font-size:1em;font-weight:700;cursor:pointer;">
+                        解答する
+                    </button>
+                </div>
+
+                <div id="ai-feedback-container" class="hidden" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;">
+                    <p id="ai-result-message" style="font-size:1.2em;font-weight:700;text-align:center;margin-bottom:12px;"></p>
+                    <div id="ai-answer-summary" style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:0.9em;margin-bottom:12px;"></div>
+                    <p id="ai-explanation-text" style="font-size:0.9em;line-height:1.7;color:var(--text-muted);"></p>
+                    <button id="ai-next-btn" type="button" class="hidden" style="width:100%;margin-top:12px;padding:14px;border-radius:var(--radius-lg);background:var(--success);color:#fff;border:none;font-size:1em;font-weight:700;cursor:pointer;">
+                        次の問題へ
+                    </button>
+                </div>
+
+                <button id="ai-back-btn" class="back-to-top-button" type="button">設定に戻る</button>
+            </div>
+
+            <!-- ④ AI結果 -->
+            <div id="result-section" class="hidden" style="padding-top:24px;">
+                <div class="result-score-circle">
+                    <span class="result-score-value" id="ai-result-score">—</span>
+                    <span class="result-score-label" id="ai-result-accuracy">正答率</span>
+                </div>
+                <p class="result-grade" id="ai-result-grade"></p>
+
+                <button id="ai-result-retry-btn" type="button" style="width:100%;margin-top:16px;padding:14px;border-radius:var(--radius-lg);background:var(--ai-color);color:#fff;border:none;font-size:1em;font-weight:700;cursor:pointer;">
+                    <span class="material-icons" style="vertical-align:middle;font-size:18px;margin-right:4px;">auto_awesome</span>
+                    もう一度生成する
+                </button>
+                <button id="ai-retry-btn" class="back-to-top-button" type="button">ホームに戻る</button>
+            </div>
+
+        </section>
+    </main>
+
+    <nav class="bottom-nav" role="navigation" aria-label="メインナビゲーション">
+        <a href="index.html" class="bottom-nav-item" id="nav-home">
+            <span class="material-icons">home</span>
+            <span class="bottom-nav-label">ホーム</span>
+        </a>
+        <a href="study.html" class="bottom-nav-item" id="nav-quiz">
+            <span class="material-icons">edit_note</span>
+            <span class="bottom-nav-label">クイズ</span>
+        </a>
+        <a href="ai-quiz.html" class="bottom-nav-item" id="nav-ai">
+            <span class="material-icons">auto_awesome</span>
+            <span class="bottom-nav-label">AI問題</span>
+        </a>
+        <a href="glossary.html" class="bottom-nav-item" id="nav-glossary">
+            <span class="material-icons">sort_by_alpha</span>
+            <span class="bottom-nav-label">用語集</span>
+        </a>
+    </nav>
+
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/ai-quiz.js"></script>
+</body>
+</html>

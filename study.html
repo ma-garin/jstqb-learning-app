@@ -3,60 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>学習開始・試験情報 - JSTQB-TA学習アプリ</title>
+    <title>クイズ設定 - JSTQB-TA学習アプリ</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/screens.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" href="img/JSTQB_TA.png" type="image/png">
     <link rel="apple-touch-icon" href="img/JSTQB_TA.png">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="JSTQB-TA学習">
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZ9EN5NX5F"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-BZ9EN5NX5F');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BZ9EN5NX5F');
     </script>
+    <nav id="main-nav" class="hidden"></nav>
+    <nav id="breadcrumb-nav" class="hidden"></nav>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <span class="material-icons menu-icon" id="menu-icon">menu</span>
-            <h1>JSTQB-テストアナリスト 学習アプリ</h1>
-            <div class="spacer"></div>
+    <header class="app-header">
+        <div class="header-inner">
+            <a href="index.html" class="header-back" aria-label="ホームへ戻る">
+                <span class="material-icons">arrow_back_ios</span>
+            </a>
+            <h1 class="header-title">クイズ設定</h1>
         </div>
-        <nav id="main-nav" class="hidden">
-            <ul>
-                <li><button id="nav-start-learning-button">学習を開始する</button></li>
-                <li><button id="nav-view-syllabus-button">シラバスを見る</button></li>
-                <li><button id="nav-view-assumed-problems-button">想定問題を見る</button></li>
-                <li><button id="nav-back-to-welcome-button">TOPに戻る</button></li>
-            </ul>
-        </nav>
-        <nav id="breadcrumb-nav">
-            </nav>
     </header>
-    <main id="app-container">
-        <section id="learning-start-screen">
-            <h2>学習開始・試験情報</h2>
 
-            <div class="exam-info-section">
-                <h3>概要</h3>
-                <p>JSTQB Advanced Level テストアナリスト試験は、ソフトウェアテストにおける高度な専門知識とスキルを証明する上級資格試験です。テスト設計、実装、実行、適切なテストケースの選択や分析能力を問います。Foundation Levelの上位に位置し、テストに関わる幅広い職種の人が対象です。</p>
-                <p class="syllabus-version-note">本アプリは、JSTQB Advanced Level テストアナリストシラバス Version 3.1.1.J03 を学習対象にしています。ISTQB 本家の CTAL-TA v4.0 とは章立てや用語が異なる場合があります。</p>
+    <main class="app-main" id="app-container">
+        <section id="learning-start-screen">
+
+            <div class="page-header">
+                <h2>JSTQB-TA 試験について</h2>
             </div>
 
             <div class="exam-info-section">
-                <h3>内容</h3>
-                <p>試験範囲はJSTQB Advanced Levelテストアナリストシラバスに基づき、主に以下の6章から構成されます。</p>
+                <h3>概要</h3>
+                <p>JSTQB Advanced Level テストアナリスト試験は、テスト設計・分析・実行の高度な専門知識を問う上級資格試験です。Foundation Levelの上位に位置します。</p>
+                <p class="syllabus-version-note">本アプリはシラバス Version 3.1.1.J03 対応です。ISTQB CTAL-TA v4.0 とは章立てが異なる場合があります。</p>
+            </div>
+
+            <div class="exam-info-section">
+                <h3>試験範囲（6章）</h3>
                 <ul>
                     <li>テストプロセスにおけるテストアナリストのタスク</li>
                     <li>リスクベースドテストにおけるタスク</li>
@@ -65,91 +60,105 @@
                     <li>レビュー</li>
                     <li>テストツールおよび自動化</li>
                 </ul>
-                <p>これらの内容は、テストの設計・分析・実行に関する知識と応用力を問うものです。</p>
             </div>
 
             <div class="exam-info-section">
-                <h3>試験期間</h3>
-                <p>試験は随時、コンピュータベーステスト（CBT）形式で実施されており、詳細な試験日程はJSTQB公式サイトや試験実施機関の案内によります。</p>
-            </div>
-
-            <div class="exam-info-section">
-                <h3>試験時間、設問数、回答方法</h3>
-                <p>試験時間：<span id="exam-duration"></span>（NDA説明5分＋試験120分＋アンケート10分を含む場合もあり）</p>
+                <h3>試験概要</h3>
+                <p>試験時間：<span id="exam-duration"></span></p>
                 <p>設問数：<span id="exam-total-questions"></span></p>
-                <p>問題形式：複数選択肢から正解を選ぶ選択式問題</p>
-                <p>出題レベルは記憶（K1）、理解（K2）、適用（K3）、分析（K4）レベルが混在し、幅広い能力が求められます。</p>
+                <p>形式：選択式（K1〜K4レベル混在）</p>
             </div>
 
             <div class="exam-info-section">
                 <h3>受験資格</h3>
                 <ul>
-                    <li>JSTQB Foundation Levelの合格者であることが必須</li>
-                    <li>テストアナリストとしての実務経験が3年以上あることが望ましい（業務経歴申請書の提出は不要）</li>
+                    <li>JSTQB Foundation Level 合格が必須</li>
+                    <li>テストアナリストとしての実務経験3年以上が望ましい</li>
                 </ul>
-                <p>直接テストに関わらないエンジニアやマネージャも受験可能ですが、Foundation Level資格が必須です。</p>
             </div>
 
             <div class="exam-info-section">
                 <h3>合格率</h3>
-                <p>2023年度：43.64%(103名/236名)<span id="pass-rate-2023"></span></p>
-                <p>2024年度：34.83%(147名/422名)<span id="pass-rate-2024"></span></p>
-                <p>合格率はFoundation Levelより低く、難易度が高いことを示しています。</p>
+                <p>2023年度：43.64%（103名／236名）</p>
+                <p>2024年度：34.83%（147名／422名）</p>
             </div>
 
             <div class="exam-info-section">
-                <h3>難易度</h3>
-                <p>Foundation Levelよりも高く、「記憶・理解」だけでなく「適用・分析」能力が求められます。</p>
-                <p>試験は専門的かつ実践的な知識を問うため、合格には十分な学習と実務経験が必要です。</p>
-            </div>
-
-            <div class="exam-info-section">
-                <h3>Kレベル別出題比率 (例)</h3>
+                <h3>Kレベル別出題比率（例）</h3>
                 <table id="k-level-distribution-table">
                     <thead>
                         <tr>
-                            <th>Kレベル</th>
-                            <th>問題数</th>
-                            <th>1問あたりの配点</th>
-                            <th>合計配点</th>
+                            <th>Kレベル</th><th>問題数</th><th>配点</th><th>合計</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
 
             <div class="exam-info-section">
-                <h3>章別出題比率 (例)</h3>
+                <h3>章別出題比率（例）</h3>
                 <table id="chapter-distribution-table">
                     <thead>
                         <tr>
-                            <th>章</th>
-                            <th>Kレベル</th>
-                            <th>問題数</th>
-                            <th>1問あたりの配点</th>
-                            <th>合計配点</th>
+                            <th>章</th><th>Kレベル</th><th>問題数</th><th>配点</th><th>合計</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
 
-            <div class="quiz-start-options" aria-label="クイズ開始オプション">
+            <!-- 苦手問題セクション（記録がある場合のみ表示） -->
+            <div id="weak-quiz-section" style="display:none;background:var(--error-light);border:1px solid #FCA5A5;border-radius:var(--radius-lg);padding:16px;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                    <span class="material-icons" style="color:var(--error);font-size:22px;">warning_amber</span>
+                    <div>
+                        <p style="font-weight:700;color:#991B1B;margin:0;font-size:0.95em;">苦手問題が <span id="weak-question-count">0</span> 問 あります</p>
+                        <p style="color:#B91C1C;font-size:0.82em;margin:0;">間違えた問題だけを集中的に練習しましょう</p>
+                    </div>
+                </div>
+                <button id="start-weak-quiz-button" type="button"
+                    style="width:100%;padding:12px;border-radius:var(--radius);background:var(--error);color:#fff;border:none;font-size:0.95em;font-weight:700;cursor:pointer;">
+                    <span class="material-icons" style="vertical-align:middle;font-size:18px;margin-right:4px;">replay</span>
+                    苦手問題を出題する
+                </button>
+            </div>
+
+            <div class="quiz-start-options">
                 <label class="shuffle-option">
                     <input type="checkbox" id="shuffle-quiz-checkbox" checked>
                     <span>問題をシャッフルして出題する</span>
                 </label>
             </div>
-            <button id="start-actual-quiz-button">今すぐクイズを開始する</button>
-            <button class="back-to-top-button" id="back-to-welcome-from-study-button">TOPに戻る</button>
+
+            <button id="start-actual-quiz-button" type="button">
+                今すぐクイズを開始する（全問）
+            </button>
+
+            <button class="back-to-top-button" type="button">TOPに戻る</button>
+
         </section>
     </main>
-    <footer>
-        <p>© 2025 JSTQB TA Learning App</p>
-    </footer>
-    <script type="module" src="js/utils.js"></script>
-    <script type="module" src="js/study.js"></script>
+
+    <nav class="bottom-nav" role="navigation" aria-label="メインナビゲーション">
+        <a href="index.html" class="bottom-nav-item" id="nav-home">
+            <span class="material-icons">home</span>
+            <span class="bottom-nav-label">ホーム</span>
+        </a>
+        <a href="study.html" class="bottom-nav-item" id="nav-quiz">
+            <span class="material-icons">edit_note</span>
+            <span class="bottom-nav-label">クイズ</span>
+        </a>
+        <a href="ai-quiz.html" class="bottom-nav-item" id="nav-ai">
+            <span class="material-icons">auto_awesome</span>
+            <span class="bottom-nav-label">AI問題</span>
+        </a>
+        <a href="glossary.html" class="bottom-nav-item" id="nav-glossary">
+            <span class="material-icons">sort_by_alpha</span>
+            <span class="bottom-nav-label">用語集</span>
+        </a>
+    </nav>
+
+    <script type="module" src="js/utils.js?v=3"></script>
+    <script type="module" src="js/study.js?v=3"></script>
 </body>
 </html>

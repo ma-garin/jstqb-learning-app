@@ -1,216 +1,191 @@
 // js/quiz.js
-import { setupCommonNavigation, setupBackToTopButtons } from './utils.js'; // showScreenのインポートを削除
+import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
+import { addWrongQuestion, removeCorrectQuestion } from './progress.js';
 
 let questionsData = [];
 let currentQuestionIndex = 0;
 let correctAnswersCount = 0;
 
-// DOM要素の取得
-const questionNumberElement = document.getElementById('question-number');
-const totalQuestionsElement = document.getElementById('total-questions');
-const questionTextElement = document.getElementById('question-text');
+const questionNumberEl = document.getElementById('question-number');
+const totalQuestionsEl = document.getElementById('total-questions');
+const questionTextEl = document.getElementById('question-text');
 const questionImageContainer = document.getElementById('question-image-container');
-const questionImageElement = document.getElementById('question-image');
+const questionImageEl = document.getElementById('question-image');
 const optionsContainer = document.getElementById('options-container');
-const optionLabels = optionsContainer ? optionsContainer.querySelectorAll('.option-label') : [];
-const optionInputs = optionsContainer ? optionsContainer.querySelectorAll('input[type="radio"]') : [];
-const optionTexts = optionsContainer ? optionsContainer.querySelectorAll('.option-text') : [];
-const submitAnswerButton = document.getElementById('submit-answer-button');
-const answerWarningElement = document.getElementById('answer-warning');
+const optionLabels = optionsContainer ? [...optionsContainer.querySelectorAll('.option-label')] : [];
+const optionInputs = optionsContainer ? [...optionsContainer.querySelectorAll('input[type="radio"]')] : [];
+const optionTexts = optionsContainer ? [...optionsContainer.querySelectorAll('.option-text')] : [];
+const submitBtn = document.getElementById('submit-answer-button');
+const answerWarningEl = document.getElementById('answer-warning');
 const feedbackContainer = document.getElementById('feedback-container');
-const resultMessageElement = document.getElementById('result-message');
-const answerSummaryElement = document.getElementById('answer-summary');
-const explanationTextElement = document.getElementById('explanation-text');
-const nextQuestionButton = document.getElementById('next-question-button');
-const backToWelcomeFromQuizButton = document.getElementById('back-to-welcome-from-quiz-button');
+const resultMessageEl = document.getElementById('result-message');
+const answerSummaryEl = document.getElementById('answer-summary');
+const explanationEl = document.getElementById('explanation-text');
+const nextBtn = document.getElementById('next-question-button');
+const progressFill = document.getElementById('quiz-progress-fill');
 
-function normalizeAnswerLetter(answer) {
+function normalize(answer) {
     return String(answer || '').trim().toLowerCase();
 }
 
-function escapeHtml(value) {
-    return String(value)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+// テキストと改行コードを安全にセット（innerHTML を使わない）
+function setTextWithBreaks(el, text) {
+    el.textContent = '';
+    String(text).split(/\\n/).forEach((line, i, arr) => {
+        el.appendChild(document.createTextNode(line));
+        if (i < arr.length - 1) el.appendChild(document.createElement('br'));
+    });
 }
 
-function getAnswerText(answerLetter) {
-    const answerIndex = normalizeAnswerLetter(answerLetter).charCodeAt(0) - 97;
-    const currentQuestion = questionsData[currentQuestionIndex];
-    if (!currentQuestion || answerIndex < 0 || answerIndex >= currentQuestion.choices.length) {
-        return '';
-    }
-    return currentQuestion.choices[answerIndex].replace(/^[a-dA-D][).]\s*/, '');
+function getAnswerText(letter) {
+    const idx = normalize(letter).charCodeAt(0) - 97;
+    const q = questionsData[currentQuestionIndex];
+    if (!q || idx < 0 || idx >= q.choices.length) return '';
+    return q.choices[idx].replace(/^[a-dA-D][).]\s*/, '');
 }
 
-function formatAnswerLabel(answerLetter) {
-    const normalizedAnswer = normalizeAnswerLetter(answerLetter);
-    const answerText = getAnswerText(normalizedAnswer);
-    return answerText ? `${normalizedAnswer.toUpperCase()}. ${answerText}` : normalizedAnswer.toUpperCase();
+function formatLabel(letter) {
+    const n = normalize(letter);
+    const text = getAnswerText(n);
+    return text ? `${n.toUpperCase()}. ${text}` : n.toUpperCase();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     setupCommonNavigation();
     setupBackToTopButtons();
 
-    // localStorageからクイズの状態を読み込む
-    const savedQuestions = localStorage.getItem('quizQuestions');
-    const savedIndex = localStorage.getItem('currentQuestionIndex');
-    const savedCorrectCount = localStorage.getItem('correctAnswersCount');
-
-    if (savedQuestions) {
-        questionsData = JSON.parse(savedQuestions);
-        currentQuestionIndex = parseInt(savedIndex || '0', 10);
-        correctAnswersCount = parseInt(savedCorrectCount || '0', 10);
-    } else {
-        // 問題データがない場合はエラーハンドリングするか、デフォルトの動作を定義
-        console.error("クイズ問題データがLocalStorageにありません。学習開始画面に戻ります。");
-        window.location.href = 'study.html'; // 学習開始画面に戻る
+    const saved = localStorage.getItem('quizQuestions');
+    if (!saved) {
+        console.error('クイズデータが見つかりません。学習開始画面に戻ります。');
+        window.location.href = 'study.html';
         return;
     }
 
-    // イベントリスナーを再設定（DOMが再描画される可能性があるため）
-    if (submitAnswerButton) {
-        submitAnswerButton.removeEventListener('click', submitAnswer); // 重複登録防止
-        submitAnswerButton.addEventListener('click', submitAnswer);
-    }
-    if (nextQuestionButton) {
-        nextQuestionButton.removeEventListener('click', goToNextQuestion); // 重複登録防止
-        nextQuestionButton.addEventListener('click', goToNextQuestion);
-    }
-    if (backToWelcomeFromQuizButton) {
-        backToWelcomeFromQuizButton.removeEventListener('click', () => {
-            window.location.href = 'index.html'; // TOP画面に戻る
-        });
-        backToWelcomeFromQuizButton.addEventListener('click', () => {
-            window.location.href = 'index.html'; // TOP画面に戻る
-        });
-    }
+    questionsData = JSON.parse(saved);
+    currentQuestionIndex = parseInt(localStorage.getItem('currentQuestionIndex') || '0', 10);
+    correctAnswersCount = parseInt(localStorage.getItem('correctAnswersCount') || '0', 10);
+
+    submitBtn?.addEventListener('click', submitAnswer);
+    nextBtn?.addEventListener('click', goToNext);
 
     loadQuestion();
-    console.log("Quiz Screen Initialized.");
 });
 
-/**
- * 現在の問題をロードして表示する
- */
 function loadQuestion() {
-    // 既存のフィードバックをリセット
     feedbackContainer.classList.add('hidden');
-    submitAnswerButton.classList.remove('hidden');
-    nextQuestionButton.classList.add('hidden');
+    submitBtn?.classList.remove('hidden');
+    nextBtn?.classList.add('hidden');
 
-    // 選択肢のスタイルをリセット
-    optionLabels.forEach(label => {
-        label.classList.remove('correct', 'incorrect');
-    });
-    optionInputs.forEach(input => {
-        input.checked = false; // 選択をクリア
-        input.disabled = false; // 有効化
-    });
-    if (answerWarningElement) {
-        answerWarningElement.classList.add('hidden');
-    }
-    if (answerSummaryElement) {
-        answerSummaryElement.textContent = '';
-    }
+    optionLabels.forEach(l => l.classList.remove('correct', 'incorrect'));
+    optionInputs.forEach(i => { i.checked = false; i.disabled = false; });
+    answerWarningEl?.classList.add('hidden');
+    if (answerSummaryEl) answerSummaryEl.textContent = '';
 
     if (currentQuestionIndex >= questionsData.length) {
-        // 全問終了したら結果画面へ
-        window.location.href = 'result.html'; // 結果画面へ遷移
+        window.location.href = 'result.html';
         return;
     }
 
-    const currentQuestion = questionsData[currentQuestionIndex];
+    const q = questionsData[currentQuestionIndex];
 
-    // 問題番号と総問題数を更新
-    questionNumberElement.textContent = (currentQuestionIndex + 1).toString();
-    totalQuestionsElement.textContent = questionsData.length.toString();
+    // 進捗バー
+    const pct = Math.round((currentQuestionIndex / questionsData.length) * 100);
+    if (progressFill) progressFill.style.width = `${pct}%`;
+    if (questionNumberEl) questionNumberEl.textContent = String(currentQuestionIndex + 1);
+    if (totalQuestionsEl) totalQuestionsEl.textContent = String(questionsData.length);
 
-    // 問題文と画像を更新
-    questionTextElement.innerHTML = currentQuestion.question.replace(/\\n/g, '<br>');
-    if (currentQuestion.image) {
-        questionImageElement.src = currentQuestion.image;
-        questionImageContainer.classList.remove('hidden');
+    // 問題文（安全なDOM API）
+    setTextWithBreaks(questionTextEl, q.question);
+
+    // 画像
+    if (q.image) {
+        questionImageEl.src = q.image;
+        questionImageContainer?.classList.remove('hidden');
     } else {
-        questionImageContainer.classList.add('hidden');
-        questionImageElement.src = ''; // 画像をクリア
+        questionImageContainer?.classList.add('hidden');
+        if (questionImageEl) questionImageEl.src = '';
     }
 
-    // 選択肢を更新
-    currentQuestion.choices.forEach((choice, index) => {
-        if (optionTexts[index]) {
-            optionTexts[index].innerHTML = choice.replace(/\\n/g, '<br>');
-        }
+    // 選択肢（安全なDOM API）
+    q.choices.forEach((choice, i) => {
+        if (optionTexts[i]) setTextWithBreaks(optionTexts[i], choice);
     });
 }
 
-/**
- * 解答を送信する
- */
 function submitAnswer() {
-    const selectedOption = document.querySelector('input[name="answer"]:checked');
-    if (!selectedOption) {
-        if (answerWarningElement) {
-            answerWarningElement.classList.remove('hidden');
-        }
+    const selected = document.querySelector('input[name="answer"]:checked');
+    if (!selected) {
+        answerWarningEl?.classList.remove('hidden');
         return;
     }
+    answerWarningEl?.classList.add('hidden');
 
-    if (answerWarningElement) {
-        answerWarningElement.classList.add('hidden');
-    }
-
-    const userAnswer = normalizeAnswerLetter(selectedOption.value);
-    const currentQuestion = questionsData[currentQuestionIndex];
-    const correctAnswer = normalizeAnswerLetter(currentQuestion.correctAnswerLetter);
+    const q = questionsData[currentQuestionIndex];
+    const userAnswer = normalize(selected.value);
+    const correctAnswer = normalize(q.correctAnswerLetter);
     const isCorrect = userAnswer === correctAnswer;
 
-    // フィードバックの表示
-    resultMessageElement.textContent = isCorrect ? '正解です！' : '不正解です。';
-    resultMessageElement.style.color = isCorrect ? 'var(--secondary-color)' : 'var(--accent-color)';
-    if (isCorrect) {
-        correctAnswersCount++;
-    }
-    if (answerSummaryElement) {
-        answerSummaryElement.innerHTML = `
-            <strong>あなたの選択:</strong> ${escapeHtml(formatAnswerLabel(userAnswer))}<br>
-            <strong>正解:</strong> ${escapeHtml(formatAnswerLabel(correctAnswer))}
-        `;
-    }
-    explanationTextElement.innerHTML = currentQuestion.explanation.replace(/\\n/g, '<br>');
-    feedbackContainer.classList.remove('hidden');
-    submitAnswerButton.classList.add('hidden');
-    nextQuestionButton.classList.remove('hidden');
+    if (isCorrect) correctAnswersCount++;
 
-    // 正解・不正解のスタイルを適用
-    optionInputs.forEach(input => {
-        input.disabled = true; // 解答後は選択肢を無効化
-        const label = input.parentElement;
-        if (normalizeAnswerLetter(input.value) === correctAnswer) {
-            label.classList.add('correct'); // 正解の選択肢
-        } else if (normalizeAnswerLetter(input.value) === userAnswer) {
-            label.classList.add('incorrect'); // ユーザーが選んだ不正解の選択肢
-        }
+    // 結果メッセージ
+    if (resultMessageEl) {
+        resultMessageEl.textContent = isCorrect ? '正解です！' : '不正解です。';
+        resultMessageEl.style.color = isCorrect ? 'var(--success)' : 'var(--error)';
+    }
+
+    // 解答サマリー（安全なDOM API）
+    if (answerSummaryEl) {
+        answerSummaryEl.textContent = '';
+        const lines = [
+            { label: 'あなたの選択: ', value: formatLabel(userAnswer) },
+            { label: '正解: ', value: formatLabel(correctAnswer) },
+        ];
+        lines.forEach((line, i) => {
+            const strong = document.createElement('strong');
+            strong.textContent = line.label;
+            answerSummaryEl.appendChild(strong);
+            answerSummaryEl.appendChild(document.createTextNode(line.value));
+            if (i < lines.length - 1) answerSummaryEl.appendChild(document.createElement('br'));
+        });
+    }
+
+    // 解説（安全なDOM API）
+    if (explanationEl) setTextWithBreaks(explanationEl, q.explanation);
+
+    feedbackContainer.classList.remove('hidden');
+    submitBtn?.classList.add('hidden');
+    nextBtn?.classList.remove('hidden');
+
+    // 選択肢ハイライト
+    optionInputs.forEach(inp => {
+        inp.disabled = true;
+        const lbl = inp.parentElement;
+        const val = normalize(inp.value);
+        if (val === correctAnswer) lbl.classList.add('correct');
+        else if (val === userAnswer) lbl.classList.add('incorrect');
     });
 
-    // localStorageに現在の状態を保存
-    localStorage.setItem('currentQuestionIndex', currentQuestionIndex.toString());
-    localStorage.setItem('correctAnswersCount', correctAnswersCount.toString());
+    // 苦手問題の記録
+    const qId = q.id;
+    if (isCorrect) {
+        removeCorrectQuestion(qId);
+    } else {
+        addWrongQuestion(qId);
+    }
+
+    // localStorageへ保存
+    localStorage.setItem('currentQuestionIndex', String(currentQuestionIndex));
+    localStorage.setItem('correctAnswersCount', String(correctAnswersCount));
+    const log = JSON.parse(localStorage.getItem('quizAnswerLog') || '[]');
+    log.push(isCorrect);
+    localStorage.setItem('quizAnswerLog', JSON.stringify(log));
 }
 
-/**
- * 次の問題へ進む、または結果画面へ遷移する
- */
-function goToNextQuestion() {
+function goToNext() {
     currentQuestionIndex++;
     if (currentQuestionIndex < questionsData.length) {
         loadQuestion();
     } else {
-        // 全問終了したら結果画面へ
-        window.location.href = 'result.html'; // 結果画面へ遷移
+        window.location.href = 'result.html';
     }
 }

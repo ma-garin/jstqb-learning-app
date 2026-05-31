@@ -1,77 +1,106 @@
-/* css/base.css */
+/* css/base.css — テス友スタイル リニューアル */
 
-/* 基本的なリセットとフォント設定 */
 :root {
-    --primary-color: #1f5f8b; /* JSTQBの青を意識 */
-    --secondary-color: #2e7d50; /* 正解時の緑 */
-    --accent-color: #b54708; /* 警告や不正解時の橙 */
-    --text-color: #25313b;
-    --background-color: #f6f8fb;
-    --card-background: #ffffff;
-    --border-color: #d9e1ea;
-    --muted-text-color: #5f6f7f;
-    --info-background: #eef6fb;
-    --warning-background: #fff7ed;
-    --shadow-light: 0 3px 10px rgba(25, 45, 70, 0.08);
+    /* Brand colors */
+    --primary: #4F46E5;
+    --primary-dark: #3730A3;
+    --primary-light: #EEF2FF;
+    --success: #10B981;
+    --success-light: #D1FAE5;
+    --warning: #F59E0B;
+    --warning-light: #FEF3C7;
+    --error: #EF4444;
+    --error-light: #FEE2E2;
+    --ai-color: #8B5CF6;
+    --ai-light: #F5F3FF;
+
+    /* Neutral */
+    --text: #1E293B;
+    --text-muted: #64748B;
+    --text-inverse: #FFFFFF;
+    --bg: #F1F5F9;
+    --surface: #FFFFFF;
+    --border: #E2E8F0;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 1px 3px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.08), 0 4px 6px rgba(0,0,0,0.04);
+
+    /* Radii */
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+
+    /* Layout */
+    --bottom-nav-height: 60px;
+    --header-height: 52px;
+    --content-max: 640px;
+
+    /* Backward-compat aliases for legacy selectors */
+    --primary-color: #4F46E5;
+    --secondary-color: #10B981;
+    --accent-color: #F59E0B;
+    --text-color: #1E293B;
+    --background-color: #F1F5F9;
+    --card-background: #FFFFFF;
+    --border-color: #E2E8F0;
+    --muted-text-color: #64748B;
+    --info-background: #EEF2FF;
+    --warning-background: #FEF3C7;
+    --shadow-light: 0 1px 3px rgba(0,0,0,0.10);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    font-family: 'Noto Sans JP', sans-serif; /* Google Fontsなどから読み込む */
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: var(--bg);
+    color: var(--text);
     line-height: 1.6;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: var(--primary-color);
-    margin-top: 0.8em;
-    margin-bottom: 0.4em;
+    color: var(--primary);
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 700;
+    line-height: 1.3;
 }
 
 p {
-    margin-bottom: 0.5em;
+    margin-top: 0;
+    margin-bottom: 0.75em;
 }
 
-ul {
-    list-style-type: disc;
-    margin-left: 20px;
+ul, ol {
+    margin-top: 0;
     margin-bottom: 1em;
+    padding-left: 1.5em;
 }
 
-ol {
-    list-style-type: decimal;
-    margin-left: 20px;
-    margin-bottom: 1em;
+a {
+    color: var(--primary);
+    text-decoration: none;
 }
 
 strong {
     font-weight: 700;
 }
 
-/* 共通の隠すクラス */
 .hidden {
-    display: none !important; /* 他のスタイルより優先して非表示にする */
-}
-
-/* 強調表示 */
-.highlight {
-    background-color: var(--accent-color);
-    padding: 2px 5px;
-    border-radius: 3px;
-}
-
-/* 正解・不正解時のテキスト色 */
-.correct-text {
-    color: var(--secondary-color);
-    font-weight: bold;
-}
-
-.incorrect-text {
-    color: var(--accent-color);
-    font-weight: bold;
+    display: none !important;
 }

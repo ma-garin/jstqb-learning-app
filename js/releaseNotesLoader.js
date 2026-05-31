@@ -1,6 +1,19 @@
 // js/releaseNotesLoader.js
 
-document.addEventListener('DOMContentLoaded', loadReleaseNotes);
+import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupCommonNavigation();
+    setupBackToTopButtons();
+    loadReleaseNotes();
+});
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
 
 /**
  * CSVファイルをフェッチし、リリースノートテーブルを生成して表示する
@@ -52,8 +65,8 @@ async function loadReleaseNotes() {
             versions.forEach(versionEntry => {
                 tableHtml += `
                     <tr>
-                        <td>${versionEntry.version}</td>
-                        <td>${versionEntry.date}</td>
+                        <td>${escapeHtml(versionEntry.version)}</td>
+                        <td>${escapeHtml(versionEntry.date)}</td>
                         <td>${convertMarkdownToHtml(versionEntry.content)}</td>
                     </tr>
                 `;

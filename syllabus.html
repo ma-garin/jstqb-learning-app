@@ -3,66 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>シラバス閲覧 - JSTQB-TA学習アプリ</title>
+    <title>シラバス - JSTQB-TA学習アプリ</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/screens.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" href="img/JSTQB_TA.png" type="image/png">
     <link rel="apple-touch-icon" href="img/JSTQB_TA.png">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="JSTQB-TA学習">
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZ9EN5NX5F"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-BZ9EN5NX5F');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BZ9EN5NX5F');
     </script>
+    <nav id="main-nav" class="hidden"></nav>
+    <nav id="breadcrumb-nav" class="hidden"></nav>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <span class="material-icons menu-icon" id="menu-icon">menu</span>
-            <h1>JSTQB-テストアナリスト 学習アプリ</h1>
-            <div class="spacer"></div>
+    <header class="app-header">
+        <div class="header-inner">
+            <a href="index.html" class="header-back" aria-label="ホームへ戻る">
+                <span class="material-icons">arrow_back_ios</span>
+            </a>
+            <h1 class="header-title">シラバス</h1>
         </div>
-        <nav id="main-nav" class="hidden">
-            <ul>
-                <li><button id="nav-start-learning-button">学習を開始する</button></li>
-                <li><button id="nav-view-syllabus-button">シラバスを見る</button></li>
-                <li><button id="nav-view-assumed-problems-button">想定問題を見る</button></li>
-                <li><button id="nav-back-to-welcome-button">TOPに戻る</button></li>
-            </ul>
-        </nav>
-        <nav id="breadcrumb-nav">
-            <span class="breadcrumb-item" data-screen-id="welcome-screen">トップ</span>
-            <span class="breadcrumb-item active-breadcrumb" data-screen-id="syllabus-screen">シラバス</span>
-        </nav>
     </header>
-    <main id="app-container">
+
+    <main class="app-main app-main--wide" id="app-container">
         <section id="syllabus-screen">
-            <h2>JSTQBテストアナリスト シラバス</h2>
-            <p class="syllabus-version-note">Version 3.1.1.J03 対応。品質特性の説明では、JSTQB シラバスの章立てを優先しつつ ISO/IEC 25010 の用語体系を補足しています。</p>
+            <p class="syllabus-version-note">Version 3.1.1.J03 対応。品質特性の説明では ISO/IEC 25010 の用語体系を補足しています。</p>
             <div class="syllabus-layout">
-                <nav id="syllabus-navigation">
-                    </nav>
-                <div id="syllabus-content">
-                    </div>
+                <nav id="syllabus-navigation"></nav>
+                <div id="syllabus-content"></div>
             </div>
-            <button class="back-to-top-button">TOPに戻る</button>
+            <button class="back-to-top-button" type="button">ホームに戻る</button>
         </section>
     </main>
-    <footer>
-        <p>© 2025 JSTQB TA Learning App</p>
-    </footer>
-    <script type="module" src="js/main.js"></script>
+
+    <nav class="bottom-nav" role="navigation" aria-label="メインナビゲーション">
+        <a href="index.html" class="bottom-nav-item" id="nav-home">
+            <span class="material-icons">home</span>
+            <span class="bottom-nav-label">ホーム</span>
+        </a>
+        <a href="study.html" class="bottom-nav-item" id="nav-quiz">
+            <span class="material-icons">edit_note</span>
+            <span class="bottom-nav-label">クイズ</span>
+        </a>
+        <a href="ai-quiz.html" class="bottom-nav-item" id="nav-ai">
+            <span class="material-icons">auto_awesome</span>
+            <span class="bottom-nav-label">AI問題</span>
+        </a>
+        <a href="glossary.html" class="bottom-nav-item" id="nav-glossary">
+            <span class="material-icons">sort_by_alpha</span>
+            <span class="bottom-nav-label">用語集</span>
+        </a>
+    </nav>
+
     <script type="module" src="js/utils.js"></script>
     <script type="module" src="js/syllabus.js"></script>
 </body>
