@@ -80,7 +80,18 @@ ${kLevelLine}
 
     if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err.error?.message || `APIエラー (${res.status})`);
+        const msg = err.error?.message || '';
+        if (res.status === 429 || msg.includes('quota') || msg.includes('Quota') || msg.includes('RESOURCE_EXHAUSTED')) {
+            const retryMatch = msg.match(/retry in ([\d.]+)s/i);
+            const retrySec = retryMatch ? Math.ceil(parseFloat(retryMatch[1])) : null;
+            const retryHint = retrySec ? `（約${retrySec}秒後に再試行できます）` : '';
+            throw new Error(
+                `APIの無料利用枠の上限に達しました${retryHint}。\nGoogle AI Studio でビリングを有効化するか、別のAPIキーをお使いください。\nhttps://ai.google.dev/gemini-api/docs/rate-limits`
+            );
+        }
+        if (res.status === 400) throw new Error('APIキーが無効か、リクエストの形式が正しくありません。キーを確認してください。');
+        if (res.status === 403) throw new Error('このAPIキーにはGemini APIへのアクセス権限がありません。Google AI Studioで権限を確認してください。');
+        throw new Error(msg || `APIエラー (${res.status})`);
     }
 
     const data = await res.json();
