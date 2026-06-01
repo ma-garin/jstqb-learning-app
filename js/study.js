@@ -50,12 +50,43 @@ export function shuffleQuestions(questions) {
     return arr;
 }
 
-function startQuiz(questions) {
-    localStorage.setItem('quizQuestions', JSON.stringify(questions));
-    localStorage.setItem('currentQuestionIndex', '0');
-    localStorage.setItem('correctAnswersCount', '0');
+function clearQuizSession() {
+    localStorage.removeItem('quizQuestions');
+    localStorage.removeItem('quizNextIndex');
+    localStorage.removeItem('currentQuestionIndex');
+    localStorage.removeItem('correctAnswersCount');
     localStorage.removeItem('quizAnswerLog');
+    localStorage.removeItem('quizPaused');
+}
+
+function startQuiz(questions) {
+    clearQuizSession();
+    localStorage.setItem('quizQuestions', JSON.stringify(questions));
+    localStorage.setItem('quizNextIndex', '0');
+    localStorage.setItem('correctAnswersCount', '0');
     window.location.href = 'quiz.html';
+}
+
+function hasPausedSession() {
+    const paused = localStorage.getItem('quizPaused') === 'true';
+    const nextIndex = parseInt(localStorage.getItem('quizNextIndex') || '0', 10);
+    const saved = localStorage.getItem('quizQuestions');
+    return paused && nextIndex > 0 && !!saved;
+}
+
+function renderResumeSection() {
+    const section = document.getElementById('resume-quiz-section');
+    if (!section) return;
+    if (hasPausedSession()) {
+        const total = JSON.parse(localStorage.getItem('quizQuestions')).length;
+        const nextIndex = parseInt(localStorage.getItem('quizNextIndex') || '0', 10);
+        const correct = parseInt(localStorage.getItem('correctAnswersCount') || '0', 10);
+        const progressText = document.getElementById('resume-progress-text');
+        if (progressText) progressText.textContent = `${nextIndex}/${total}問完了・正解${correct}問`;
+        section.style.display = 'block';
+    } else {
+        section.style.display = 'none';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -63,12 +94,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupBackToTopButtons();
     initStudyScreen();
     renderWeakQuizSection();
+    renderResumeSection();
+
+    // 再開ボタン
+    document.getElementById('resume-quiz-button')?.addEventListener('click', () => {
+        localStorage.removeItem('quizPaused');
+        window.location.href = 'quiz.html';
+    });
+
+    // 破棄ボタン
+    document.getElementById('discard-quiz-button')?.addEventListener('click', () => {
+        if (confirm('中断中のクイズを破棄しますか？進捗は失われます。')) {
+            clearQuizSession();
+            renderResumeSection();
+        }
+    });
 
     // 全問クイズ開始
     const startBtn = document.getElementById('start-actual-quiz-button');
     const shuffleCheckbox = document.getElementById('shuffle-quiz-checkbox');
     if (startBtn) {
         startBtn.addEventListener('click', async () => {
+            if (hasPausedSession() && !confirm('中断中のクイズがあります。最初から始めると進捗が失われます。よろしいですか？')) return;
             const questions = await fetchQuestions();
             if (!questions.length) { console.error('問題データの読み込みに失敗しました。'); return; }
             const quizQuestions = shuffleCheckbox?.checked ? shuffleQuestions(questions) : questions;
@@ -80,6 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const weakBtn = document.getElementById('start-weak-quiz-button');
     if (weakBtn) {
         weakBtn.addEventListener('click', async () => {
+            if (hasPausedSession() && !confirm('中断中のクイズがあります。苦手問題クイズを始めると進捗が失われます。よろしいですか？')) return;
             const wrongIds = getWrongQuestionIds();
             if (!wrongIds.length) {
                 alert('苦手問題がまだ記録されていません。まず全問クイズに挑戦してください。');
