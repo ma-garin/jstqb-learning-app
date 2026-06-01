@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const EXAM_META = {
-    alta: { totalQuestions: 33, syllabusInfo: 'シラバス v3.1.1.J03 対応 ・ K1〜K4', syllabusChapters: 8, greeting: 'Advanced Level Test Analyst' },
+    alta: { totalQuestions: 120, syllabusInfo: 'シラバス v3.1.1.J03 対応 ・ K1〜K4', syllabusChapters: 8, greeting: 'Advanced Level Test Analyst' },
     altm: { totalQuestions: 40, syllabusInfo: 'シラバス V3.0.J03 対応 ・ K2〜K4', syllabusChapters: 3, greeting: 'Advanced Level Test Manager' },
 };
 
