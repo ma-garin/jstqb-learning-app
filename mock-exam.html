@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模擬試験 - JSTQB-AL学習アプリ</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="img/JSTQB_TA.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/JSTQB_TA.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZ9EN5NX5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BZ9EN5NX5F');
+    </script>
+    <nav id="main-nav" class="hidden"></nav>
+    <nav id="breadcrumb-nav" class="hidden"></nav>
+    <style>
+        /* 模擬試験専用スタイル */
+        .exam-header {
+            position: sticky;
+            top: var(--header-height);
+            z-index: 90;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .exam-timer {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 80px;
+        }
+        .exam-timer.warning { color: var(--warning); }
+        .exam-timer.danger { color: var(--error); animation: pulse 1s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+        .exam-progress-text {
+            font-size: 0.85em;
+            color: var(--text-muted);
+        }
+        .exam-progress-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+        .exam-progress-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: var(--radius-full);
+            transition: width 0.3s;
+        }
+
+        /* 問題ナビゲーション */
+        .exam-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .exam-nav-btn {
+            aspect-ratio: 1;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            font-size: 0.75em;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            box-shadow: none;
+            white-space: nowrap;
+            padding: 0;
+        }
+        .exam-nav-btn.answered {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .exam-nav-btn.current {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        /* 問題本文 */
+        .exam-question-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+        .exam-question-meta {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .exam-meta-tag {
+            font-size: 0.72em;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .exam-question-body {
+            font-size: 0.95em;
+            line-height: 1.75;
+            margin-bottom: 16px;
+        }
+        .exam-question-body p { margin: 0 0 10px; }
+        .exam-question-body ul, .exam-question-body ol {
+            margin: 0 0 10px;
+            padding-left: 20px;
+        }
+        .exam-question-body li { margin-bottom: 4px; }
+        .exam-question-body blockquote {
+            background: var(--bg);
+            padding: 12px;
+            border-left: 3px solid var(--primary);
+            margin: 8px 0;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-size: 0.9em;
+        }
+        .exam-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0 14px;
+            font-size: 0.85em;
+        }
+        .exam-table th {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 8px 10px;
+            text-align: left;
+            border: 1px solid var(--border);
+            font-weight: 700;
+        }
+        .exam-table td {
+            padding: 7px 10px;
+            border: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+        .exam-table tr:nth-child(even) td { background: var(--bg); }
+
+        /* 選択肢 */
+        .exam-choices { display: flex; flex-direction: column; gap: 10px; }
+        .exam-choice-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.15s;
+            background: var(--surface);
+        }
+        .exam-choice-label:hover { border-color: var(--primary); background: var(--primary-light); }
+        .exam-choice-label input[type="radio"] { margin-top: 2px; flex-shrink: 0; }
+        .exam-choice-label.selected { border-color: var(--primary); background: var(--primary-light); }
+        .exam-choice-text { font-size: 0.9em; line-height: 1.6; }
+
+        /* フィードバック（結果画面） */
+        .exam-result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+        .exam-result-answer { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+        .exam-result-correct { color: var(--success); font-weight: 700; }
+        .exam-result-wrong { color: var(--error); font-weight: 700; }
+        .exam-explanation {
+            font-size: 0.88em;
+            line-height: 1.7;
+            color: var(--text-muted);
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            margin-top: 10px;
+        }
+        .exam-result-nav {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .exam-result-nav button { flex: 1; }
+
+        /* スコア画面 */
+        .exam-score-section { padding-top: 24px; text-align: center; }
+        .exam-score-badge {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            border: 5px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .exam-score-value { font-size: 2.2em; font-weight: 700; color: var(--primary); line-height: 1.1; }
+        .exam-score-label { font-size: 0.8em; color: var(--text-muted); }
+        .exam-pass { color: var(--success); font-size: 1.3em; font-weight: 700; margin: 0 0 16px; }
+        .exam-fail { color: var(--error); font-size: 1.3em; font-weight: 700; margin: 0 0 16px; }
+        .exam-chapter-summary {
+            text-align: left;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+        .exam-chapter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.88em;
+        }
+        .exam-chapter-row:last-child { border-bottom: none; }
+        .exam-chapter-bar-wrap { flex: 1; margin: 0 12px; background: var(--border); border-radius: var(--radius-full); height: 6px; }
+        .exam-chapter-bar-fill { height: 100%; border-radius: var(--radius-full); background: var(--primary); }
+
+        code { font-family: monospace; background: var(--bg); padding: 1px 5px; border-radius: 4px; font-size: 0.92em; }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-inner">
+            <a href="index.html" class="header-back" aria-label="ホームへ戻る" id="header-back-btn">
+                <span class="material-icons">arrow_back_ios</span>
+            </a>
+            <h1 class="header-title">模擬試験</h1>
+        </div>
+    </header>
+
+    <main class="app-main" id="app-container">
+
+        <!-- ① 開始画面 -->
+        <section id="start-screen">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:14px;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+                    <span class="material-icons" style="font-size:36px;color:var(--primary);">assignment</span>
+                    <div>
+                        <p style="font-size:1.1em;font-weight:700;margin:0;">JSTQB ALTA 模擬試験</p>
+                        <p style="font-size:0.82em;color:var(--text-muted);margin:0;">シラバス v3.1.1.J03 対応</p>
+                    </div>
+                </div>
+                <table class="exam-table" style="margin-bottom:0;">
+                    <tbody>
+                        <tr><td style="font-weight:600;">問題数</td><td>45問</td></tr>
+                        <tr><td style="font-weight:600;">試験時間</td><td>75分</td></tr>
+                        <tr><td style="font-weight:600;">合格基準</td><td>65%以上（30問以上正解）</td></tr>
+                        <tr><td style="font-weight:600;">出題形式</td><td>4択選択式（シナリオ問題・表含む）</td></tr>
+                        <tr><td style="font-weight:600;">途中回答</td><td>可（後から見直し・変更できます）</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="background:var(--warning-light);border:1px solid var(--warning);border-radius:var(--radius);padding:12px;font-size:0.85em;margin-bottom:16px;">
+                <strong>⚠️ 注意事項：</strong>試験開始後はタイマーが進みます。ブラウザを閉じても中断されます（再開は不可）。全問解答後または時間切れで採点されます。
+            </div>
+            <button id="start-btn" class="btn-ai" style="width:100%;padding:16px;border-radius:var(--radius-lg);font-size:1.05em;" type="button">
+                <span class="material-icons">play_arrow</span>
+                試験を開始する
+            </button>
+            <button class="back-to-top-button" type="button">ホームに戻る</button>
+        </section>
+
+        <!-- ② 試験画面 -->
+        <section id="exam-screen" class="hidden">
+            <div class="exam-header">
+                <div class="exam-timer" id="exam-timer">
+                    <span class="material-icons" style="font-size:18px;">timer</span>
+                    <span id="timer-display">75:00</span>
+                </div>
+                <div class="exam-progress-bar">
+                    <div class="exam-progress-bar-fill" id="exam-progress-fill" style="width:0%"></div>
+                </div>
+                <span class="exam-progress-text" id="exam-progress-text">1 / 45</span>
+            </div>
+
+            <!-- 問題ナビ -->
+            <div style="padding: 12px 0 4px;">
+                <p style="font-size:0.78em;color:var(--text-muted);margin:0 0 8px;">問題一覧（青=解答済み）</p>
+                <div class="exam-nav-grid" id="exam-nav-grid"></div>
+            </div>
+
+            <!-- 問題本文 -->
+            <div class="exam-question-card">
+                <div class="exam-question-meta" id="exam-question-meta"></div>
+                <div class="exam-question-body" id="exam-question-body"></div>
+                <div class="exam-choices" id="exam-choices"></div>
+                <p id="exam-warning" class="answer-warning hidden" role="alert" style="margin-top:10px;">解答を選択してください。</p>
+            </div>
+
+            <!-- ナビゲーションボタン -->
+            <div style="display:flex;gap:10px;margin-bottom:14px;">
+                <button id="exam-prev-btn" type="button" class="btn-secondary" style="flex:1;padding:12px;">
+                    <span class="material-icons">chevron_left</span>前の問題
+                </button>
+                <button id="exam-next-btn" type="button" class="btn-primary" style="flex:1;padding:12px;">
+                    次の問題<span class="material-icons">chevron_right</span>
+                </button>
+            </div>
+            <button id="exam-submit-btn" type="button" class="btn-success btn-block" style="padding:14px;border-radius:var(--radius-lg);margin-bottom:8px;">
+                <span class="material-icons">check_circle</span>
+                採点する（試験を終了）
+            </button>
+            <p id="unanswered-hint" style="text-align:center;font-size:0.82em;color:var(--text-muted);"></p>
+        </section>
+
+        <!-- ③ 結果画面 -->
+        <section id="result-screen" class="hidden">
+            <div class="exam-score-section">
+                <div class="exam-score-badge" id="score-badge">
+                    <span class="exam-score-value" id="result-score">0/45</span>
+                    <span class="exam-score-label" id="result-accuracy">0%</span>
+                </div>
+                <p id="result-grade" class="exam-pass"></p>
+                <p style="font-size:0.85em;color:var(--text-muted);margin-bottom:16px;" id="result-time"></p>
+
+                <!-- 章別成績 -->
+                <div class="exam-chapter-summary" id="chapter-summary"></div>
+
+                <!-- 解説一覧 -->
+                <div style="text-align:left;">
+                    <h3 style="font-size:1em;margin-bottom:12px;">解答・解説</h3>
+                    <div id="result-review"></div>
+                </div>
+
+                <button id="retry-btn" type="button" class="btn-ai btn-block" style="padding:14px;border-radius:var(--radius-lg);margin-top:16px;">
+                    <span class="material-icons">refresh</span>もう一度挑戦
+                </button>
+                <button class="back-to-top-button" type="button">ホームに戻る</button>
+            </div>
+        </section>
+
+    </main>
+
+    <nav class="bottom-nav" role="navigation" aria-label="メインナビゲーション">
+        <a href="index.html" class="bottom-nav-item" id="nav-home">
+            <span class="material-icons">home</span>
+            <span class="bottom-nav-label">ホーム</span>
+        </a>
+        <a href="study.html" class="bottom-nav-item" id="nav-quiz">
+            <span class="material-icons">edit_note</span>
+            <span class="bottom-nav-label">クイズ</span>
+        </a>
+        <a href="ai-quiz.html" class="bottom-nav-item" id="nav-ai">
+            <span class="material-icons">auto_awesome</span>
+            <span class="bottom-nav-label">AI問題</span>
+        </a>
+        <a href="glossary.html" class="bottom-nav-item" id="nav-glossary">
+            <span class="material-icons">sort_by_alpha</span>
+            <span class="bottom-nav-label">用語集</span>
+        </a>
+    </nav>
+
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/mock-exam.js"></script>
+</body>
+</html>
