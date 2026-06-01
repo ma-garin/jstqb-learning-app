@@ -30,10 +30,14 @@
 <body>
     <header class="app-header">
         <div class="header-inner">
-            <a href="study.html" class="header-back" aria-label="設定に戻る">
+            <button id="quiz-pause-btn" class="header-back" aria-label="中断して保存" type="button">
                 <span class="material-icons">arrow_back_ios</span>
-            </a>
+            </button>
             <h1 class="header-title">クイズ</h1>
+            <button id="quiz-pause-label-btn" type="button"
+                style="background:none;border:none;font-size:0.78em;color:var(--text-muted);cursor:pointer;padding:4px 8px;white-space:nowrap;">
+                中断して保存
+            </button>
         </div>
     </header>
 

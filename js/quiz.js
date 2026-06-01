@@ -59,6 +59,14 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn?.addEventListener('click', submitAnswer);
     nextBtn?.addEventListener('click', goToNext);
 
+    // 中断ボタン（ヘッダーの戻るボタンと「中断して保存」テキスト）
+    const pauseHandler = () => {
+        localStorage.setItem('quizPaused', 'true');
+        window.location.href = 'study.html';
+    };
+    document.getElementById('quiz-pause-btn')?.addEventListener('click', pauseHandler);
+    document.getElementById('quiz-pause-label-btn')?.addEventListener('click', pauseHandler);
+
     loadQuestion();
 
     function loadQuestion() {

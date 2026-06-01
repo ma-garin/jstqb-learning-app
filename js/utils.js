@@ -34,8 +34,22 @@ export function setupCommonNavigation() {
     if (activeId) {
         document.getElementById(activeId)?.classList.add('active');
     }
+    injectSettingsButton(currentPage);
     injectExamTabs();
     updateHeaderTitle();
+}
+
+function injectSettingsButton(currentPage) {
+    if (currentPage === 'settings.html') return;
+    const headerInner = document.querySelector('.header-inner');
+    if (!headerInner || headerInner.querySelector('.header-settings-btn')) return;
+    const btn = document.createElement('a');
+    btn.href = 'settings.html';
+    btn.className = 'header-settings-btn';
+    btn.setAttribute('aria-label', '設定');
+    btn.style.cssText = 'display:flex;align-items:center;color:var(--text-muted);padding:8px;margin-right:-8px;margin-left:auto;border-radius:var(--radius-sm);flex-shrink:0;';
+    btn.innerHTML = '<span class="material-icons" style="font-size:22px;">settings</span>';
+    headerInner.appendChild(btn);
 }
 
 function injectExamTabs() {
