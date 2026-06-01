@@ -1,6 +1,7 @@
 // js/gemini.js — Gemini API クライアント
 
-const API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const API_BASE_PREFIX = 'https://generativelanguage.googleapis.com/v1beta/models/';
+const DEFAULT_MODEL = 'gemini-2.0-flash';
 const STORAGE_KEY = 'jstqb_gemini_key';
 
 export function getApiKey() {
@@ -44,7 +45,7 @@ const EXAM_PROMPTS = {
     altm: 'JSTQB Advanced Level テストマネジメント試験（シラバス v3.0.J03）',
 };
 
-export async function generateQuestions(apiKey, { count = 3, topic = '', kLevel = '', exam = 'alta' } = {}) {
+export async function generateQuestions(apiKey, { count = 3, topic = '', kLevel = '', exam = 'alta', model = DEFAULT_MODEL } = {}) {
     const topicLine = topic ? `テーマ: ${topic}` : '';
     const kLevelLine = kLevel ? `出題レベル: ${kLevel}` : 'K2〜K4レベルを混在';
     const examLabel = EXAM_PROMPTS[exam] || EXAM_PROMPTS.alta;
@@ -69,7 +70,7 @@ ${kLevelLine}
   ]
 }`;
 
-    const res = await fetch(`${API_BASE}?key=${apiKey}`, {
+    const res = await fetch(`${API_BASE_PREFIX}${model}:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -80,7 +81,18 @@ ${kLevelLine}
 
     if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err.error?.message || `APIエラー (${res.status})`);
+        const msg = err.error?.message || '';
+        if (res.status === 429 || msg.includes('quota') || msg.includes('Quota') || msg.includes('RESOURCE_EXHAUSTED')) {
+            const retryMatch = msg.match(/retry in ([\d.]+)s/i);
+            const retrySec = retryMatch ? Math.ceil(parseFloat(retryMatch[1])) : null;
+            const retryHint = retrySec ? `（約${retrySec}秒後に再試行できます）` : '';
+            throw new Error(
+                `APIの無料利用枠の上限に達しました${retryHint}。\nGoogle AI Studio でビリングを有効化するか、別のAPIキーをお使いください。\nhttps://ai.google.dev/gemini-api/docs/rate-limits`
+            );
+        }
+        if (res.status === 400) throw new Error('APIキーが無効か、リクエストの形式が正しくありません。キーを確認してください。');
+        if (res.status === 403) throw new Error('このAPIキーにはGemini APIへのアクセス権限がありません。Google AI Studioで権限を確認してください。');
+        throw new Error(msg || `APIエラー (${res.status})`);
     }
 
     const data = await res.json();

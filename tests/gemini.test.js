@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { parseGeminiJson } from '../js/gemini.js';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { parseGeminiJson, generateQuestions } from '../js/gemini.js';
 
 const VALID_PAYLOAD = JSON.stringify({
     questions: [
@@ -63,5 +63,93 @@ describe('parseGeminiJson', () => {
 
     it('不正なJSONの場合はSyntaxErrorをスローする', () => {
         expect(() => parseGeminiJson('{invalid json}')).toThrow(SyntaxError);
+    });
+});
+
+describe('generateQuestions — エラーハンドリング', () => {
+    beforeEach(() => {
+        vi.stubGlobal('fetch', vi.fn());
+    });
+    afterEach(() => {
+        vi.unstubAllGlobals();
+    });
+
+    it('429クォータエラーを日本語メッセージに変換する', async () => {
+        fetch.mockResolvedValue({
+            ok: false,
+            status: 429,
+            json: async () => ({ error: { message: 'You exceeded your current quota. Please retry in 58.9s.' } }),
+        });
+        await expect(generateQuestions('dummy-key')).rejects.toThrow('無料利用枠の上限');
+    });
+
+    it('クォータエラーに再試行時間を含める', async () => {
+        fetch.mockResolvedValue({
+            ok: false,
+            status: 429,
+            json: async () => ({ error: { message: 'Quota exceeded. Please retry in 120.5s.' } }),
+        });
+        await expect(generateQuestions('dummy-key')).rejects.toThrow('約121秒後');
+    });
+
+    it('400エラーを分かりやすいメッセージに変換する', async () => {
+        fetch.mockResolvedValue({
+            ok: false,
+            status: 400,
+            json: async () => ({ error: { message: 'API key not valid.' } }),
+        });
+        await expect(generateQuestions('dummy-key')).rejects.toThrow('APIキーが無効');
+    });
+
+    it('403エラーを分かりやすいメッセージに変換する', async () => {
+        fetch.mockResolvedValue({
+            ok: false,
+            status: 403,
+            json: async () => ({ error: { message: 'Permission denied.' } }),
+        });
+        await expect(generateQuestions('dummy-key')).rejects.toThrow('アクセス権限');
+    });
+
+    it('正常レスポンスから問題配列を返す', async () => {
+        const mockText = JSON.stringify({
+            questions: [
+                { question: 'Q', choices: ['A.a', 'B.b', 'C.c', 'D.d'], correctAnswerLetter: 'a', explanation: 'ex' },
+            ],
+        });
+        fetch.mockResolvedValue({
+            ok: true,
+            json: async () => ({
+                candidates: [{ content: { parts: [{ text: mockText }] } }],
+            }),
+        });
+        const result = await generateQuestions('dummy-key');
+        expect(result).toHaveLength(1);
+        expect(result[0].question).toBe('Q');
+    });
+
+    it('model パラメータがURLに反映される', async () => {
+        const mockText = JSON.stringify({
+            questions: [{ question: 'Q', choices: ['A.a', 'B.b', 'C.c', 'D.d'], correctAnswerLetter: 'a', explanation: 'ex' }],
+        });
+        fetch.mockResolvedValue({
+            ok: true,
+            json: async () => ({ candidates: [{ content: { parts: [{ text: mockText }] } }] }),
+        });
+        await generateQuestions('dummy-key', { model: 'gemini-1.5-flash' });
+        const calledUrl = fetch.mock.calls[0][0];
+        expect(calledUrl).toContain('gemini-1.5-flash');
+    });
+
+    it('model 未指定時は gemini-2.0-flash がデフォルト', async () => {
+        const mockText = JSON.stringify({
+            questions: [{ question: 'Q', choices: ['A.a', 'B.b', 'C.c', 'D.d'], correctAnswerLetter: 'a', explanation: 'ex' }],
+        });
+        fetch.mockResolvedValue({
+            ok: true,
+            json: async () => ({ candidates: [{ content: { parts: [{ text: mockText }] } }] }),
+        });
+        await generateQuestions('dummy-key');
+        const calledUrl = fetch.mock.calls[0][0];
+        expect(calledUrl).toContain('gemini-2.0-flash');
     });
 });
