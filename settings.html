@@ -30,9 +30,9 @@
 <body>
     <header class="app-header">
         <div class="header-inner">
-            <a href="index.html" class="header-back" aria-label="ホームへ戻る">
+            <button onclick="history.length > 1 ? history.back() : (location.href='index.html')" class="header-back" aria-label="前のページへ戻る" type="button">
                 <span class="material-icons">arrow_back_ios</span>
-            </a>
+            </button>
             <h1 class="header-title">設定</h1>
         </div>
     </header>
