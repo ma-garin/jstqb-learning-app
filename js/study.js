@@ -5,38 +5,76 @@ import { getExam } from './examContext.js';
 
 const EXAM_INFO = {
     alta: {
-        duration: "180分",
-        totalQuestions: "90問",
-        totalScore: "90点",
+        pageTitle: 'JSTQB-TA 試験について',
+        overview: 'JSTQB Advanced Level テストアナリスト試験は、テスト設計・分析・実行の高度な専門知識を問う上級資格試験です。Foundation Levelの上位に位置します。',
+        syllabusNote: '本アプリはシラバス Version 3.1.1.J03 対応です。ISTQB CTAL-TA v4.0 とは章立てが異なる場合があります。',
+        scopeHeading: '試験範囲（6章）',
+        scope: [
+            'テストプロセスにおけるテストアナリストのタスク',
+            'リスクベースドテストにおけるタスク',
+            'テスト技法',
+            'ソフトウェア品質特性のテスト',
+            'レビュー',
+            'テストツールおよび自動化',
+        ],
+        format: '形式：選択式（K1〜K4レベル混在）',
+        requirements: [
+            'JSTQB Foundation Level 合格が必須',
+            'テストアナリストとしての実務経験3年以上が望ましい',
+        ],
+        passRates: [
+            '2023年度：43.64%（103名／236名）',
+            '2024年度：34.83%（147名／422名）',
+        ],
+        duration: '180分',
+        totalQuestions: '90問',
+        totalScore: '90点',
         kLevelDistribution: [
-            { level: "K1", questions: "10問", scorePerQuestion: "1点", totalScore: "10点" },
-            { level: "K2", questions: "30問", scorePerQuestion: "1点", totalScore: "30点" },
-            { level: "K3", questions: "30問", scorePerQuestion: "1点", totalScore: "30点" },
-            { level: "K4", questions: "20問", scorePerQuestion: "1点", totalScore: "20点" }
+            { level: 'K1', questions: '10問', scorePerQuestion: '1点', totalScore: '10点' },
+            { level: 'K2', questions: '30問', scorePerQuestion: '1点', totalScore: '30点' },
+            { level: 'K3', questions: '30問', scorePerQuestion: '1点', totalScore: '30点' },
+            { level: 'K4', questions: '20問', scorePerQuestion: '1点', totalScore: '20点' },
         ],
         chapterDistribution: [
-            { chapter: "1章", kLevel: "K1-K4", questions: "20問", scorePerQuestion: "1点", totalScore: "20点" },
-            { chapter: "2章", kLevel: "K1-K4", questions: "15問", scorePerQuestion: "1点", totalScore: "15点" },
-            { chapter: "3章", kLevel: "K1-K4", questions: "25問", scorePerQuestion: "1点", totalScore: "25点" },
-            { chapter: "4章", kLevel: "K1-K4", questions: "20問", scorePerQuestion: "1点", totalScore: "20点" },
-            { chapter: "5章", kLevel: "K1-K4", questions: "10問", scorePerQuestion: "1点", totalScore: "10点" }
-        ]
+            { chapter: '1章', kLevel: 'K1-K4', questions: '20問', scorePerQuestion: '1点', totalScore: '20点' },
+            { chapter: '2章', kLevel: 'K1-K4', questions: '15問', scorePerQuestion: '1点', totalScore: '15点' },
+            { chapter: '3章', kLevel: 'K1-K4', questions: '25問', scorePerQuestion: '1点', totalScore: '25点' },
+            { chapter: '4章', kLevel: 'K1-K4', questions: '20問', scorePerQuestion: '1点', totalScore: '20点' },
+            { chapter: '5章', kLevel: 'K1-K4', questions: '10問', scorePerQuestion: '1点', totalScore: '10点' },
+        ],
     },
     altm: {
-        duration: "180分",
-        totalQuestions: "65問",
-        totalScore: "65点",
+        pageTitle: 'JSTQB-TM 試験について',
+        overview: 'JSTQB Advanced Level テストマネージャ試験は、テストプロジェクトのマネジメントに必要な高度な専門知識を問う上級資格試験です。Foundation Levelの上位に位置します。',
+        syllabusNote: '本アプリはシラバス V3.0.J03 対応です。',
+        scopeHeading: '試験範囲（3章）',
+        scope: [
+            'テストマネジメント',
+            'リスクベースドテストおよびその他のテストの優先順位づけアプローチ',
+            'テストドキュメント',
+        ],
+        format: '形式：選択式（K2〜K4レベル混在）',
+        requirements: [
+            'JSTQB Foundation Level 合格が必須',
+            'テストマネージャとしての実務経験3年以上が望ましい',
+        ],
+        passRates: [
+            '試験実施状況については JSTQB 公式サイトをご確認ください。',
+        ],
+        duration: '180分',
+        totalQuestions: '65問',
+        totalScore: '65点',
         kLevelDistribution: [
-            { level: "K2", questions: "36問", scorePerQuestion: "1点", totalScore: "36点" },
-            { level: "K3", questions: "5問", scorePerQuestion: "1点", totalScore: "5点" },
-            { level: "K4", questions: "7問", scorePerQuestion: "1点", totalScore: "7点" }
+            { level: 'K2', questions: '36問', scorePerQuestion: '1点', totalScore: '36点' },
+            { level: 'K3', questions: '5問', scorePerQuestion: '1点', totalScore: '5点' },
+            { level: 'K4', questions: '7問', scorePerQuestion: '1点', totalScore: '7点' },
         ],
         chapterDistribution: [
-            { chapter: "1章", kLevel: "K2-K4", questions: "34問", scorePerQuestion: "1点", totalScore: "34点" },
-            { chapter: "2章", kLevel: "K2-K4", questions: "18問", scorePerQuestion: "1点", totalScore: "18点" },
-            { chapter: "3章", kLevel: "K2-K4", questions: "13問", scorePerQuestion: "1点", totalScore: "13点" }
-        ]
-    }
+            { chapter: '1章', kLevel: 'K2-K4', questions: '34問', scorePerQuestion: '1点', totalScore: '34点' },
+            { chapter: '2章', kLevel: 'K2-K4', questions: '18問', scorePerQuestion: '1点', totalScore: '18点' },
+            { chapter: '3章', kLevel: 'K2-K4', questions: '13問', scorePerQuestion: '1点', totalScore: '13点' },
+        ],
+    },
 };
 
 const examInfo = EXAM_INFO[getExam()] ?? EXAM_INFO.alta;
@@ -145,14 +183,49 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 export function initStudyScreen() {
-    const examDurationEl = document.getElementById('exam-duration');
-    const examTotalQEl = document.getElementById('exam-total-questions');
+    const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+
+    setText('exam-page-title', examInfo.pageTitle);
+    setText('exam-overview', examInfo.overview);
+    setText('exam-syllabus-note', examInfo.syllabusNote);
+    setText('exam-duration', examInfo.duration);
+    setText('exam-total-questions', examInfo.totalQuestions);
+    setText('exam-format', examInfo.format);
+
+    const scopeHeading = document.getElementById('exam-scope-heading');
+    if (scopeHeading) scopeHeading.textContent = examInfo.scopeHeading;
+
+    const scopeList = document.getElementById('exam-scope-list');
+    if (scopeList) {
+        scopeList.innerHTML = '';
+        examInfo.scope.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            scopeList.appendChild(li);
+        });
+    }
+
+    const reqList = document.getElementById('exam-requirements-list');
+    if (reqList) {
+        reqList.innerHTML = '';
+        examInfo.requirements.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            reqList.appendChild(li);
+        });
+    }
+
+    const passRates = document.getElementById('exam-pass-rates');
+    if (passRates) {
+        passRates.innerHTML = '';
+        examInfo.passRates.forEach(text => {
+            const p = document.createElement('p');
+            p.textContent = text;
+            passRates.appendChild(p);
+        });
+    }
+
     const kLevelTbody = document.querySelector('#k-level-distribution-table tbody');
-    const chapterTbody = document.querySelector('#chapter-distribution-table tbody');
-
-    if (examDurationEl) examDurationEl.textContent = examInfo.duration;
-    if (examTotalQEl) examTotalQEl.textContent = examInfo.totalQuestions;
-
     if (kLevelTbody) {
         kLevelTbody.innerHTML = '';
         examInfo.kLevelDistribution.forEach(item => {
@@ -162,6 +235,8 @@ export function initStudyScreen() {
             });
         });
     }
+
+    const chapterTbody = document.querySelector('#chapter-distribution-table tbody');
     if (chapterTbody) {
         chapterTbody.innerHTML = '';
         examInfo.chapterDistribution.forEach(item => {
