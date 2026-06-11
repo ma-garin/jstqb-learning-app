@@ -1,6 +1,6 @@
 {
-  "name": "QA基礎学習PWA",
-  "short_name": "QA基礎学習",
+  "name": "JSTQB-Study",
+  "short_name": "JSTQB-Study",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#f8f9fa",

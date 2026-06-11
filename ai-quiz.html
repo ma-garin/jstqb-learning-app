@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>コンテンツ方針 - QA基礎学習PWA</title>
+    <title>コンテンツ方針 - JSTQB-Study</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/components.css">
@@ -15,7 +15,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="QA基礎学習PWA">
+    <meta name="apple-mobile-web-app-title" content="JSTQB-Study">
 </head>
 <body>
     <header class="app-header">
@@ -63,6 +63,12 @@
         </a>
     </nav>
 
-    <script type="module" src="js/utils.js"></script>
+    <script type="module">
+        import { setupCommonNavigation, setupBackToTopButtons } from './js/utils.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            setupCommonNavigation();
+            setupBackToTopButtons();
+        });
+    </script>
 </body>
 </html>

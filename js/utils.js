@@ -53,7 +53,7 @@ function injectSettingsButton(currentPage) {
 
 function updateHeaderTitle() {
     const el = document.querySelector('.header-home-title');
-    if (el) el.textContent = 'QA基礎学習PWA';
+    if (el) el.textContent = 'JSTQB-Study';
 }
 
 function injectRightsDisclaimer() {
@@ -79,12 +79,20 @@ export function setupBackToTopButtons() {
     });
 }
 
+const CERT_FILE_MAP = {
+    'qa-basic': './questionsData.js',
+    'alta': './questionsData_alta.js',
+    'altm': './questionsData_altm.js',
+};
+
 export async function fetchQuestions() {
+    const certId = localStorage.getItem('qa_selected_cert') || 'qa-basic';
+    const file = CERT_FILE_MAP[certId] || CERT_FILE_MAP['qa-basic'];
     try {
-        const { questions } = await import('./questionsData.js');
+        const { questions } = await import(file);
         return questions;
     } catch (err) {
-        console.error('QA基礎問題データの読み込みエラー:', err);
+        console.error('問題データの読み込みエラー:', err);
         return [];
     }
 }

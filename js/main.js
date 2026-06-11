@@ -1,16 +1,69 @@
 // js/main.js - ホーム画面の初期化
-
 import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions } from './utils.js';
 import { getDashboardStats, getWrongQuestionIds } from './progress.js';
-import { topicMap } from './topicMap.js';
+import { topicMaps } from './topicMap.js';
+import { CERTIFICATIONS, getSelectedCert, setSelectedCert } from './certifications.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     setupCommonNavigation();
     setupBackToTopButtons();
+    renderCertSelector();
     await renderDashboard();
 });
 
+function renderCertSelector() {
+    const container = document.getElementById('cert-cards');
+    if (!container) return;
+    const selectedId = getSelectedCert();
+
+    container.textContent = '';
+    CERTIFICATIONS.forEach(cert => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'cert-card' + (cert.id === selectedId ? ' cert-card--active' : '') + (!cert.available ? ' cert-card--disabled' : '');
+        card.disabled = !cert.available;
+        const nameEl = document.createElement('span');
+        nameEl.className = 'cert-card-name';
+        nameEl.textContent = cert.name;
+
+        const levelEl = document.createElement('span');
+        levelEl.className = `cert-card-level cert-card-level--${cert.level}`;
+        levelEl.textContent = levelLabel(cert.level);
+
+        const descEl = document.createElement('span');
+        descEl.className = 'cert-card-desc';
+        descEl.textContent = cert.description;
+
+        const statusEl = document.createElement('span');
+        if (cert.available) {
+            statusEl.className = 'cert-card-count';
+            statusEl.textContent = `${cert.questionCount}問`;
+        } else {
+            statusEl.className = 'cert-card-coming';
+            statusEl.textContent = '近日公開';
+        }
+
+        card.append(nameEl, levelEl, descEl, statusEl);
+        card.addEventListener('click', async () => {
+            setSelectedCert(cert.id);
+            container.querySelectorAll('.cert-card').forEach(c => c.classList.remove('cert-card--active'));
+            card.classList.add('cert-card--active');
+            await renderDashboard();
+        });
+        container.appendChild(card);
+    });
+}
+
+function levelLabel(level) {
+    const labels = { foundation: '基礎', advanced: '上級', specialist: '専門' };
+    return labels[level] || level;
+}
+
 async function renderDashboard() {
+    const certId = getSelectedCert();
+    const cert = CERTIFICATIONS.find(c => c.id === certId) || CERTIFICATIONS[0];
+    const map = topicMaps[cert.id] || topicMaps['qa-basic'];
+
     const questions = await fetchQuestions();
     const totalQuestions = questions.length;
     const { todayAnswered, todayCorrect, accuracy, streak, totalAnswered } = getDashboardStats();
@@ -19,11 +72,11 @@ async function renderDashboard() {
         const el = document.getElementById(id);
         if (el) el.textContent = text;
     };
-    setText('action-desc-quiz', `自作問題${totalQuestions}問で基礎を確認`);
+    setText('action-desc-quiz', `${cert.name}の自作問題 ${totalQuestions}問で確認`);
     setText('action-desc-problems', `全${totalQuestions}問・独自解説付き`);
-    setText('action-desc-syllabus', `${topicMap.length}章の学習トピックを確認`);
-    setText('info-syllabus-version', `個人制作のQA基礎コース ・ 自作問題${totalQuestions}問`);
-    setText('greeting-sub', 'ソフトウェアテスト基礎トレーナー');
+    setText('action-desc-syllabus', `${cert.name}: ${map.length}章の学習トピック`);
+    setText('info-syllabus-version', `${cert.fullName} ・ 自作問題${totalQuestions}問`);
+    setText('greeting-sub', cert.fullName);
     setText('stat-answered', todayAnswered);
     setText('stat-correct', todayCorrect);
     setText('stat-accuracy', accuracy !== null ? `${accuracy}%` : '—');

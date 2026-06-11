@@ -1,11 +1,19 @@
 // js/syllabus.js - 公開資料の本文は表示せず、学習位置を示す参照情報のみを扱う。
 import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
-import { topicMap, officialLinks } from './topicMap.js';
+import { topicMaps, officialLinks } from './topicMap.js';
+import { CERTIFICATIONS, getSelectedCert } from './certifications.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     setupCommonNavigation();
     setupBackToTopButtons();
-    initSyllabusScreen(topicMap);
+    const certId = getSelectedCert();
+    const cert = CERTIFICATIONS.find(c => c.id === certId) || CERTIFICATIONS[0];
+    const map = topicMaps[cert.id] || topicMaps['qa-basic'];
+
+    const headerTitle = document.querySelector('.header-title');
+    if (headerTitle) headerTitle.textContent = `学習範囲マップ - ${cert.name}`;
+
+    initSyllabusScreen(map);
 });
 
 export function initSyllabusScreen(chapters) {
