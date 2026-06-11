@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { setTextWithBreaks } from '../js/utils.js';
+import { fetchQuestions, setTextWithBreaks } from '../js/utils.js';
+import { setSelectedCert } from '../js/certifications.js';
 
 describe('setTextWithBreaks', () => {
     let el;
@@ -42,5 +43,21 @@ describe('setTextWithBreaks', () => {
         setTextWithBreaks(el, '行1\x5cn');
         const brs = el.querySelectorAll('br');
         expect(brs).toHaveLength(1);
+    });
+});
+
+describe('fetchQuestions', () => {
+    beforeEach(() => {
+        localStorage.clear();
+    });
+
+    it('選択中の資格に対応する問題データを読み込む', async () => {
+        setSelectedCert('fl');
+        const flQuestions = await fetchQuestions();
+        setSelectedCert('alta');
+        const altaQuestions = await fetchQuestions();
+
+        expect(flQuestions[0].id).toMatch(/^fl-/);
+        expect(altaQuestions[0].id).toMatch(/^alta-/);
     });
 });

@@ -1,6 +1,8 @@
 // js/quiz.js
 import { setupCommonNavigation, setupBackToTopButtons, setTextWithBreaks } from './utils.js';
 import { addWrongQuestion, removeCorrectQuestion, recordAnswer } from './progress.js';
+import { getSelectedCert } from './certifications.js';
+import { certKey, SUFFIXES } from './storage.js';
 
 // Pure functions — exported for testing
 export function normalize(answer) {
@@ -50,8 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const explanationEl = document.getElementById('explanation-text');
     const nextBtn = document.getElementById('next-question-button');
     const progressFill = document.getElementById('quiz-progress-fill');
+    const certId = getSelectedCert();
+    const sessionKeys = {
+        questions: certKey(certId, SUFFIXES.quizQuestions),
+        nextIndex: certKey(certId, SUFFIXES.quizNextIndex),
+        correctCount: certKey(certId, SUFFIXES.quizCorrectCount),
+        paused: certKey(certId, SUFFIXES.quizPaused),
+    };
 
-    const saved = localStorage.getItem('qa_basic_quiz_questions');
+    const saved = localStorage.getItem(sessionKeys.questions);
     if (!saved) {
         console.error('クイズデータが見つかりません。学習開始画面に戻ります。');
         window.location.href = 'study.html';
@@ -59,15 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     questionsData = JSON.parse(saved);
-    currentQuestionIndex = parseInt(localStorage.getItem('qa_basic_quiz_next_index') || '0', 10);
-    correctAnswersCount = parseInt(localStorage.getItem('qa_basic_quiz_correct_count') || '0', 10);
+    currentQuestionIndex = parseInt(localStorage.getItem(sessionKeys.nextIndex) || '0', 10);
+    correctAnswersCount = parseInt(localStorage.getItem(sessionKeys.correctCount) || '0', 10);
 
     submitBtn?.addEventListener('click', submitAnswer);
     nextBtn?.addEventListener('click', goToNext);
 
     // 中断ボタン（ヘッダーの戻るボタンと「中断して保存」テキスト）
     const pauseHandler = () => {
-        localStorage.setItem('qa_basic_quiz_paused', 'true');
+        localStorage.setItem(sessionKeys.paused, 'true');
         window.location.href = 'study.html';
     };
     document.getElementById('quiz-pause-btn')?.addEventListener('click', pauseHandler);
@@ -172,8 +181,8 @@ document.addEventListener('DOMContentLoaded', () => {
         recordAnswer(isCorrect, qId);
 
         // Save next-to-show index so reload cannot re-answer this question
-        localStorage.setItem('qa_basic_quiz_next_index', String(currentQuestionIndex + 1));
-        localStorage.setItem('qa_basic_quiz_correct_count', String(correctAnswersCount));
+        localStorage.setItem(sessionKeys.nextIndex, String(currentQuestionIndex + 1));
+        localStorage.setItem(sessionKeys.correctCount, String(correctAnswersCount));
     }
 
     function goToNext() {

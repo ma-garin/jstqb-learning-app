@@ -1,21 +1,30 @@
 // js/study.js
 import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions } from './utils.js';
 import { getWrongQuestionIds } from './progress.js';
+import { getCertById, getSelectedCert } from './certifications.js';
+import { certKey, SUFFIXES } from './storage.js';
+import { topicMaps } from './topicMap.js';
 
-const SESSION_KEYS = {
-    questions: 'qa_basic_quiz_questions',
-    nextIndex: 'qa_basic_quiz_next_index',
-    correctCount: 'qa_basic_quiz_correct_count',
-    answerLog: 'qa_basic_quiz_answer_log',
-    paused: 'qa_basic_quiz_paused',
-};
+function getSessionKeys() {
+    const certId = getSelectedCert();
+    return {
+        questions: certKey(certId, SUFFIXES.quizQuestions),
+        nextIndex: certKey(certId, SUFFIXES.quizNextIndex),
+        correctCount: certKey(certId, SUFFIXES.quizCorrectCount),
+        answerLog: certKey(certId, SUFFIXES.quizAnswerLog),
+        paused: certKey(certId, SUFFIXES.quizPaused),
+    };
+}
 
-const COURSE_INFO = {
-    pageTitle: 'QA基礎コース',
-    overview: '新卒・初学者が、ソフトウェアの品質確認を現場の場面と結び付けて学ぶための個人制作コースです。資格試験の模擬教材ではありません。',
-    note: '章番号・節番号・LOコード・Kレベルは学習範囲を探すための参照情報です。公式情報は必ず公開元の資料で確認してください。',
-    topics: ['テストの目的と期待結果', '入力値のグループ分けと境界の確認', '状態変化と変更後の確認', 'リスクに応じた優先順位', '伝わる不具合報告とレビュー'],
-};
+function getCourseInfo() {
+    const cert = getCertById(getSelectedCert());
+    return {
+        pageTitle: `${cert.fullName} コース`,
+        overview: `${cert.description}を、現場の場面と結び付けて学ぶための個人制作コースです。資格試験の模擬教材ではありません。`,
+        note: '章番号・節番号・LOコード・Kレベルは学習範囲を探すための参照情報です。公式情報は必ず公開元の資料で確認してください。',
+        topics: [],
+    };
+}
 
 export function shuffleQuestions(questions) {
     const arr = [...questions];
@@ -27,22 +36,24 @@ export function shuffleQuestions(questions) {
 }
 
 function clearQuizSession() {
-    Object.values(SESSION_KEYS).forEach(key => localStorage.removeItem(key));
+    Object.values(getSessionKeys()).forEach(key => localStorage.removeItem(key));
 }
 
 function startQuiz(questions) {
+    const sessionKeys = getSessionKeys();
     clearQuizSession();
-    localStorage.setItem(SESSION_KEYS.questions, JSON.stringify(questions));
-    localStorage.setItem(SESSION_KEYS.nextIndex, '0');
-    localStorage.setItem(SESSION_KEYS.correctCount, '0');
+    localStorage.setItem(sessionKeys.questions, JSON.stringify(questions));
+    localStorage.setItem(sessionKeys.nextIndex, '0');
+    localStorage.setItem(sessionKeys.correctCount, '0');
     window.location.href = 'quiz.html';
 }
 
 function hasPausedSession() {
-    const nextIndex = parseInt(localStorage.getItem(SESSION_KEYS.nextIndex) || '0', 10);
-    return localStorage.getItem(SESSION_KEYS.paused) === 'true'
+    const sessionKeys = getSessionKeys();
+    const nextIndex = parseInt(localStorage.getItem(sessionKeys.nextIndex) || '0', 10);
+    return localStorage.getItem(sessionKeys.paused) === 'true'
         && nextIndex > 0
-        && !!localStorage.getItem(SESSION_KEYS.questions);
+        && !!localStorage.getItem(sessionKeys.questions);
 }
 
 function renderResumeSection() {
@@ -52,9 +63,10 @@ function renderResumeSection() {
         section.style.display = 'none';
         return;
     }
-    const total = JSON.parse(localStorage.getItem(SESSION_KEYS.questions) || '[]').length;
-    const nextIndex = parseInt(localStorage.getItem(SESSION_KEYS.nextIndex) || '0', 10);
-    const correct = parseInt(localStorage.getItem(SESSION_KEYS.correctCount) || '0', 10);
+    const sessionKeys = getSessionKeys();
+    const total = JSON.parse(localStorage.getItem(sessionKeys.questions) || '[]').length;
+    const nextIndex = parseInt(localStorage.getItem(sessionKeys.nextIndex) || '0', 10);
+    const correct = parseInt(localStorage.getItem(sessionKeys.correctCount) || '0', 10);
     const progress = document.getElementById('resume-progress-text');
     if (progress) progress.textContent = `${nextIndex}/${total}問完了・正解${correct}問`;
     section.style.display = 'block';
@@ -63,12 +75,14 @@ function renderResumeSection() {
 document.addEventListener('DOMContentLoaded', () => {
     setupCommonNavigation();
     setupBackToTopButtons();
+    const courseTitle = document.getElementById('quiz-course-title');
+    if (courseTitle) courseTitle.textContent = `${getCertById(getSelectedCert()).name} クイズ`;
     initStudyScreen();
     renderWeakQuizSection();
     renderResumeSection();
 
     document.getElementById('resume-quiz-button')?.addEventListener('click', () => {
-        localStorage.removeItem(SESSION_KEYS.paused);
+        localStorage.removeItem(getSessionKeys().paused);
         window.location.href = 'quiz.html';
     });
     document.getElementById('discard-quiz-button')?.addEventListener('click', () => {
@@ -89,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start-weak-quiz-button')?.addEventListener('click', async () => {
         const wrongIds = getWrongQuestionIds();
         if (!wrongIds.length) {
-            alert('復習対象はまだありません。まずQA基礎クイズに挑戦してください。');
+            alert(`復習対象はまだありません。まず${getCertById(getSelectedCert()).name}クイズに挑戦してください。`);
             return;
         }
         const questions = (await fetchQuestions()).filter(q => wrongIds.includes(q.id));
@@ -98,13 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 export function initStudyScreen() {
+    const courseInfo = getCourseInfo();
+    const map = topicMaps[getSelectedCert()] || topicMaps.fl;
     const setText = (id, text) => {
         const el = document.getElementById(id);
         if (el) el.textContent = text;
     };
-    setText('exam-page-title', COURSE_INFO.pageTitle);
-    setText('exam-overview', COURSE_INFO.overview);
-    setText('exam-syllabus-note', COURSE_INFO.note);
+    setText('exam-page-title', courseInfo.pageTitle);
+    setText('exam-overview', courseInfo.overview);
+    setText('exam-syllabus-note', courseInfo.note);
     setText('exam-scope-heading', 'このコースで扱う内容');
     setText('exam-duration', '自分のペースで進められます');
     setText('exam-total-questions', '自作問題を収録');
@@ -113,9 +129,9 @@ export function initStudyScreen() {
     const scope = document.getElementById('exam-scope-list');
     if (scope) {
         scope.textContent = '';
-        COURSE_INFO.topics.forEach(text => {
+        map.forEach(chapter => {
             const li = document.createElement('li');
-            li.textContent = text;
+            li.textContent = `${chapter.chapter}章 ${chapter.title}`;
             scope.appendChild(li);
         });
     }

@@ -2,11 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { shuffleQuestions } from '../js/study.js';
 
 const SAMPLE_QUESTIONS = [
-    { id: 'q1', question: '問題1' },
-    { id: 'q2', question: '問題2' },
-    { id: 'q3', question: '問題3' },
-    { id: 'q4', question: '問題4' },
-    { id: 'q5', question: '問題5' },
+    { id: 'fl-001', question: '問題1' },
+    { id: 'fl-002', question: '問題2' },
+    { id: 'fl-003', question: '問題3' },
+    { id: 'fl-004', question: '問題4' },
+    { id: 'fl-005', question: '問題5' },
 ];
 
 describe('shuffleQuestions', () => {
@@ -29,7 +29,7 @@ describe('shuffleQuestions', () => {
     });
 
     it('1要素配列はそのまま返す', () => {
-        const single = [{ id: 'q1' }];
+        const single = [{ id: 'fl-001' }];
         expect(shuffleQuestions(single)).toEqual(single);
     });
 

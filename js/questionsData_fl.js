@@ -1,7 +1,7 @@
-// 制作者が独自に作成したQA基礎問題。公式問題・公式本文は使用しない。
+// 制作者が独自に作成したFoundation Level学習問題。公式問題・公式本文は使用しない。
 export const questions = [
     {
-        id: 'qa-basic-001',
+        id: 'fl-001',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -15,7 +15,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-002',
+        id: 'fl-002',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -29,7 +29,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-003',
+        id: 'fl-003',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -43,7 +43,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-004',
+        id: 'fl-004',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -57,7 +57,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-005',
+        id: 'fl-005',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -71,7 +71,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-006',
+        id: 'fl-006',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -85,7 +85,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-007',
+        id: 'fl-007',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -99,7 +99,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-008',
+        id: 'fl-008',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -113,7 +113,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-009',
+        id: 'fl-009',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -127,7 +127,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-010',
+        id: 'fl-010',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -141,7 +141,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-011',
+        id: 'fl-011',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -155,7 +155,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-012',
+        id: 'fl-012',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -169,7 +169,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-013',
+        id: 'fl-013',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -183,7 +183,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-014',
+        id: 'fl-014',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -197,7 +197,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-015',
+        id: 'fl-015',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -211,7 +211,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-016',
+        id: 'fl-016',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -225,7 +225,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-017',
+        id: 'fl-017',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -239,7 +239,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-018',
+        id: 'fl-018',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -253,7 +253,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-019',
+        id: 'fl-019',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -267,7 +267,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-020',
+        id: 'fl-020',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -281,7 +281,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-021',
+        id: 'fl-021',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -295,7 +295,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-022',
+        id: 'fl-022',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -309,7 +309,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-023',
+        id: 'fl-023',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -323,7 +323,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-024',
+        id: 'fl-024',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -337,7 +337,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-025',
+        id: 'fl-025',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -351,7 +351,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-026',
+        id: 'fl-026',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -365,7 +365,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-027',
+        id: 'fl-027',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -379,7 +379,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-028',
+        id: 'fl-028',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -393,7 +393,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-029',
+        id: 'fl-029',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -407,7 +407,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-030',
+        id: 'fl-030',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -421,7 +421,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-031',
+        id: 'fl-031',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -435,7 +435,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-032',
+        id: 'fl-032',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -449,7 +449,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-033',
+        id: 'fl-033',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -463,7 +463,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-034',
+        id: 'fl-034',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -477,7 +477,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-035',
+        id: 'fl-035',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -491,7 +491,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-036',
+        id: 'fl-036',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -505,7 +505,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-037',
+        id: 'fl-037',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -519,7 +519,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-038',
+        id: 'fl-038',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -533,7 +533,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-039',
+        id: 'fl-039',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -547,7 +547,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-040',
+        id: 'fl-040',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -561,7 +561,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-041',
+        id: 'fl-041',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -575,7 +575,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-042',
+        id: 'fl-042',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -589,7 +589,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-043',
+        id: 'fl-043',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -603,7 +603,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-044',
+        id: 'fl-044',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -617,7 +617,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-045',
+        id: 'fl-045',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -631,7 +631,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-046',
+        id: 'fl-046',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -645,7 +645,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-047',
+        id: 'fl-047',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -659,7 +659,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-048',
+        id: 'fl-048',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -673,7 +673,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-049',
+        id: 'fl-049',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -687,7 +687,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-050',
+        id: 'fl-050',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -701,7 +701,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-051',
+        id: 'fl-051',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -715,7 +715,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-052',
+        id: 'fl-052',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -729,7 +729,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-053',
+        id: 'fl-053',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -743,7 +743,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-054',
+        id: 'fl-054',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -757,7 +757,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-055',
+        id: 'fl-055',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -771,7 +771,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-056',
+        id: 'fl-056',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -785,7 +785,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-057',
+        id: 'fl-057',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -799,7 +799,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-058',
+        id: 'fl-058',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -813,7 +813,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-059',
+        id: 'fl-059',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -827,7 +827,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-060',
+        id: 'fl-060',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -841,7 +841,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-061',
+        id: 'fl-061',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -855,7 +855,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-062',
+        id: 'fl-062',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -869,7 +869,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-063',
+        id: 'fl-063',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -883,7 +883,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-064',
+        id: 'fl-064',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -897,7 +897,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-065',
+        id: 'fl-065',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -911,7 +911,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-066',
+        id: 'fl-066',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -925,7 +925,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-067',
+        id: 'fl-067',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -939,7 +939,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-068',
+        id: 'fl-068',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -953,7 +953,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-069',
+        id: 'fl-069',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -967,7 +967,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-070',
+        id: 'fl-070',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -981,7 +981,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-071',
+        id: 'fl-071',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -995,7 +995,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-072',
+        id: 'fl-072',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1009,7 +1009,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-073',
+        id: 'fl-073',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1023,7 +1023,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-074',
+        id: 'fl-074',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1037,7 +1037,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-075',
+        id: 'fl-075',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1051,7 +1051,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-076',
+        id: 'fl-076',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1065,7 +1065,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-077',
+        id: 'fl-077',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1079,7 +1079,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-078',
+        id: 'fl-078',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1093,7 +1093,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-079',
+        id: 'fl-079',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1107,7 +1107,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-080',
+        id: 'fl-080',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1121,7 +1121,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-081',
+        id: 'fl-081',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1135,7 +1135,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-082',
+        id: 'fl-082',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1149,7 +1149,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-083',
+        id: 'fl-083',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1163,7 +1163,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-084',
+        id: 'fl-084',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1177,7 +1177,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-085',
+        id: 'fl-085',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1191,7 +1191,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-086',
+        id: 'fl-086',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1205,7 +1205,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-087',
+        id: 'fl-087',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1219,7 +1219,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-088',
+        id: 'fl-088',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1233,7 +1233,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-089',
+        id: 'fl-089',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1247,7 +1247,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-090',
+        id: 'fl-090',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1261,7 +1261,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-091',
+        id: 'fl-091',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1275,7 +1275,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-092',
+        id: 'fl-092',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1289,7 +1289,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-093',
+        id: 'fl-093',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1303,7 +1303,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-094',
+        id: 'fl-094',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1317,7 +1317,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-095',
+        id: 'fl-095',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1331,7 +1331,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-096',
+        id: 'fl-096',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1345,7 +1345,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-097',
+        id: 'fl-097',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1359,7 +1359,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-098',
+        id: 'fl-098',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1373,7 +1373,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-099',
+        id: 'fl-099',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1387,7 +1387,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-100',
+        id: 'fl-100',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1401,7 +1401,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-101',
+        id: 'fl-101',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1415,7 +1415,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-102',
+        id: 'fl-102',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1429,7 +1429,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-103',
+        id: 'fl-103',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1443,7 +1443,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-104',
+        id: 'fl-104',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1457,7 +1457,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-105',
+        id: 'fl-105',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1471,7 +1471,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-106',
+        id: 'fl-106',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1485,7 +1485,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-107',
+        id: 'fl-107',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1499,7 +1499,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-108',
+        id: 'fl-108',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1513,7 +1513,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-109',
+        id: 'fl-109',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1527,7 +1527,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-110',
+        id: 'fl-110',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1541,7 +1541,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-111',
+        id: 'fl-111',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1555,7 +1555,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-112',
+        id: 'fl-112',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1569,7 +1569,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-113',
+        id: 'fl-113',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1583,7 +1583,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-114',
+        id: 'fl-114',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1597,7 +1597,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-115',
+        id: 'fl-115',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1611,7 +1611,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-116',
+        id: 'fl-116',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1625,7 +1625,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-117',
+        id: 'fl-117',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1639,7 +1639,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-118',
+        id: 'fl-118',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1653,7 +1653,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-119',
+        id: 'fl-119',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1667,7 +1667,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-120',
+        id: 'fl-120',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1681,7 +1681,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-121',
+        id: 'fl-121',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1695,7 +1695,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-122',
+        id: 'fl-122',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1709,7 +1709,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-123',
+        id: 'fl-123',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1723,7 +1723,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-124',
+        id: 'fl-124',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1737,7 +1737,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-125',
+        id: 'fl-125',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1751,7 +1751,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-126',
+        id: 'fl-126',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1765,7 +1765,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-127',
+        id: 'fl-127',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1779,7 +1779,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-128',
+        id: 'fl-128',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1793,7 +1793,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-129',
+        id: 'fl-129',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1807,7 +1807,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-130',
+        id: 'fl-130',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1821,7 +1821,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-131',
+        id: 'fl-131',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1835,7 +1835,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-132',
+        id: 'fl-132',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1849,7 +1849,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-133',
+        id: 'fl-133',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1863,7 +1863,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-134',
+        id: 'fl-134',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1877,7 +1877,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-135',
+        id: 'fl-135',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1891,7 +1891,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-136',
+        id: 'fl-136',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1905,7 +1905,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-137',
+        id: 'fl-137',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1919,7 +1919,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-138',
+        id: 'fl-138',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1933,7 +1933,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-139',
+        id: 'fl-139',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1947,7 +1947,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-140',
+        id: 'fl-140',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1961,7 +1961,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-141',
+        id: 'fl-141',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1975,7 +1975,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-142',
+        id: 'fl-142',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -1989,7 +1989,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-143',
+        id: 'fl-143',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -2003,7 +2003,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-144',
+        id: 'fl-144',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -2017,7 +2017,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-145',
+        id: 'fl-145',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -2031,7 +2031,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-146',
+        id: 'fl-146',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -2045,7 +2045,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-147',
+        id: 'fl-147',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -2059,7 +2059,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-148',
+        id: 'fl-148',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -2073,7 +2073,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-149',
+        id: 'fl-149',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -2087,7 +2087,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-150',
+        id: 'fl-150',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -2101,7 +2101,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-151',
+        id: 'fl-151',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',
@@ -2115,7 +2115,7 @@ export const questions = [
         reviewerStatus: 'reviewed',
     },
     {
-        id: 'qa-basic-152',
+        id: 'fl-152',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB/ISTQB public syllabus referenced only as topic map',

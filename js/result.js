@@ -1,13 +1,19 @@
 // js/result.js
 
 import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
+import { getSelectedCert } from './certifications.js';
+import { certKey, SUFFIXES } from './storage.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     setupCommonNavigation();
     setupBackToTopButtons();
 
-    const totalQuestions = JSON.parse(localStorage.getItem('qa_basic_quiz_questions') || '[]').length;
-    const correctCount = parseInt(localStorage.getItem('qa_basic_quiz_correct_count') || '0', 10);
+    const certId = getSelectedCert();
+    const questionsKey = certKey(certId, SUFFIXES.quizQuestions);
+    const nextIndexKey = certKey(certId, SUFFIXES.quizNextIndex);
+    const correctCountKey = certKey(certId, SUFFIXES.quizCorrectCount);
+    const totalQuestions = JSON.parse(localStorage.getItem(questionsKey) || '[]').length;
+    const correctCount = parseInt(localStorage.getItem(correctCountKey) || '0', 10);
     const accuracy = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
 
     const elScore = document.getElementById('result-score-value');
@@ -37,9 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elAccuracy) elAccuracy.textContent = `${accuracy}%`;
 
     document.getElementById('restart-quiz-button')?.addEventListener('click', () => {
-        localStorage.removeItem('qa_basic_quiz_questions');
-        localStorage.removeItem('qa_basic_quiz_next_index');
-        localStorage.removeItem('qa_basic_quiz_correct_count');
+        localStorage.removeItem(questionsKey);
+        localStorage.removeItem(nextIndexKey);
+        localStorage.removeItem(correctCountKey);
         window.location.href = 'study.html';
     });
 

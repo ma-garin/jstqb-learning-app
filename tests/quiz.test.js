@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { normalize, getAnswerText, formatLabel } from '../js/quiz.js';
 
 const SAMPLE_QUESTION = {
-    id: 'qa-basic-001',
+    id: 'fl-001',
     question: 'テスト問題',
     choices: [
         'a. 選択肢A',

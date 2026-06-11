@@ -1,18 +1,19 @@
 // js/settings.js
 import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
 import { clearAllProgress, clearWrongQuestions, getDashboardStats, getWrongQuestionIds } from './progress.js';
-
-const QUIZ_KEYS = [
-    'qa_basic_quiz_questions',
-    'qa_basic_quiz_next_index',
-    'qa_basic_quiz_correct_count',
-    'qa_basic_quiz_answer_log',
-    'qa_basic_quiz_paused',
-];
+import { getSelectedCert } from './certifications.js';
+import { certKey, SUFFIXES } from './storage.js';
 
 function resetAllData() {
+    const certId = getSelectedCert();
     clearAllProgress();
-    QUIZ_KEYS.forEach(key => localStorage.removeItem(key));
+    [
+        SUFFIXES.quizQuestions,
+        SUFFIXES.quizNextIndex,
+        SUFFIXES.quizCorrectCount,
+        SUFFIXES.quizAnswerLog,
+        SUFFIXES.quizPaused,
+    ].forEach(suffix => localStorage.removeItem(certKey(certId, suffix)));
 }
 
 function renderStats() {
@@ -47,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const appInfo = document.querySelectorAll('.settings-item-desc');
     appInfo.forEach(item => {
         if (item.textContent.includes('CTAL') || item.textContent.includes('ALTA')) {
-            item.textContent = '個人制作の非公式QA基礎教材。公式本文・公式問題は収録していません。';
+            item.textContent = '個人制作の非公式テスト技術学習教材。公式本文・公式問題は収録していません。';
         }
     });
 });

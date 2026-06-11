@@ -62,7 +62,7 @@ function levelLabel(level) {
 async function renderDashboard() {
     const certId = getSelectedCert();
     const cert = CERTIFICATIONS.find(c => c.id === certId) || CERTIFICATIONS[0];
-    const map = topicMaps[cert.id] || topicMaps['qa-basic'];
+    const map = topicMaps[cert.id] || topicMaps.fl;
 
     const questions = await fetchQuestions();
     const totalQuestions = questions.length;

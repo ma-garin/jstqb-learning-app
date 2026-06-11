@@ -1,14 +1,14 @@
 // 学習対象資格の定義。問題数は更新時に同期すること。
 export const CERTIFICATIONS = [
     {
-        id: 'qa-basic',
-        name: 'QA基礎',
-        fullName: 'ソフトウェアテスト QA基礎',
+        id: 'fl',
+        name: 'FL',
+        fullName: 'Foundation Level（FL）',
         description: 'テストの基本・設計技法・プロセス管理など基礎全般',
         level: 'foundation',
         questionCount: 152,
         available: true,
-        dataFile: 'questionsData',
+        dataFile: 'questionsData_fl',
     },
     {
         id: 'alta',
@@ -55,7 +55,7 @@ export const CERTIFICATIONS = [
 export const SELECTED_CERT_KEY = 'qa_selected_cert';
 
 export function getSelectedCert() {
-    return localStorage.getItem(SELECTED_CERT_KEY) || 'qa-basic';
+    return localStorage.getItem(SELECTED_CERT_KEY) || 'fl';
 }
 
 export function setSelectedCert(certId) {

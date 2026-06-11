@@ -1,21 +1,14 @@
-// js/progress.js - 単一QA基礎コースの進捗管理
-
-const KEYS = {
-    today: 'qa_basic_progress_today',
-    streak: 'qa_basic_streak',
-    lastDate: 'qa_basic_last_date',
-    total: 'qa_basic_total_answered',
-    wrong: 'qa_basic_wrong_questions',
-    answeredIds: 'qa_basic_answered_ids',
-};
+// js/progress.js - 資格ごとの進捗管理
+import { getSelectedCert } from './certifications.js';
+import { certKey, GLOBAL_KEYS, SUFFIXES } from './storage.js';
 
 function todayStr() {
     return new Date().toISOString().slice(0, 10);
 }
 
-function getTodayProgress() {
+function getTodayProgress(certId = getSelectedCert()) {
     try {
-        const value = JSON.parse(localStorage.getItem(KEYS.today) || 'null');
+        const value = JSON.parse(localStorage.getItem(certKey(certId, SUFFIXES.today)) || 'null');
         return value?.date === todayStr() ? value : { answered: 0, correct: 0, date: todayStr() };
     } catch {
         return { answered: 0, correct: 0, date: todayStr() };
@@ -32,73 +25,86 @@ function readArray(key) {
 }
 
 export function recordAnswer(isCorrect, questionId = null) {
-    const progress = getTodayProgress();
+    const certId = getSelectedCert();
+    const progress = getTodayProgress(certId);
     progress.answered += 1;
     if (isCorrect) progress.correct += 1;
     progress.date = todayStr();
-    localStorage.setItem(KEYS.today, JSON.stringify(progress));
+    localStorage.setItem(certKey(certId, SUFFIXES.today), JSON.stringify(progress));
 
     const today = todayStr();
-    const lastDate = localStorage.getItem(KEYS.lastDate);
+    const lastDate = localStorage.getItem(GLOBAL_KEYS.lastDate);
     if (lastDate !== today) {
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
         const nextStreak = lastDate === yesterday.toISOString().slice(0, 10)
-            ? parseInt(localStorage.getItem(KEYS.streak) || '0', 10) + 1
+            ? parseInt(localStorage.getItem(GLOBAL_KEYS.streak) || '0', 10) + 1
             : 1;
-        localStorage.setItem(KEYS.streak, String(nextStreak));
-        localStorage.setItem(KEYS.lastDate, today);
+        localStorage.setItem(GLOBAL_KEYS.streak, String(nextStreak));
+        localStorage.setItem(GLOBAL_KEYS.lastDate, today);
     }
 
-    const total = parseInt(localStorage.getItem(KEYS.total) || '0', 10);
-    localStorage.setItem(KEYS.total, String(total + 1));
+    const totalKey = certKey(certId, SUFFIXES.total);
+    const total = parseInt(localStorage.getItem(totalKey) || '0', 10);
+    localStorage.setItem(totalKey, String(total + 1));
     if (questionId) {
-        const ids = readArray(KEYS.answeredIds);
+        const answeredIdsKey = certKey(certId, SUFFIXES.answeredIds);
+        const ids = readArray(answeredIdsKey);
         if (!ids.includes(questionId)) {
             ids.push(questionId);
-            localStorage.setItem(KEYS.answeredIds, JSON.stringify(ids));
+            localStorage.setItem(answeredIdsKey, JSON.stringify(ids));
         }
     }
 }
 
 export function getUniqueAnsweredCount() {
-    return readArray(KEYS.answeredIds).length;
+    const certId = getSelectedCert();
+    return readArray(certKey(certId, SUFFIXES.answeredIds)).length;
 }
 
 export function getWrongQuestionIds() {
-    return readArray(KEYS.wrong);
+    const certId = getSelectedCert();
+    return readArray(certKey(certId, SUFFIXES.wrong));
 }
 
 export function addWrongQuestion(id) {
     if (!id) return;
+    const certId = getSelectedCert();
     const ids = getWrongQuestionIds();
     if (!ids.includes(id)) {
         ids.push(id);
-        localStorage.setItem(KEYS.wrong, JSON.stringify(ids));
+        localStorage.setItem(certKey(certId, SUFFIXES.wrong), JSON.stringify(ids));
     }
 }
 
 export function removeCorrectQuestion(id) {
     if (!id) return;
-    localStorage.setItem(KEYS.wrong, JSON.stringify(getWrongQuestionIds().filter(item => item !== id)));
+    const certId = getSelectedCert();
+    localStorage.setItem(certKey(certId, SUFFIXES.wrong), JSON.stringify(getWrongQuestionIds().filter(item => item !== id)));
 }
 
 export function clearWrongQuestions() {
-    localStorage.removeItem(KEYS.wrong);
+    const certId = getSelectedCert();
+    localStorage.removeItem(certKey(certId, SUFFIXES.wrong));
 }
 
 export function clearAllProgress() {
-    Object.values(KEYS).forEach(key => localStorage.removeItem(key));
+    const certId = getSelectedCert();
+    [SUFFIXES.today, SUFFIXES.total, SUFFIXES.wrong, SUFFIXES.answeredIds, SUFFIXES.lessonsRead]
+        .forEach(suffix => localStorage.removeItem(certKey(certId, suffix)));
+    localStorage.removeItem(GLOBAL_KEYS.streak);
+    localStorage.removeItem(GLOBAL_KEYS.lastDate);
 }
 
 export function getDashboardStats() {
-    const progress = getTodayProgress();
+    const certId = getSelectedCert();
+    const progress = getTodayProgress(certId);
     const accuracy = progress.answered ? Math.round((progress.correct / progress.answered) * 100) : null;
     return {
         todayAnswered: progress.answered,
         todayCorrect: progress.correct,
         accuracy,
-        streak: parseInt(localStorage.getItem(KEYS.streak) || '0', 10),
+        streak: parseInt(localStorage.getItem(GLOBAL_KEYS.streak) || '0', 10),
         totalAnswered: getUniqueAnsweredCount(),
     };
 }

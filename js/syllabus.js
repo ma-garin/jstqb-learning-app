@@ -1,6 +1,6 @@
 // js/syllabus.js - 公開資料の本文は表示せず、学習位置を示す参照情報のみを扱う。
 import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
-import { topicMaps, officialLinks } from './topicMap.js';
+import { topicMaps, topicMapVersions, officialLinks } from './topicMap.js';
 import { CERTIFICATIONS, getSelectedCert } from './certifications.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,15 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
     setupBackToTopButtons();
     const certId = getSelectedCert();
     const cert = CERTIFICATIONS.find(c => c.id === certId) || CERTIFICATIONS[0];
-    const map = topicMaps[cert.id] || topicMaps['qa-basic'];
+    const map = topicMaps[cert.id] || topicMaps.fl;
 
     const headerTitle = document.querySelector('.header-title');
     if (headerTitle) headerTitle.textContent = `学習範囲マップ - ${cert.name}`;
 
-    initSyllabusScreen(map);
+    initSyllabusScreen(map, topicMapVersions[cert.id]);
 });
 
-export function initSyllabusScreen(chapters) {
+export function initSyllabusScreen(chapters, versionNote = '') {
     const navigation = document.getElementById('syllabus-navigation');
     const content = document.getElementById('syllabus-content');
     if (!navigation || !content) return;
@@ -24,7 +24,10 @@ export function initSyllabusScreen(chapters) {
     content.textContent = '';
 
     const note = document.querySelector('.syllabus-version-note');
-    if (note) note.textContent = 'ここでは章・節・LOコード・Kレベルと自作の学習タイトルだけを表示します。公式情報は必ず公式PDFを確認してください。';
+    if (note) {
+        const base = 'ここでは章・節・LOコード・Kレベルと自作の学習タイトルだけを表示します。公式情報は必ず公式シラバスを確認してください。';
+        note.textContent = versionNote ? `${versionNote}。${base}` : base;
+    }
 
     chapters.forEach(chapter => {
         const button = document.createElement('button');

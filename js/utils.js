@@ -1,4 +1,6 @@
 // js/utils.js
+import { getCertById, getSelectedCert } from './certifications.js';
+import { runMigrations } from './migrations.js';
 
 const PAGE_TO_NAV = {
     'index.html': 'nav-home',
@@ -30,6 +32,7 @@ export function setTextWithBreaks(el, text) {
 }
 
 export function setupCommonNavigation() {
+    runMigrations();
     const currentPage = window.location.pathname.split('/').pop() || '';
     const activeId = PAGE_TO_NAV[currentPage];
     if (activeId) document.getElementById(activeId)?.classList.add('active');
@@ -79,15 +82,9 @@ export function setupBackToTopButtons() {
     });
 }
 
-const CERT_FILE_MAP = {
-    'qa-basic': './questionsData.js',
-    'alta': './questionsData_alta.js',
-    'altm': './questionsData_altm.js',
-};
-
 export async function fetchQuestions() {
-    const certId = localStorage.getItem('qa_selected_cert') || 'qa-basic';
-    const file = CERT_FILE_MAP[certId] || CERT_FILE_MAP['qa-basic'];
+    const { dataFile } = getCertById(getSelectedCert());
+    const file = `./${dataFile}.js`;
     try {
         const { questions } = await import(file);
         return questions;
