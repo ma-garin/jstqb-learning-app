@@ -1,9 +1,10 @@
 // js/syllabus.js - 公開資料の本文は表示せず、学習位置を示す参照情報のみを扱う。
-import { setupCommonNavigation, setupBackToTopButtons } from './utils.js';
+import { setupCommonNavigation, setupBackToTopButtons, fetchLessons } from './utils.js';
 import { topicMaps, topicMapVersions, officialLinks } from './topicMap.js';
 import { CERTIFICATIONS, getSelectedCert } from './certifications.js';
+import { certKey, SUFFIXES } from './storage.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     setupCommonNavigation();
     setupBackToTopButtons();
     const certId = getSelectedCert();
@@ -13,10 +14,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerTitle = document.querySelector('.header-title');
     if (headerTitle) headerTitle.textContent = `学習範囲マップ - ${cert.name}`;
 
-    initSyllabusScreen(map, topicMapVersions[cert.id]);
+    const lessons = await fetchLessons(cert.id);
+    initSyllabusScreen(map, topicMapVersions[cert.id], {
+        certId: cert.id,
+        lessons,
+        learnedIds: readLearnedLessons(cert.id),
+    });
 });
 
-export function initSyllabusScreen(chapters, versionNote = '') {
+function readLearnedLessons(certId) {
+    try {
+        const value = JSON.parse(localStorage.getItem(certKey(certId, SUFFIXES.lessonsRead)) || '[]');
+        return Array.isArray(value) ? value : [];
+    } catch {
+        return [];
+    }
+}
+
+export function initSyllabusScreen(chapters, versionNote = '', options = {}) {
     const navigation = document.getElementById('syllabus-navigation');
     const content = document.getElementById('syllabus-content');
     if (!navigation || !content) return;
@@ -30,11 +45,14 @@ export function initSyllabusScreen(chapters, versionNote = '') {
     }
 
     chapters.forEach(chapter => {
+        const chapterLessons = (options.lessons || []).filter(lesson => lesson.chapter === chapter.chapter);
+        const learnedCount = chapterLessons.filter(lesson => (options.learnedIds || []).includes(lesson.id)).length;
         const button = document.createElement('button');
         button.className = 'syllabus-chapter-button';
-        button.textContent = `${chapter.chapter}章 ${chapter.title}`;
+        const progress = chapterLessons.length ? ` ✓ ${learnedCount}/${chapterLessons.length}` : '';
+        button.textContent = `${chapter.chapter}章 ${chapter.title}${progress}`;
         button.addEventListener('click', () => {
-            displayChapterContent(chapter, content);
+            displayChapterContent(chapter, content, options);
             navigation.querySelectorAll('button').forEach(item => item.classList.remove('active'));
             button.classList.add('active');
         });
@@ -42,28 +60,45 @@ export function initSyllabusScreen(chapters, versionNote = '') {
     });
 
     if (chapters.length) {
-        displayChapterContent(chapters[0], content);
+        displayChapterContent(chapters[0], content, options);
         navigation.querySelector('button')?.classList.add('active');
     }
 }
 
-export function displayChapterContent(chapter, content) {
+export function displayChapterContent(chapter, content, options = {}) {
     content.textContent = '';
     const heading = document.createElement('h2');
     heading.textContent = `${chapter.chapter}章 ${chapter.title}`;
     content.appendChild(heading);
 
     chapter.sections.forEach(section => {
+        const lesson = (options.lessons || []).find(item => item.sectionRef === section.section);
+        const isLearned = lesson && (options.learnedIds || []).includes(lesson.id);
         const card = document.createElement('section');
         card.className = 'syllabus-section';
         const title = document.createElement('h3');
-        title.textContent = `${section.section} ${section.title}`;
+        title.className = 'syllabus-section-heading';
+        if (lesson) {
+            const link = document.createElement('a');
+            link.href = `lesson.html?id=${encodeURIComponent(lesson.id)}`;
+            link.textContent = `${section.section} ${section.title}`;
+            title.appendChild(link);
+        } else {
+            title.textContent = `${section.section} ${section.title}`;
+        }
         const learningTitle = document.createElement('p');
         learningTitle.textContent = `自作学習タイトル: ${section.learningTitle}`;
         const meta = document.createElement('p');
         meta.className = 'problem-syllabus-info';
         meta.textContent = [section.loCode && `LO: ${section.loCode}`, section.kLevel && `Kレベル: ${section.kLevel}`].filter(Boolean).join(' ・ ') || '参照コード未設定';
-        card.append(title, learningTitle, meta);
+        card.appendChild(title);
+        if (isLearned || !lesson) {
+            const badge = document.createElement('span');
+            badge.className = isLearned ? 'lesson-badge lesson-badge--learned' : 'lesson-badge lesson-badge--preparing';
+            badge.textContent = isLearned ? '✓ 学習済み' : 'レッスン準備中';
+            card.appendChild(badge);
+        }
+        card.append(learningTitle, meta);
         content.appendChild(card);
     });
 

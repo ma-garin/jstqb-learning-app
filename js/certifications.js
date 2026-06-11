@@ -9,6 +9,7 @@ export const CERTIFICATIONS = [
         questionCount: 152,
         available: true,
         dataFile: 'questionsData_fl',
+        lessonsFile: null,
     },
     {
         id: 'alta',
@@ -19,6 +20,7 @@ export const CERTIFICATIONS = [
         questionCount: 40,
         available: true,
         dataFile: 'questionsData_alta',
+        lessonsFile: 'lessonsData_alta',
     },
     {
         id: 'altm',
@@ -29,6 +31,7 @@ export const CERTIFICATIONS = [
         questionCount: 40,
         available: true,
         dataFile: 'questionsData_altm',
+        lessonsFile: null,
     },
     {
         id: 'ct-ai',
@@ -39,6 +42,7 @@ export const CERTIFICATIONS = [
         questionCount: 0,
         available: false,
         dataFile: 'questionsData_ctai',
+        lessonsFile: null,
     },
     {
         id: 'ct-genai',
@@ -49,6 +53,7 @@ export const CERTIFICATIONS = [
         questionCount: 0,
         available: false,
         dataFile: 'questionsData_ctgenai',
+        lessonsFile: null,
     },
 ];
 

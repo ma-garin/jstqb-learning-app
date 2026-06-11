@@ -74,7 +74,7 @@ async function renderDashboard() {
     };
     setText('action-desc-quiz', `${cert.name}の自作問題 ${totalQuestions}問で確認`);
     setText('action-desc-problems', `全${totalQuestions}問・独自解説付き`);
-    setText('action-desc-syllabus', `${cert.name}: ${map.length}章の学習トピック`);
+    setText('action-desc-syllabus', `${cert.name}: ${map.length}章のマップとレッスン`);
     setText('info-syllabus-version', `${cert.fullName} ・ 自作問題${totalQuestions}問`);
     setText('greeting-sub', cert.fullName);
     setText('stat-answered', todayAnswered);

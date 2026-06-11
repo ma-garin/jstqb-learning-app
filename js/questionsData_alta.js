@@ -2,6 +2,7 @@
 export const questions = [
     {
         id: 'alta-001',
+        sectionRef: '1.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -16,6 +17,7 @@ export const questions = [
     },
     {
         id: 'alta-002',
+        sectionRef: '1.4.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -30,6 +32,7 @@ export const questions = [
     },
     {
         id: 'alta-003',
+        sectionRef: '3.2.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -44,6 +47,7 @@ export const questions = [
     },
     {
         id: 'alta-004',
+        sectionRef: '3.2.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -58,6 +62,7 @@ export const questions = [
     },
     {
         id: 'alta-005',
+        sectionRef: '3.2.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -72,6 +77,7 @@ export const questions = [
     },
     {
         id: 'alta-006',
+        sectionRef: '3.2.4',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -86,6 +92,7 @@ export const questions = [
     },
     {
         id: 'alta-007',
+        sectionRef: '3.2.5',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -100,6 +107,7 @@ export const questions = [
     },
     {
         id: 'alta-008',
+        sectionRef: '3.2.6',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -114,6 +122,7 @@ export const questions = [
     },
     {
         id: 'alta-009',
+        sectionRef: '3.3.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -128,6 +137,7 @@ export const questions = [
     },
     {
         id: 'alta-010',
+        sectionRef: '3.3.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -142,6 +152,7 @@ export const questions = [
     },
     {
         id: 'alta-011',
+        sectionRef: '3.3.4',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -156,6 +167,7 @@ export const questions = [
     },
     {
         id: 'alta-012',
+        sectionRef: '2.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -170,6 +182,7 @@ export const questions = [
     },
     {
         id: 'alta-013',
+        sectionRef: '2.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -184,6 +197,7 @@ export const questions = [
     },
     {
         id: 'alta-014',
+        sectionRef: '2.4.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -198,6 +212,7 @@ export const questions = [
     },
     {
         id: 'alta-015',
+        sectionRef: '4.2.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -212,6 +227,7 @@ export const questions = [
     },
     {
         id: 'alta-016',
+        sectionRef: '4.2.5',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -226,6 +242,7 @@ export const questions = [
     },
     {
         id: 'alta-017',
+        sectionRef: '4.2.4',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -240,6 +257,7 @@ export const questions = [
     },
     {
         id: 'alta-018',
+        sectionRef: '4.2.6',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -254,6 +272,7 @@ export const questions = [
     },
     {
         id: 'alta-019',
+        sectionRef: '5.2.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -268,6 +287,7 @@ export const questions = [
     },
     {
         id: 'alta-020',
+        sectionRef: '5.2.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -282,6 +302,7 @@ export const questions = [
     },
     {
         id: 'alta-021',
+        sectionRef: '6.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -296,6 +317,7 @@ export const questions = [
     },
     {
         id: 'alta-022',
+        sectionRef: '6.3.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -310,6 +332,7 @@ export const questions = [
     },
     {
         id: 'alta-023',
+        sectionRef: '1.5',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -324,6 +347,7 @@ export const questions = [
     },
     {
         id: 'alta-024',
+        sectionRef: '4.2.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -338,6 +362,7 @@ export const questions = [
     },
     {
         id: 'alta-025',
+        sectionRef: '3.2.6',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -352,6 +377,7 @@ export const questions = [
     },
     {
         id: 'alta-026',
+        sectionRef: '1.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -366,6 +392,7 @@ export const questions = [
     },
     {
         id: 'alta-027',
+        sectionRef: '1.6',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -380,6 +407,7 @@ export const questions = [
     },
     {
         id: 'alta-028',
+        sectionRef: '3.3.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -394,6 +422,7 @@ export const questions = [
     },
     {
         id: 'alta-029',
+        sectionRef: '2.4.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -408,6 +437,7 @@ export const questions = [
     },
     {
         id: 'alta-030',
+        sectionRef: '4.2.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -422,6 +452,7 @@ export const questions = [
     },
     {
         id: 'alta-031',
+        sectionRef: '6.3.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -436,6 +467,7 @@ export const questions = [
     },
     {
         id: 'alta-032',
+        sectionRef: '1.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -450,6 +482,7 @@ export const questions = [
     },
     {
         id: 'alta-033',
+        sectionRef: '3.2.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -464,6 +497,7 @@ export const questions = [
     },
     {
         id: 'alta-034',
+        sectionRef: '1.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -478,6 +512,7 @@ export const questions = [
     },
     {
         id: 'alta-035',
+        sectionRef: '3.2.7',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -492,6 +527,7 @@ export const questions = [
     },
     {
         id: 'alta-036',
+        sectionRef: '3.2.8',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -506,6 +542,7 @@ export const questions = [
     },
     {
         id: 'alta-037',
+        sectionRef: '1.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -520,6 +557,7 @@ export const questions = [
     },
     {
         id: 'alta-038',
+        sectionRef: '6.3.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -534,6 +572,7 @@ export const questions = [
     },
     {
         id: 'alta-039',
+        sectionRef: '3.2.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',
@@ -548,6 +587,7 @@ export const questions = [
     },
     {
         id: 'alta-040',
+        sectionRef: '1.6',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTA syllabus v3.1.1 referenced only as topic map',

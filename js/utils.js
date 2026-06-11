@@ -12,6 +12,7 @@ const PAGE_TO_NAV = {
     'question.html': 'nav-quiz',
     'mock-exam.html': 'nav-quiz',
     'syllabus.html': 'nav-home',
+    'lesson.html': 'nav-home',
     'ai-quiz.html': 'nav-ai',
     'glossary.html': 'nav-glossary',
 };
@@ -50,7 +51,11 @@ function injectSettingsButton(currentPage) {
     btn.className = 'header-settings-btn';
     btn.setAttribute('aria-label', '設定');
     btn.style.cssText = 'display:flex;align-items:center;color:var(--text-muted);padding:8px;margin-right:-8px;margin-left:auto;border-radius:var(--radius-sm);flex-shrink:0;';
-    btn.innerHTML = '<span class="material-icons" style="font-size:22px;">settings</span>';
+    const icon = document.createElement('span');
+    icon.className = 'material-icons';
+    icon.style.fontSize = '22px';
+    icon.textContent = 'settings';
+    btn.appendChild(icon);
     headerInner.appendChild(btn);
 }
 
@@ -82,14 +87,28 @@ export function setupBackToTopButtons() {
     });
 }
 
-export async function fetchQuestions() {
-    const { dataFile } = getCertById(getSelectedCert());
+export async function fetchQuestions(certId = getSelectedCert()) {
+    const { dataFile } = getCertById(certId);
     const file = `./${dataFile}.js`;
     try {
         const { questions } = await import(file);
         return questions;
     } catch (err) {
         console.error('問題データの読み込みエラー:', err);
+        return [];
+    }
+}
+
+export async function fetchLessons(certId = getSelectedCert()) {
+    const { lessonsFile } = getCertById(certId);
+    if (!lessonsFile) return [];
+    const file = `./${lessonsFile}.js`;
+
+    try {
+        const { lessons } = await import(file);
+        return lessons;
+    } catch (err) {
+        console.error('レッスンデータの読み込みエラー:', err);
         return [];
     }
 }

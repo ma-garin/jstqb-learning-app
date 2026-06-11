@@ -119,6 +119,190 @@
     margin-bottom: 0.75em;
 }
 
+.syllabus-section-heading a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.syllabus-section-heading a:hover {
+    text-decoration: underline;
+}
+
+.lesson-badge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    border-radius: var(--radius-full);
+    padding: 3px 9px;
+    margin-bottom: 10px;
+    font-size: 0.75em;
+    font-weight: 700;
+}
+
+.lesson-badge--learned {
+    background-color: var(--success-light);
+    color: var(--success);
+}
+
+.lesson-badge--preparing {
+    background-color: var(--bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+
+/* ── Lesson Screen ───────────────────────────── */
+#lesson-screen {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+}
+
+#lesson-content {
+    color: var(--text);
+}
+
+.lesson-back-link {
+    display: inline-flex;
+    color: var(--primary);
+    font-size: 0.9em;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-decoration: none;
+}
+
+.lesson-back-link:hover {
+    text-decoration: underline;
+}
+
+.lesson-meta,
+.lesson-example-scenario,
+.lesson-walkthrough {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.lesson-meta {
+    margin-bottom: 18px;
+}
+
+.lesson-meta p:last-child {
+    margin-bottom: 0;
+}
+
+.lesson-section-number {
+    color: var(--primary);
+    font-size: 0.82em;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.lesson-section-title {
+    font-weight: 700;
+}
+
+.lesson-title {
+    color: var(--text);
+    font-size: 1.65em;
+    margin-bottom: 24px;
+}
+
+#lesson-content > h2 {
+    color: var(--text);
+    font-size: 1.25em;
+    margin: 28px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+}
+
+#lesson-content > h3 {
+    color: var(--primary);
+    font-size: 1.08em;
+    margin-top: 24px;
+}
+
+#lesson-content > p {
+    line-height: 1.85;
+}
+
+.lesson-key-points {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.lesson-key-points li {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-sm);
+}
+
+.lesson-example-scenario {
+    line-height: 1.75;
+    margin-bottom: 10px;
+}
+
+.lesson-walkthrough {
+    padding-left: 36px;
+    line-height: 1.75;
+}
+
+.lesson-walkthrough li + li {
+    margin-top: 8px;
+}
+
+.lesson-related-questions .assumed-problem-item {
+    margin-bottom: 12px;
+}
+
+.lesson-section-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.lesson-nav-link {
+    flex: 1;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--primary);
+    padding: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.lesson-nav-link--next {
+    margin-left: auto;
+    text-align: right;
+}
+
+.lesson-learned-button {
+    width: 100%;
+    margin-top: 18px;
+    background-color: var(--primary);
+    color: var(--text-inverse);
+}
+
+.lesson-learned-button.is-learned {
+    background-color: var(--success);
+}
+
+.lesson-not-found {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    font-weight: 700;
+}
+
 /* ── Assumed Problems Screen ─────────────────── */
 #assumed-problems-screen {
     background: transparent;
