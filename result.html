@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>結果 - QA基礎学習PWA</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="img/qa-learning-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="img/qa-learning-icon.svg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="QA基礎学習PWA">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZ9EN5NX5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BZ9EN5NX5F');
+    </script>
+    <nav id="main-nav" class="hidden"></nav>
+    <nav id="breadcrumb-nav" class="hidden"></nav>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-inner">
+            <h1 class="header-title">クイズ結果</h1>
+        </div>
+    </header>
+
+    <main class="app-main" id="app-container">
+        <section id="result-screen">
+
+            <!-- Score Circle -->
+            <div class="result-score-circle">
+                <span class="result-score-value" id="result-score-value">—</span>
+                <span class="result-score-label" id="result-score-label">正答率</span>
+            </div>
+
+            <!-- Grade message -->
+            <p class="result-grade" id="result-grade"></p>
+
+            <!-- Detail cards -->
+            <div class="result-detail-card">
+                <span class="result-detail-label">出題数</span>
+                <span class="result-detail-value" id="detail-total">—</span>
+            </div>
+            <div class="result-detail-card">
+                <span class="result-detail-label">正解数</span>
+                <span class="result-detail-value" id="detail-correct">—</span>
+            </div>
+            <div class="result-detail-card">
+                <span class="result-detail-label">正答率</span>
+                <span class="result-detail-value" id="detail-accuracy">—</span>
+            </div>
+
+            <button id="restart-quiz-button" type="button" style="width:100%;margin-top:20px;padding:14px;border-radius:var(--radius-lg);background-color:var(--primary);color:#fff;font-size:1em;">
+                もう一度挑戦する
+            </button>
+            <button id="back-to-welcome-from-result-button" class="back-to-top-button" type="button">
+                ホームに戻る
+            </button>
+
+        </section>
+    </main>
+
+    <nav class="bottom-nav" role="navigation" aria-label="メインナビゲーション">
+        <a href="index.html" class="bottom-nav-item" id="nav-home">
+            <span class="material-icons">home</span>
+            <span class="bottom-nav-label">ホーム</span>
+        </a>
+        <a href="study.html" class="bottom-nav-item" id="nav-quiz">
+            <span class="material-icons">edit_note</span>
+            <span class="bottom-nav-label">クイズ</span>
+        </a>
+        <a href="ai-quiz.html" class="bottom-nav-item" id="nav-ai">
+            <span class="material-icons">policy</span>
+            <span class="bottom-nav-label">方針</span>
+        </a>
+        <a href="glossary.html" class="bottom-nav-item" id="nav-glossary">
+            <span class="material-icons">sort_by_alpha</span>
+            <span class="bottom-nav-label">用語集</span>
+        </a>
+    </nav>
+
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/result.js"></script>
+</body>
+</html>

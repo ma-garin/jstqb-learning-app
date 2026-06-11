@@ -1,0 +1,207 @@
+/* css/layout.css — ボトムナビ・ヘッダー・コンテンツ領域 */
+
+/* ── App Header ─────────────────────────────── */
+.app-header {
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+    height: var(--header-height);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 16px;
+    max-width: var(--content-max);
+    margin: 0 auto;
+    gap: 8px;
+}
+
+.header-title {
+    font-size: 1em;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
+
+.header-home-title {
+    font-size: 1.05em;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+}
+
+.header-back {
+    display: flex;
+    align-items: center;
+    color: var(--primary);
+    padding: 8px;
+    margin-left: -8px;
+    border-radius: var(--radius-sm);
+}
+
+.header-back .material-icons {
+    font-size: 22px;
+}
+
+/* hidden legacy elements (kept for JS backward-compat) */
+#main-nav,
+#breadcrumb-nav,
+.menu-icon,
+.spacer {
+    display: none !important;
+}
+
+/* ── Exam Tab Bar ────────────────────────────── */
+.exam-tabs {
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    position: sticky;
+    top: var(--header-height);
+    z-index: 99;
+}
+
+.exam-tab {
+    flex: 1;
+    padding: 10px 0;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.exam-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+/* ── Main Content ────────────────────────────── */
+.app-main {
+    flex: 1;
+    padding: 16px 16px calc(var(--bottom-nav-height) + 16px + env(safe-area-inset-bottom));
+    max-width: var(--content-max);
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Wider layout for syllabus */
+.app-main--wide {
+    max-width: 960px;
+}
+
+/* footer is removed; replaced by bottom nav */
+footer {
+    display: none;
+}
+
+/* ── Bottom Navigation ───────────────────────── */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background-color: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: stretch;
+    z-index: 200;
+    box-shadow: 0 -1px 8px rgba(0,0,0,0.07);
+}
+
+.bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 6px 4px;
+    transition: color 0.15s ease, background-color 0.15s ease;
+    border-radius: 0;
+    position: relative;
+}
+
+.bottom-nav-item .material-icons {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.bottom-nav-label {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.bottom-nav-item.active {
+    color: var(--primary);
+}
+
+.bottom-nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 12%;
+    right: 12%;
+    height: 2px;
+    background-color: var(--primary);
+    border-radius: 0 0 var(--radius-full) var(--radius-full);
+}
+
+/* ── Syllabus Layout (desktop two-column) ────── */
+.syllabus-layout {
+    display: flex;
+    gap: 16px;
+    min-height: 60vh;
+}
+
+#syllabus-navigation {
+    flex: 0 0 220px;
+    background-color: var(--surface);
+    border-radius: var(--radius);
+    padding: 12px;
+    border: 1px solid var(--border);
+    overflow-y: auto;
+    max-height: calc(100vh - var(--header-height) - var(--bottom-nav-height) - 48px);
+    position: sticky;
+    top: calc(var(--header-height) + 8px);
+    align-self: flex-start;
+}
+
+#syllabus-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 640px) {
+    .syllabus-layout {
+        flex-direction: column;
+    }
+
+    #syllabus-navigation {
+        flex: none;
+        position: static;
+        max-height: 35vh;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 10px;
+    }
+}

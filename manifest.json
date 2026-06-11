@@ -1,0 +1,18 @@
+{
+  "name": "QA基礎学習PWA",
+  "short_name": "QA基礎学習",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#4F46E5",
+  "description": "ソフトウェアテストとQAの基礎を自作教材で学ぶ個人制作の非公式PWA",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "img/qa-learning-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>設定 - QA基礎学習PWA</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="img/qa-learning-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="img/qa-learning-icon.svg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="QA基礎学習PWA">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZ9EN5NX5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BZ9EN5NX5F');
+    </script>
+    <nav id="main-nav" class="hidden"></nav>
+    <nav id="breadcrumb-nav" class="hidden"></nav>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-inner">
+            <button onclick="history.length > 1 ? history.back() : (location.href='index.html')" class="header-back" aria-label="前のページへ戻る" type="button">
+                <span class="material-icons">arrow_back_ios</span>
+            </button>
+            <h1 class="header-title">設定</h1>
+        </div>
+    </header>
+
+    <main class="app-main" id="app-container">
+        <section id="settings-screen" style="padding-bottom: 32px;">
+
+            <!-- 学習データ -->
+            <div class="settings-group">
+                <p class="settings-group-label">学習データ</p>
+
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <p class="settings-item-title">累計学習データ</p>
+                        <p class="settings-item-desc" id="stats-summary">読み込み中…</p>
+                    </div>
+                </div>
+
+                <button class="settings-btn settings-btn--danger" id="reset-wrong-btn" type="button">
+                    <span class="material-icons">playlist_remove</span>
+                    苦手問題リストをリセット
+                </button>
+
+                <button class="settings-btn settings-btn--danger" id="reset-all-btn" type="button">
+                    <span class="material-icons">delete_forever</span>
+                    すべての学習データをリセット
+                </button>
+            </div>
+
+            <!-- アプリ情報 -->
+            <div class="settings-group">
+                <p class="settings-group-label">アプリ情報</p>
+
+                <a href="release_notes.html" class="settings-item settings-item--link">
+                    <div class="settings-item-info">
+                        <p class="settings-item-title">更新履歴</p>
+                        <p class="settings-item-desc">バージョン・変更内容の確認</p>
+                    </div>
+                    <span class="material-icons settings-item-arrow">chevron_right</span>
+                </a>
+
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <p class="settings-item-title">学習範囲</p>
+                        <p class="settings-item-desc">ソフトウェアテストとQAの基礎テーマ</p>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <p class="settings-item-title">コンテンツ方針</p>
+                        <p class="settings-item-desc">説明・問題・解説は制作者による独自コンテンツです</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <p class="settings-group-label">非公式教材について</p>
+                <div class="settings-item">
+                    <div class="settings-item-info">
+                        <p class="settings-item-desc" style="line-height:1.7;">
+                            本アプリは、ソフトウェアテスト学習を目的とした個人制作の非公式教材です。<br>
+                            ISTQB、JSTQB、その他関連団体の公式教材、認定教材、認定トレーニングではありません。<br>
+                            学習範囲の確認には、ISTQB/JSTQBが公開する公式シラバスおよび公式情報を参照してください。<br>
+                            本アプリ内の説明、問題、解説は制作者による独自コンテンツです。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <nav class="bottom-nav" role="navigation" aria-label="メインナビゲーション">
+        <a href="index.html" class="bottom-nav-item" id="nav-home">
+            <span class="material-icons">home</span>
+            <span class="bottom-nav-label">ホーム</span>
+        </a>
+        <a href="study.html" class="bottom-nav-item" id="nav-quiz">
+            <span class="material-icons">edit_note</span>
+            <span class="bottom-nav-label">クイズ</span>
+        </a>
+        <a href="ai-quiz.html" class="bottom-nav-item" id="nav-ai">
+            <span class="material-icons">policy</span>
+            <span class="bottom-nav-label">方針</span>
+        </a>
+        <a href="glossary.html" class="bottom-nav-item" id="nav-glossary">
+            <span class="material-icons">sort_by_alpha</span>
+            <span class="bottom-nav-label">用語集</span>
+        </a>
+    </nav>
+
+    <script type="module" src="js/settings.js"></script>
+</body>
+</html>

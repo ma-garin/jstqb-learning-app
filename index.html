@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA基礎学習PWA</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="icon" href="img/qa-learning-icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="img/qa-learning-icon.svg">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="QA基礎学習PWA">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZ9EN5NX5F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BZ9EN5NX5F');
+    </script>
+    <!-- hidden legacy nav (no-op in new design) -->
+    <nav id="main-nav" class="hidden"></nav>
+    <nav id="breadcrumb-nav" class="hidden"></nav>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-inner">
+            <span class="header-home-title">QA基礎学習PWA</span>
+        </div>
+    </header>
+
+    <main class="app-main" id="app-container">
+        <section id="welcome-screen">
+
+            <!-- Greeting -->
+            <div class="home-greeting">
+                <p class="greeting-sub" id="greeting-sub">Software Quality Basics</p>
+                <h2>今日もQAの基礎を学びましょう</h2>
+            </div>
+
+            <!-- Progress Card -->
+            <div class="progress-card">
+                <h3>今日の学習進捗</h3>
+                <div class="progress-stats">
+                    <div class="progress-stat">
+                        <span class="progress-stat-value" id="stat-answered">0</span>
+                        <span class="progress-stat-label">今日の問題数</span>
+                    </div>
+                    <div class="progress-stat">
+                        <span class="progress-stat-value" id="stat-correct">0</span>
+                        <span class="progress-stat-label">正解数</span>
+                    </div>
+                    <div class="progress-stat">
+                        <span class="progress-stat-value" id="stat-accuracy">—</span>
+                        <span class="progress-stat-label">正答率</span>
+                    </div>
+                </div>
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%"></div>
+                </div>
+                <p class="progress-note" id="progress-note">累計回答を読み込み中…</p>
+            </div>
+
+            <!-- Action Grid -->
+            <div class="action-grid">
+                <a href="study.html" class="action-card action-card--primary">
+                    <span class="material-icons action-icon">edit_note</span>
+                    <div style="flex:1;">
+                        <p class="action-title">クイズに挑戦</p>
+                        <p class="action-desc" id="action-desc-quiz">自作問題で理解度を確認</p>
+                    </div>
+                    <span id="weak-badge" style="display:none;background:rgba(255,255,255,0.25);color:#fff;font-size:0.72em;font-weight:700;padding:3px 8px;border-radius:var(--radius-full);white-space:nowrap;"></span>
+                </a>
+
+                <a href="ai-quiz.html" class="action-card">
+                    <span class="material-icons action-icon action-icon-default">policy</span>
+                    <div>
+                        <p class="action-title">コンテンツ方針</p>
+                        <p class="action-desc">独自教材の作成ルール</p>
+                    </div>
+                </a>
+
+                <a href="syllabus.html" class="action-card">
+                    <span class="material-icons action-icon action-icon-default">menu_book</span>
+                    <div>
+                        <p class="action-title">学習範囲マップ</p>
+                        <p class="action-desc" id="action-desc-syllabus" style="color:var(--text-muted)">章・節・学習テーマを確認</p>
+                    </div>
+                </a>
+
+                <a href="question.html" class="action-card">
+                    <span class="material-icons action-icon action-icon-default">quiz</span>
+                    <div>
+                        <p class="action-title">問題集</p>
+                        <p class="action-desc" id="action-desc-problems" style="color:var(--text-muted)">自作問題・解説付き</p>
+                    </div>
+                </a>
+
+                <a href="mock-exam.html" class="action-card" style="border:1.5px solid #DC2626;background:linear-gradient(135deg,#FFF1F2,#FFF);">
+                    <span class="material-icons action-icon" style="color:#DC2626;">assignment</span>
+                    <div>
+                        <p class="action-title" style="color:#DC2626;">復習チャレンジ</p>
+                        <p class="action-desc" style="color:var(--text-muted)">自作問題をまとめて復習</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Streak info -->
+            <div class="info-strip">
+                <span class="material-icons">local_fire_department</span>
+                <p class="info-strip-text">🔥 <span id="streak-count">0</span>日連続学習中</p>
+                <a href="release_notes.html" class="info-strip-link">更新履歴</a>
+            </div>
+
+            <!-- App info -->
+            <div class="info-strip">
+                <span class="material-icons">info_outline</span>
+                <p class="info-strip-text" id="info-syllabus-version">QA基礎テーマを自作教材で学習</p>
+            </div>
+
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;margin-top:14px;font-size:0.84em;line-height:1.7;color:var(--text-muted);">
+                <strong style="display:block;color:var(--text);margin-bottom:4px;">非公式教材について</strong>
+                本アプリは、ソフトウェアテスト学習を目的とした個人制作の非公式教材です。<br>
+                ISTQB、JSTQB、その他関連団体の公式教材、認定教材、認定トレーニングではありません。<br>
+                学習範囲の確認には、ISTQB/JSTQBが公開する公式シラバスおよび公式情報を参照してください。<br>
+                本アプリ内の説明、問題、解説は制作者による独自コンテンツです。
+            </div>
+
+        </section>
+    </main>
+
+    <nav class="bottom-nav" role="navigation" aria-label="メインナビゲーション">
+        <a href="index.html" class="bottom-nav-item" id="nav-home">
+            <span class="material-icons">home</span>
+            <span class="bottom-nav-label">ホーム</span>
+        </a>
+        <a href="study.html" class="bottom-nav-item" id="nav-quiz">
+            <span class="material-icons">edit_note</span>
+            <span class="bottom-nav-label">クイズ</span>
+        </a>
+        <a href="ai-quiz.html" class="bottom-nav-item" id="nav-ai">
+            <span class="material-icons">policy</span>
+            <span class="bottom-nav-label">方針</span>
+        </a>
+        <a href="glossary.html" class="bottom-nav-item" id="nav-glossary">
+            <span class="material-icons">sort_by_alpha</span>
+            <span class="bottom-nav-label">用語集</span>
+        </a>
+    </nav>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
