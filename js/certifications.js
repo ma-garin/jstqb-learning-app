@@ -31,7 +31,7 @@ export const CERTIFICATIONS = [
         questionCount: 40,
         available: true,
         dataFile: 'questionsData_altm',
-        lessonsFile: null,
+        lessonsFile: 'lessonsData_altm',
     },
     {
         id: 'ct-ai',

@@ -915,6 +915,53 @@ table tbody tr:nth-child(even) {
     margin-bottom: 16px;
 }
 
+.quiz-range-field {
+    margin-bottom: 14px;
+}
+
+.quiz-range-label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.8em;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.chapter-quiz-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chapter-quiz-chip {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.78em;
+    line-height: 1.4;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.chapter-quiz-chip:hover:not(:disabled) {
+    border-color: var(--primary);
+}
+
+.chapter-quiz-chip--active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--text-inverse);
+}
+
+.chapter-quiz-chip:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
 .shuffle-option {
     display: flex;
     align-items: center;
@@ -1094,4 +1141,77 @@ table tbody tr:nth-child(even) {
     font-size: 0.72em;
     color: var(--text-muted);
     margin-top: 4px;
+}
+
+/* ── Home: Chapter Heatmap ──────────────────── */
+.chapter-heatmap-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 16px;
+    padding: 16px;
+}
+
+.chapter-heatmap-section h3 {
+    color: var(--text-muted);
+    font-size: 0.85em;
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.chapter-heatmap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 8px;
+}
+
+.chapter-heatmap-tile {
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    text-align: left;
+}
+
+.chapter-heatmap-tile--low {
+    background: var(--error-light);
+    border-color: var(--error);
+}
+
+.chapter-heatmap-tile--medium {
+    background: var(--warning-light);
+    border-color: var(--warning);
+}
+
+.chapter-heatmap-tile--high {
+    background: var(--success-light);
+    border-color: var(--success);
+}
+
+.chapter-heatmap-number {
+    color: var(--text-muted);
+    font-size: 0.75em;
+    font-weight: 700;
+}
+
+.chapter-heatmap-value {
+    color: var(--text);
+    font-size: 1.5em;
+    line-height: 1.2;
+}
+
+.chapter-heatmap-detail {
+    color: var(--text-muted);
+    font-size: 0.7em;
+}
+
+.result-quiz-context {
+    color: var(--primary);
+    font-size: 1.05em;
+    margin-bottom: 16px;
+    text-align: center;
 }

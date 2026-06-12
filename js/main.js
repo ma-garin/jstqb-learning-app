@@ -3,6 +3,8 @@ import { setupCommonNavigation, setupBackToTopButtons, fetchQuestions } from './
 import { getDashboardStats, getWrongQuestionIds } from './progress.js';
 import { topicMaps } from './topicMap.js';
 import { CERTIFICATIONS, getSelectedCert, setSelectedCert } from './certifications.js';
+import { certKey, SUFFIXES } from './storage.js';
+import { aggregateChapterStats } from './chapterStats.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     setupCommonNavigation();
@@ -59,6 +61,52 @@ function levelLabel(level) {
     return labels[level] || level;
 }
 
+function readStoredIds(key) {
+    try {
+        const value = JSON.parse(localStorage.getItem(key) || '[]');
+        return Array.isArray(value) ? value : [];
+    } catch {
+        return [];
+    }
+}
+
+function renderChapterHeatmap(questions, certId, map) {
+    const section = document.getElementById('chapter-heatmap-section');
+    const container = document.getElementById('chapter-heatmap');
+    if (!section || !container) return;
+
+    const answeredIds = readStoredIds(certKey(certId, SUFFIXES.answeredIds));
+    const stats = aggregateChapterStats(questions, answeredIds, getWrongQuestionIds());
+    container.textContent = '';
+    section.hidden = stats.length === 0;
+    if (!stats.length) return;
+
+    stats.forEach(stat => {
+        const tile = document.createElement('button');
+        const level = stat.achievement >= 75 ? 'high' : stat.achievement >= 40 ? 'medium' : 'low';
+        const chapterInfo = map.find(item => String(item.chapter) === stat.chapter);
+        tile.type = 'button';
+        tile.className = `chapter-heatmap-tile chapter-heatmap-tile--${level}`;
+        tile.setAttribute('aria-label', `${stat.chapter}章 ${chapterInfo?.title || ''} ${stat.achievement}%`);
+
+        const chapter = document.createElement('span');
+        chapter.className = 'chapter-heatmap-number';
+        chapter.textContent = `${stat.chapter}章`;
+        const achievement = document.createElement('strong');
+        achievement.className = 'chapter-heatmap-value';
+        achievement.textContent = `${stat.achievement}%`;
+        const detail = document.createElement('span');
+        detail.className = 'chapter-heatmap-detail';
+        detail.textContent = `回答 ${stat.answered}/${stat.total}`;
+
+        tile.append(chapter, achievement, detail);
+        tile.addEventListener('click', () => {
+            window.location.href = `study.html?chapter=${encodeURIComponent(stat.chapter)}`;
+        });
+        container.appendChild(tile);
+    });
+}
+
 async function renderDashboard() {
     const certId = getSelectedCert();
     const cert = CERTIFICATIONS.find(c => c.id === certId) || CERTIFICATIONS[0];
@@ -93,4 +141,6 @@ async function renderDashboard() {
         weakBadge.textContent = `復習 ${wrongCount}問`;
         weakBadge.style.display = wrongCount > 0 ? 'inline-block' : 'none';
     }
+
+    renderChapterHeatmap(questions, certId, map);
 }

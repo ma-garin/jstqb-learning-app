@@ -13,6 +13,7 @@ function getSessionKeys() {
         correctCount: certKey(certId, SUFFIXES.quizCorrectCount),
         answerLog: certKey(certId, SUFFIXES.quizAnswerLog),
         paused: certKey(certId, SUFFIXES.quizPaused),
+        meta: certKey(certId, SUFFIXES.quizMeta),
     };
 }
 
@@ -35,17 +36,114 @@ export function shuffleQuestions(questions) {
     return arr;
 }
 
+export function getQuestionChapter(question) {
+    return question?.sectionRef ? String(question.sectionRef).split('.')[0] : null;
+}
+
+export function filterQuestionsByChapter(questions, chapter) {
+    if (!chapter) return [...questions];
+    const selectedChapter = String(chapter);
+    return questions.filter(question => getQuestionChapter(question) === selectedChapter);
+}
+
+export function saveQuizMeta(certId, chapter = '', chapterTitle = '', storage = localStorage) {
+    const meta = chapter
+        ? { mode: 'chapter', chapter: String(chapter), chapterTitle: chapterTitle || '' }
+        : { mode: 'all', chapter: '', chapterTitle: '' };
+    storage.setItem(certKey(certId, SUFFIXES.quizMeta), JSON.stringify(meta));
+    return meta;
+}
+
+let selectedQuizRange = { chapter: '', chapterTitle: '' };
+let loadedQuestions = null;
+
 function clearQuizSession() {
     Object.values(getSessionKeys()).forEach(key => localStorage.removeItem(key));
 }
 
-function startQuiz(questions) {
+function startQuiz(questions, range = selectedQuizRange) {
     const sessionKeys = getSessionKeys();
     clearQuizSession();
+    saveQuizMeta(getSelectedCert(), range.chapter, range.chapterTitle);
     localStorage.setItem(sessionKeys.questions, JSON.stringify(questions));
     localStorage.setItem(sessionKeys.nextIndex, '0');
     localStorage.setItem(sessionKeys.correctCount, '0');
     window.location.href = 'quiz.html';
+}
+
+function selectQuizRange(chapter, chapterTitle) {
+    selectedQuizRange = { chapter, chapterTitle };
+    document.querySelectorAll('.chapter-quiz-chip').forEach(chip => {
+        const isSelected = chip.dataset.chapter === chapter;
+        chip.classList.toggle('chapter-quiz-chip--active', isSelected);
+        chip.setAttribute('aria-pressed', String(isSelected));
+    });
+
+    const startButton = document.getElementById('start-actual-quiz-button');
+    if (startButton) {
+        startButton.textContent = chapter
+            ? `${chapter}章ドリルを開始する`
+            : '今すぐクイズを開始する（全問）';
+    }
+}
+
+export async function renderChapterQuizRange() {
+    const container = document.getElementById('chapter-quiz-chips');
+    if (!container) return;
+
+    const certId = getSelectedCert();
+    const map = topicMaps[certId] || [];
+    const questions = await fetchQuestions();
+    const chapterQuestions = questions.filter(question => getQuestionChapter(question));
+    const wrongIds = new Set(getWrongQuestionIds());
+    const showWrongCounts = chapterQuestions.some(question => wrongIds.has(question.id));
+    const requestedChapter = new URLSearchParams(window.location.search).get('chapter') || '';
+
+    loadedQuestions = questions;
+    container.textContent = '';
+
+    const createChip = (chapter, chapterTitle, count, wrongCount) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'chapter-quiz-chip';
+        chip.dataset.chapter = chapter;
+        chip.setAttribute('aria-pressed', 'false');
+        const countText = showWrongCounts
+            ? `${count}問・苦手${wrongCount}`
+            : `${count}問`;
+        chip.textContent = chapter
+            ? `${chapter}章 ${chapterTitle}（${countText}）`
+            : `全範囲（${countText}）`;
+        chip.addEventListener('click', () => selectQuizRange(chapter, chapterTitle));
+        container.appendChild(chip);
+        return chip;
+    };
+
+    createChip('', '', questions.length, questions.filter(question => wrongIds.has(question.id)).length);
+
+    if (!chapterQuestions.length) {
+        selectQuizRange('', '');
+        return;
+    }
+
+    map.forEach(item => {
+        const questionsForChapter = filterQuestionsByChapter(chapterQuestions, item.chapter);
+        const chip = createChip(
+            String(item.chapter),
+            item.title,
+            questionsForChapter.length,
+            questionsForChapter.filter(question => wrongIds.has(question.id)).length,
+        );
+        chip.disabled = questionsForChapter.length === 0;
+    });
+
+    const requestedItem = map.find(item => String(item.chapter) === requestedChapter);
+    const requestedQuestions = filterQuestionsByChapter(chapterQuestions, requestedChapter);
+    if (requestedItem && requestedQuestions.length) {
+        selectQuizRange(String(requestedItem.chapter), requestedItem.title);
+    } else {
+        selectQuizRange('', '');
+    }
 }
 
 function hasPausedSession() {
@@ -72,7 +170,7 @@ function renderResumeSection() {
     section.style.display = 'block';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     setupCommonNavigation();
     setupBackToTopButtons();
     const courseTitle = document.getElementById('quiz-course-title');
@@ -80,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initStudyScreen();
     renderWeakQuizSection();
     renderResumeSection();
+    await renderChapterQuizRange();
 
     document.getElementById('resume-quiz-button')?.addEventListener('click', () => {
         localStorage.removeItem(getSessionKeys().paused);
@@ -94,10 +193,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('start-actual-quiz-button')?.addEventListener('click', async () => {
         if (hasPausedSession() && !confirm('中断中のクイズを破棄して最初から始めますか？')) return;
-        const questions = await fetchQuestions();
+        const questions = loadedQuestions || await fetchQuestions();
         if (!questions.length) return;
+        const selectedQuestions = filterQuestionsByChapter(questions, selectedQuizRange.chapter);
+        if (!selectedQuestions.length) return;
         const shouldShuffle = document.getElementById('shuffle-quiz-checkbox')?.checked;
-        startQuiz(shouldShuffle ? shuffleQuestions(questions) : questions);
+        startQuiz(shouldShuffle ? shuffleQuestions(selectedQuestions) : selectedQuestions);
     });
 
     document.getElementById('start-weak-quiz-button')?.addEventListener('click', async () => {
@@ -107,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         const questions = (await fetchQuestions()).filter(q => wrongIds.includes(q.id));
-        if (questions.length) startQuiz(shuffleQuestions(questions));
+        if (questions.length) startQuiz(shuffleQuestions(questions), { chapter: '', chapterTitle: '' });
     });
 });
 

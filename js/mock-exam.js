@@ -16,7 +16,8 @@ let challengeFinished = false;
 document.addEventListener('DOMContentLoaded', async () => {
     setupCommonNavigation();
     setupBackToTopButtons();
-    challengeQuestions = (await fetchQuestions()).slice(0, 10);
+    const questions = await fetchQuestions();
+    challengeQuestions = questions.slice(0, Math.min(10, questions.length));
     userAnswers = new Array(challengeQuestions.length).fill(null);
     rewriteStaticLabels();
     buildNavGrid();
@@ -32,13 +33,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 function rewriteStaticLabels() {
     const certName = getCertById(getSelectedCert()).name;
     const header = document.querySelector('.header-title');
-    if (header) header.textContent = '10分復習チャレンジ';
+    document.title = `${certName} 10分復習チャレンジ - JSTQB-Study`;
+    if (header) header.textContent = `${certName} 10分復習チャレンジ`;
     const start = document.getElementById('start-screen');
     if (start) {
         const title = start.querySelector('div p[style*="font-weight:700"]');
         if (title) title.textContent = `${certName} 10分復習チャレンジ`;
         const subtitle = title?.nextElementSibling;
-        if (subtitle) subtitle.textContent = '制作者による独自問題のみを使用';
+        if (subtitle) subtitle.textContent = `${certName}の制作者による独自問題のみを使用`;
         const values = start.querySelectorAll('.exam-table td:last-child');
         const texts = [`${challengeQuestions.length}問`, '10分', '合否判定なし', '4択の自作問題', '可（後から見直せます）'];
         values.forEach((cell, index) => { if (texts[index]) cell.textContent = texts[index]; });

@@ -12,9 +12,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const questionsKey = certKey(certId, SUFFIXES.quizQuestions);
     const nextIndexKey = certKey(certId, SUFFIXES.quizNextIndex);
     const correctCountKey = certKey(certId, SUFFIXES.quizCorrectCount);
+    const quizMetaKey = certKey(certId, SUFFIXES.quizMeta);
     const totalQuestions = JSON.parse(localStorage.getItem(questionsKey) || '[]').length;
     const correctCount = parseInt(localStorage.getItem(correctCountKey) || '0', 10);
     const accuracy = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+
+    try {
+        const quizMeta = JSON.parse(localStorage.getItem(quizMetaKey) || 'null');
+        if (quizMeta?.mode === 'chapter') {
+            const context = document.getElementById('result-quiz-context') || document.createElement('h2');
+            context.id = 'result-quiz-context';
+            context.className = 'result-quiz-context';
+            context.textContent = `${quizMeta.chapter}章 ${quizMeta.chapterTitle} ドリル`;
+            if (!context.parentElement) {
+                document.querySelector('#result-screen .result-score-circle')?.before(context);
+            }
+        }
+    } catch {
+        localStorage.removeItem(quizMetaKey);
+    }
 
     const elScore = document.getElementById('result-score-value');
     const elScoreLabel = document.getElementById('result-score-label');
@@ -46,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem(questionsKey);
         localStorage.removeItem(nextIndexKey);
         localStorage.removeItem(correctCountKey);
+        localStorage.removeItem(quizMetaKey);
         window.location.href = 'study.html';
     });
 

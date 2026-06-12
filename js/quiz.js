@@ -1,31 +1,24 @@
 // js/quiz.js
 import { setupCommonNavigation, setupBackToTopButtons, setTextWithBreaks } from './utils.js';
 import { addWrongQuestion, removeCorrectQuestion, recordAnswer } from './progress.js';
-import { getSelectedCert } from './certifications.js';
-import { certKey, SUFFIXES } from './storage.js';
+import {
+    answerIndex,
+    formatLabel,
+    pauseQuizSession,
+    readQuizSession,
+    saveQuizProgress,
+} from './quizEngine.js';
 
-// Pure functions — exported for testing
-export function normalize(answer) {
-    return String(answer || '').trim().toLowerCase();
-}
-
-export function getAnswerText(letter, question) {
-    const idx = normalize(letter).charCodeAt(0) - 97;
-    if (!question || idx < 0 || idx >= question.choices.length) return '';
-    return question.choices[idx].replace(/^[a-dA-D][).]\s*/, '');
-}
-
-export function answerIndex(value) {
-    if (Number.isInteger(value)) return value;
-    const normalized = normalize(value);
-    return normalized ? normalized.charCodeAt(0) - 97 : -1;
-}
-
-export function formatLabel(letter, question) {
-    const n = normalize(letter);
-    const text = getAnswerText(n, question);
-    return text ? `${n.toUpperCase()}. ${text}` : n.toUpperCase();
-}
+export {
+    normalize,
+    getAnswerText,
+    answerIndex,
+    formatLabel,
+    getQuizSessionKeys,
+    readQuizSession,
+    saveQuizProgress,
+    pauseQuizSession,
+} from './quizEngine.js';
 
 let questionsData = [];
 let currentQuestionIndex = 0;
@@ -52,31 +45,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const explanationEl = document.getElementById('explanation-text');
     const nextBtn = document.getElementById('next-question-button');
     const progressFill = document.getElementById('quiz-progress-fill');
-    const certId = getSelectedCert();
-    const sessionKeys = {
-        questions: certKey(certId, SUFFIXES.quizQuestions),
-        nextIndex: certKey(certId, SUFFIXES.quizNextIndex),
-        correctCount: certKey(certId, SUFFIXES.quizCorrectCount),
-        paused: certKey(certId, SUFFIXES.quizPaused),
-    };
-
-    const saved = localStorage.getItem(sessionKeys.questions);
-    if (!saved) {
+    const session = readQuizSession();
+    if (!session) {
         console.error('クイズデータが見つかりません。学習開始画面に戻ります。');
         window.location.href = 'study.html';
         return;
     }
 
-    questionsData = JSON.parse(saved);
-    currentQuestionIndex = parseInt(localStorage.getItem(sessionKeys.nextIndex) || '0', 10);
-    correctAnswersCount = parseInt(localStorage.getItem(sessionKeys.correctCount) || '0', 10);
+    questionsData = session.questions;
+    currentQuestionIndex = session.nextIndex;
+    correctAnswersCount = session.correctCount;
 
     submitBtn?.addEventListener('click', submitAnswer);
     nextBtn?.addEventListener('click', goToNext);
 
     // 中断ボタン（ヘッダーの戻るボタンと「中断して保存」テキスト）
     const pauseHandler = () => {
-        localStorage.setItem(sessionKeys.paused, 'true');
+        pauseQuizSession();
         window.location.href = 'study.html';
     };
     document.getElementById('quiz-pause-btn')?.addEventListener('click', pauseHandler);
@@ -181,8 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         recordAnswer(isCorrect, qId);
 
         // Save next-to-show index so reload cannot re-answer this question
-        localStorage.setItem(sessionKeys.nextIndex, String(currentQuestionIndex + 1));
-        localStorage.setItem(sessionKeys.correctCount, String(correctAnswersCount));
+        saveQuizProgress(currentQuestionIndex + 1, correctAnswersCount);
     }
 
     function goToNext() {

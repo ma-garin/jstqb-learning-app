@@ -2,6 +2,7 @@
 export const questions = [
     {
         id: 'altm-001',
+        sectionRef: '1.1.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -21,6 +22,7 @@ export const questions = [
     },
     {
         id: 'altm-002',
+        sectionRef: '1.1.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -40,6 +42,7 @@ export const questions = [
     },
     {
         id: 'altm-003',
+        sectionRef: '1.1.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -59,6 +62,7 @@ export const questions = [
     },
     {
         id: 'altm-004',
+        sectionRef: '1.2.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -78,6 +82,7 @@ export const questions = [
     },
     {
         id: 'altm-005',
+        sectionRef: '1.3.4',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -97,6 +102,7 @@ export const questions = [
     },
     {
         id: 'altm-006',
+        sectionRef: '1.3.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -116,6 +122,7 @@ export const questions = [
     },
     {
         id: 'altm-007',
+        sectionRef: '1.3.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -135,6 +142,7 @@ export const questions = [
     },
     {
         id: 'altm-008',
+        sectionRef: '1.3.4',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -154,6 +162,7 @@ export const questions = [
     },
     {
         id: 'altm-009',
+        sectionRef: '1.3.5',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -173,6 +182,7 @@ export const questions = [
     },
     {
         id: 'altm-010',
+        sectionRef: '1.4.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -192,6 +202,7 @@ export const questions = [
     },
     {
         id: 'altm-011',
+        sectionRef: '1.4.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -211,6 +222,7 @@ export const questions = [
     },
     {
         id: 'altm-012',
+        sectionRef: '1.5.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -230,6 +242,7 @@ export const questions = [
     },
     {
         id: 'altm-013',
+        sectionRef: '1.5.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -249,6 +262,7 @@ export const questions = [
     },
     {
         id: 'altm-014',
+        sectionRef: '1.5.4',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -268,6 +282,7 @@ export const questions = [
     },
     {
         id: 'altm-015',
+        sectionRef: '1.6.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -287,6 +302,7 @@ export const questions = [
     },
     {
         id: 'altm-016',
+        sectionRef: '1.6.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -306,6 +322,7 @@ export const questions = [
     },
     {
         id: 'altm-017',
+        sectionRef: '2.1.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -325,6 +342,7 @@ export const questions = [
     },
     {
         id: 'altm-018',
+        sectionRef: '2.1.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -344,6 +362,7 @@ export const questions = [
     },
     {
         id: 'altm-019',
+        sectionRef: '2.1.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -363,6 +382,7 @@ export const questions = [
     },
     {
         id: 'altm-020',
+        sectionRef: '2.2.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -382,6 +402,7 @@ export const questions = [
     },
     {
         id: 'altm-021',
+        sectionRef: '2.2.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -401,6 +422,7 @@ export const questions = [
     },
     {
         id: 'altm-022',
+        sectionRef: '2.2.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -420,6 +442,7 @@ export const questions = [
     },
     {
         id: 'altm-023',
+        sectionRef: '2.3.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -439,6 +462,7 @@ export const questions = [
     },
     {
         id: 'altm-024',
+        sectionRef: '2.3.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -458,6 +482,7 @@ export const questions = [
     },
     {
         id: 'altm-025',
+        sectionRef: '2.3.5',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -477,6 +502,7 @@ export const questions = [
     },
     {
         id: 'altm-026',
+        sectionRef: '2.3.6',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -496,6 +522,7 @@ export const questions = [
     },
     {
         id: 'altm-027',
+        sectionRef: '3.1.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -515,6 +542,7 @@ export const questions = [
     },
     {
         id: 'altm-028',
+        sectionRef: '3.1.5',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -534,6 +562,7 @@ export const questions = [
     },
     {
         id: 'altm-029',
+        sectionRef: '3.1.6',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -553,6 +582,7 @@ export const questions = [
     },
     {
         id: 'altm-030',
+        sectionRef: '3.2.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -572,6 +602,7 @@ export const questions = [
     },
     {
         id: 'altm-031',
+        sectionRef: '3.2.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -591,6 +622,7 @@ export const questions = [
     },
     {
         id: 'altm-032',
+        sectionRef: '1.2.5',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -610,6 +642,7 @@ export const questions = [
     },
     {
         id: 'altm-033',
+        sectionRef: '1.2.4',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -629,6 +662,7 @@ export const questions = [
     },
     {
         id: 'altm-034',
+        sectionRef: '',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -648,6 +682,7 @@ export const questions = [
     },
     {
         id: 'altm-035',
+        sectionRef: '1.4.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -667,6 +702,7 @@ export const questions = [
     },
     {
         id: 'altm-036',
+        sectionRef: '1.2.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -686,6 +722,7 @@ export const questions = [
     },
     {
         id: 'altm-037',
+        sectionRef: '2.1.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -705,6 +742,7 @@ export const questions = [
     },
     {
         id: 'altm-038',
+        sectionRef: '1.5.2',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -724,6 +762,7 @@ export const questions = [
     },
     {
         id: 'altm-039',
+        sectionRef: '3.2.1',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
@@ -743,6 +782,7 @@ export const questions = [
     },
     {
         id: 'altm-040',
+        sectionRef: '2.1.3',
         sourcePolicy: 'original',
         officialQuestionUsed: false,
         certificationReference: 'JSTQB ALTM syllabus v3.0 referenced only as topic map',
