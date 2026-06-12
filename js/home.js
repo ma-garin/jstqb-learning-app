@@ -1,0 +1,3 @@
+import{questions,topics,glossaryTerms}from'./content.js';import{getAnsweredCount}from'./storage.js';
+document.getElementById('question-count').textContent=questions.length;document.getElementById('topic-count').textContent=topics.length;document.getElementById('glossary-count').textContent=glossaryTerms.length;document.getElementById('answered-count').textContent=getAnsweredCount();document.getElementById('empty-message').hidden=questions.length+topics.length+glossaryTerms.length>0;
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(error=>console.warn('Service Worker registration failed:',error));

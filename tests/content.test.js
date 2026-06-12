@@ -1,0 +1,2 @@
+import{describe,expect,it}from'vitest';import{questions,topics,glossaryTerms}from'../js/content.js';
+describe('教材データ契約',()=>{it('初期状態は空配列である',()=>{expect(questions).toEqual([]);expect(topics).toEqual([]);expect(glossaryTerms).toEqual([])});it('問題追加時に必要な項目を検証できる',()=>{const sample={id:'course-001',topic:'テーマ',question:'問題',choices:['A','B','C','D'],correctAnswerIndex:0,explanation:'解説'};expect(sample.choices).toHaveLength(4);expect(sample.correctAnswerIndex).toBeGreaterThanOrEqual(0);expect(sample.correctAnswerIndex).toBeLessThan(sample.choices.length)})});

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">QA基礎学習PWA</title>
-  <desc id="desc">チェックマークとQAの文字を組み合わせた独自アイコン</desc>
-  <rect width="512" height="512" rx="112" fill="#2563eb"/>
-  <path d="M122 250l72 72 154-166" fill="none" stroke="#fff" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="256" y="420" fill="#fff" font-family="Arial, sans-serif" font-size="92" font-weight="700" text-anchor="middle">QA</text>
-</svg>

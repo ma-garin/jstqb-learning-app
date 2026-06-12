@@ -1,15 +1,12 @@
 {
-  "name": "qa-basic-learning-pwa",
+  "name": "exam-study-pwa-starter",
   "type": "module",
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "devDependencies": {
-    "vitest": "^2.0.0"
-  },
-  "dependencies": {
-    "happy-dom": "^20.9.0",
-    "jsdom": "^29.1.1"
+    "jsdom": "^29.1.1",
+    "vitest": "^4.1.8"
   }
 }

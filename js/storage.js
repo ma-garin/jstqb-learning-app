@@ -1,20 +1,6 @@
-export const GLOBAL_KEYS = {
-    selectedCert: 'qa_selected_cert',
-    schemaVersion: 'app_schema_version',
-    streak: 'app_streak',
-    lastDate: 'app_last_date',
-};
-export function certKey(certId, suffix) { return `${certId}_${suffix}`; }
-export const SUFFIXES = {
-    today: 'progress_today',
-    total: 'total_answered',
-    wrong: 'wrong_questions',
-    answeredIds: 'answered_ids',
-    lessonsRead: 'lessons_read',
-    quizQuestions: 'quiz_questions',
-    quizNextIndex: 'quiz_next_index',
-    quizCorrectCount: 'quiz_correct_count',
-    quizAnswerLog: 'quiz_answer_log',
-    quizPaused: 'quiz_paused',
-    quizMeta: 'quiz_meta',
-};
+export const STORAGE_KEYS={session:'exam_starter_session',result:'exam_starter_result',answered:'exam_starter_answered'};
+export function readJson(key,fallback,storage=localStorage){try{const value=JSON.parse(storage.getItem(key));return value??fallback}catch{return fallback}}
+export function writeJson(key,value,storage=localStorage){storage.setItem(key,JSON.stringify(value))}
+export function clearLearningData(storage=localStorage){Object.values(STORAGE_KEYS).forEach(key=>storage.removeItem(key))}
+export function getAnsweredCount(storage=localStorage){const ids=readJson(STORAGE_KEYS.answered,[],storage);return Array.isArray(ids)?new Set(ids).size:0}
+export function recordAnswered(id,storage=localStorage){const ids=readJson(STORAGE_KEYS.answered,[],storage);writeJson(STORAGE_KEYS.answered,[...new Set([...ids,id])],storage)}
